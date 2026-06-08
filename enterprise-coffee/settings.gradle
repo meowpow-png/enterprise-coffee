@@ -1,1 +1,3 @@
 rootProject.name ='enterprise-coffee-platform'
+
+include 'backend'

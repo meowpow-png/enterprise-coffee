@@ -7,3 +7,4 @@ pluginManagement {
 rootProject.name = 'gatlingfx-examples'
 
 include 'enterprise-coffee'
+include 'enterprise-coffee:backend'

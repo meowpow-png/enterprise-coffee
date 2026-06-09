@@ -82,6 +82,25 @@ Configuration is loaded from `config.json`.
 | `coffee.types[].name`     | Supported coffee type             |
 | `coffee.types[].duration` | Brewing duration                  |
 
+## CLI Options
+
+The following command line options are available:
+
+| Option     | Description             | Default       |
+|------------|-------------------------|---------------|
+| `--port`   | HTTP server port        | `8080`        |
+| `--config` | Configuration file path | `config.json` |
+
+**Example:**
+
+Run the service with a custom configuration file and port:
+
+```shell
+./build/bin/machine \
+  --config=custom-config.json \
+  --port=9090
+```
+
 ## Development
 
 ### Requirements

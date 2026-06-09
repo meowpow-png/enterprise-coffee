@@ -36,6 +36,10 @@ order type:
         -d '{"type":"{{type}}"}' \
         {{machine-url}}/order
 
+# Get brewing progress
+progress:
+    @curl -s {{machine-url}}/progress | jq
+
 # Watch brewing progress until complete
 watch-progress:
     @watch -n 1 "curl -s {{machine-url}}/progress | jq"

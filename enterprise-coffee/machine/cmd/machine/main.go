@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -15,7 +16,6 @@ import (
 )
 
 func main() {
-	log.Println("starting coffee machine")
 	ctx, stop := signal.NotifyContext(
 		context.Background(),
 		os.Interrupt,
@@ -24,6 +24,8 @@ func main() {
 	defer stop()
 
 	flags := LoadFlags()
+	printBanner(flags.Port)
+
 	healthService := health.NewService(5 * time.Second)
 
 	go pulseHealth(ctx, healthService)
@@ -37,7 +39,6 @@ func main() {
 	).Build()
 
 	go NewShutdownHandler(server, 5*time.Second).Wait(ctx)
-	log.Printf("listening on :%d", flags.Port)
 
 	if err := server.ListenAndServe(); err != nil {
 		if !errors.Is(err, http.ErrServerClosed) {
@@ -58,4 +59,32 @@ func pulseHealth(ctx context.Context, service *health.Service) {
 			service.Pulse()
 		}
 	}
+}
+
+func printBanner(port int) {
+	fmt.Printf(`
+============================================================
+ Welcome to BrewMaster 3000
+============================================================
+
+Delivering enterprise-grade espresso, one request at a time.
+
+Available endpoints:
+
+  GET  /health    Service health status
+  GET  /status    Machine status
+  GET  /progress  Current brewing progress
+  POST /order     Submit coffee order
+
+Supported coffee types:
+
+  ESPRESSO
+  AMERICANO
+  CAPPUCCINO
+
+Listening on: http://localhost:%d
+
+Ready to brew.
+
+`, port)
 }

@@ -33,7 +33,9 @@ just watch-progress
 
 See [commands](#commands) for more information.
 
-## Endpoints
+## Usage
+
+### Endpoints
 
 | Method | Endpoint    | Description              |
 |--------|-------------|--------------------------|
@@ -42,7 +44,7 @@ See [commands](#commands) for more information.
 | `GET`  | `/progress` | Current brewing progress |
 | `POST` | `/order`    | Submit coffee order      |
 
-## Configuration
+### Configuration
 
 Configuration is loaded from `config.json`.
 
@@ -82,7 +84,7 @@ Configuration is loaded from `config.json`.
 | `coffee.types[].name`     | Supported coffee type             |
 | `coffee.types[].duration` | Brewing duration                  |
 
-## CLI Options
+### CLI Options
 
 The following command line options are available:
 
@@ -100,6 +102,22 @@ Run the service with a custom configuration file and port:
   --config=custom-config.json \
   --port=9090
 ```
+
+### Docker
+
+Build and start the service:
+
+```
+just compose up --build
+```
+
+Stop the service:
+
+```
+just compose down
+```
+
+The service is available on port `8080` by default.
 
 ## Development
 

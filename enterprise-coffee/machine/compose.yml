@@ -1,0 +1,6 @@
+services:
+  machine:
+    build: .
+    image: senthora/enterprise-coffee-machine
+    ports:
+      - "8080:8080"

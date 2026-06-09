@@ -18,6 +18,9 @@ type Service struct {
 func NewService(
 	coffees []config.CoffeeTypeConfig,
 ) *Service {
+	if len(coffees) == 0 {
+		panic("coffees must not be empty")
+	}
 	brewers := make(map[CoffeeType]*Brewer)
 
 	for _, coffee := range coffees {

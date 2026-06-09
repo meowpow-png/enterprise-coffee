@@ -1,6 +1,14 @@
 package config
 
-import "flag"
+import (
+	"flag"
+	"os"
+)
+
+const (
+	defaultPort       = 8080
+	defaultConfigFile = "config.json"
+)
 
 // Flags contains command line flags.
 type Flags struct {
@@ -8,22 +16,25 @@ type Flags struct {
 	ConfigFile string
 }
 
-var port = flag.Int(
-	"port",
-	8080,
-	"HTTP server port",
-)
-
-var configFile = flag.String(
-	"config",
-	"config.json",
-	"Configuration file",
-)
-
 // LoadFlags loads command line flags.
 func LoadFlags() Flags {
-	flag.Parse()
+	return loadFlags(flag.CommandLine, os.Args[1:])
+}
 
+func loadFlags(fs *flag.FlagSet, args []string) Flags {
+	port := fs.Int(
+		"port",
+		defaultPort,
+		"HTTP server port",
+	)
+	configFile := fs.String(
+		"config",
+		defaultConfigFile,
+		"Configuration file",
+	)
+	if err := fs.Parse(args); err != nil {
+		panic(err)
+	}
 	if *port <= 0 {
 		panic("port must be positive")
 	}

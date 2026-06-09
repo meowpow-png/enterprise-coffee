@@ -15,6 +15,12 @@ type ShutdownHandler struct {
 
 // NewShutdownHandler creates a new shutdown handler.
 func NewShutdownHandler(server *http.Server, timeout time.Duration) *ShutdownHandler {
+	if server == nil {
+		panic("server must not be nil")
+	}
+	if timeout <= 0 {
+		panic("timeout must be positive")
+	}
 	return &ShutdownHandler{
 		server:  server,
 		timeout: timeout,

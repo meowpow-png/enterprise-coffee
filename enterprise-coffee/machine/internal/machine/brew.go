@@ -32,6 +32,9 @@ func (b *Brew) Progress() int {
 
 // SetProgress updates the brewing progress.
 func (b *Brew) SetProgress(progress int) {
+	if progress < 0 || progress > 100 {
+		panic("progress must be between 0 and 100")
+	}
 	b.mu.Lock()
 	defer b.mu.Unlock()
 

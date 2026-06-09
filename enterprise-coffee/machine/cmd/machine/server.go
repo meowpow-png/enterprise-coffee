@@ -24,6 +24,15 @@ func NewServer(
 	healthService *health.Service,
 	machineService *machine.Service,
 ) *Server {
+	if port <= 0 {
+		panic("port must be positive")
+	}
+	if healthService == nil {
+		panic("health service must not be nil")
+	}
+	if machineService == nil {
+		panic("machine service must not be nil")
+	}
 	return &Server{
 		port:           port,
 		healthService:  healthService,

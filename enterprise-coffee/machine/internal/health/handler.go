@@ -9,6 +9,9 @@ type Handler struct {
 
 // NewHandler creates a new health handler.
 func NewHandler(service *Service) *Handler {
+	if service == nil {
+		panic("service must not be nil")
+	}
 	return &Handler{
 		service: service,
 	}
@@ -17,7 +20,7 @@ func NewHandler(service *Service) *Handler {
 // ServeHTTP serves health requests.
 func (h *Handler) ServeHTTP(
 	writer http.ResponseWriter,
-	request *http.Request,
+	_ *http.Request,
 ) {
 	if h.service.Healthy() {
 		writer.WriteHeader(http.StatusOK)

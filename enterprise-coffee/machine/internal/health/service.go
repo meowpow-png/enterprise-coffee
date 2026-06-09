@@ -14,6 +14,9 @@ type Service struct {
 
 // NewService creates a new health service.
 func NewService(maxPulseAge time.Duration) *Service {
+	if maxPulseAge <= 0 {
+		panic("maxPulseAge must be positive")
+	}
 	return &Service{
 		lastPulse:   time.Now(),
 		maxPulseAge: maxPulseAge,

@@ -13,6 +13,9 @@ type Brewer struct {
 
 // NewBrewer creates a new brewer.
 func NewBrewer(duration time.Duration) *Brewer {
+	if duration <= 0 {
+		panic("duration must be positive")
+	}
 	return &Brewer{
 		duration: duration,
 	}

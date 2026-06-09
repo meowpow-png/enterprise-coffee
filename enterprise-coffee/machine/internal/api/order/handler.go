@@ -15,6 +15,9 @@ type Handler struct {
 
 // NewOrderHandler creates a new order handler.
 func NewOrderHandler(service *machine.Service) *Handler {
+	if service == nil {
+		panic("service must not be nil")
+	}
 	return &Handler{
 		service: service,
 	}

@@ -14,6 +14,9 @@ type Handler struct {
 
 // NewProgressHandler creates a new progress handler.
 func NewProgressHandler(service *machine.Service) *Handler {
+	if service == nil {
+		panic("service must not be nil")
+	}
 	return &Handler{
 		service: service,
 	}

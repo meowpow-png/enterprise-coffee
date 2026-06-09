@@ -1,6 +1,7 @@
 package machine
 
 import (
+	"fmt"
 	"log"
 	"time"
 )
@@ -19,13 +20,20 @@ func NewBrewer(duration time.Duration) *Brewer {
 
 // Process processes a brewing operation.
 func (b *Brewer) Process(brew *Brew) {
-	log.Printf("started brewing %s", brew.Coffee())
-
+	log.Printf(
+		"started brewing %s (estimated time: %s)",
+		brew.Coffee(),
+		b.duration,
+	)
+	fmt.Println()
 	step := b.duration / 10
 
 	for progress := 10; progress <= 100; progress += 10 {
 		time.Sleep(step)
 		brew.SetProgress(progress)
+
+		log.Printf("%s... %d%%", brew.Coffee(), progress)
 	}
+	fmt.Println()
 	log.Printf("completed brewing %s", brew.Coffee())
 }

@@ -1,18 +1,31 @@
 package machine
 
-import "sync"
+import (
+	"sync"
+	"time"
+
+	"senthora.com/gatlingfx/enterprise-coffee/machine/internal/api/config"
+)
 
 // Service manages coffee machine state.
 type Service struct {
-	mu     sync.RWMutex
-	brew   *Brew
-	brewer *Brewer
+	mu      sync.RWMutex
+	brew    *Brew
+	brewers map[CoffeeType]*Brewer
 }
 
 // NewService creates a new machine service.
-func NewService(brewer *Brewer) *Service {
+func NewService(
+	coffees []config.CoffeeTypeConfig,
+) *Service {
+	brewers := make(map[CoffeeType]*Brewer)
+
+	for _, coffee := range coffees {
+		brewers[CoffeeType(coffee.Name)] =
+			NewBrewer(time.Duration(coffee.Duration))
+	}
 	return &Service{
-		brewer: brewer,
+		brewers: brewers,
 	}
 }
 
@@ -42,6 +55,11 @@ func (s *Service) Progress() (CoffeeType, int) {
 func (s *Service) Brew(coffee CoffeeType) bool {
 	s.mu.Lock()
 
+	brewer, exists := s.brewers[coffee]
+	if !exists {
+		s.mu.Unlock()
+		return false
+	}
 	if s.brew != nil {
 		s.mu.Unlock()
 		return false
@@ -52,7 +70,7 @@ func (s *Service) Brew(coffee CoffeeType) bool {
 	s.mu.Unlock()
 
 	go func() {
-		s.brewer.Process(brew)
+		brewer.Process(brew)
 
 		s.mu.Lock()
 		defer s.mu.Unlock()

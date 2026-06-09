@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
@@ -25,16 +26,19 @@ func main() {
 	defer stop()
 
 	flags := config.LoadFlags()
-	printBanner(flags.Port)
+	configuration, err := config.Load(flags)
+	if err != nil {
+		log.Fatalf("failed to load config: %v", err)
+	}
+	printBanner(configuration)
 
 	healthService := health.NewService(5 * time.Second)
 
 	go pulseHealth(ctx, healthService)
 
-	brewer := machine.NewBrewer(10 * time.Second)
-	machineService := machine.NewService(brewer)
+	machineService := machine.NewService(configuration.Coffee.Types)
 	server := NewServer(
-		flags.Port,
+		configuration.Server.Port,
 		healthService,
 		machineService,
 	).Build()
@@ -62,10 +66,14 @@ func pulseHealth(ctx context.Context, service *health.Service) {
 	}
 }
 
-func printBanner(port int) {
+func printBanner(config config.Config) {
+	name := config.Machine.Name
+	types := coffeeTypes(config)
+	port := config.Server.Port
+
 	fmt.Printf(`
 ============================================================
- Welcome to BrewMaster 3000
+ Welcome to %s
 ============================================================
 
 Delivering enterprise-grade espresso, one request at a time.
@@ -79,13 +87,22 @@ Available endpoints:
 
 Supported coffee types:
 
-  ESPRESSO
-  AMERICANO
-  CAPPUCCINO
+%s
 
 Listening on: http://localhost:%d
 
 Ready to brew.
 
-`, port)
+`, name, types, port)
+}
+
+func coffeeTypes(config config.Config) string {
+	var builder strings.Builder
+
+	for _, coffee := range config.Coffee.Types {
+		builder.WriteString("  ")
+		builder.WriteString(coffee.Name)
+		builder.WriteString("\n")
+	}
+	return builder.String()
 }

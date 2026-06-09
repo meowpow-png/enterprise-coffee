@@ -1,0 +1,24 @@
+{
+  "machine": {
+    "name": "Brewer 3000"
+  },
+  "server": {
+    "port": 8082
+  },
+  "coffee": {
+    "types": [
+      {
+        "name": "ESPRESSO",
+        "duration": "10s"
+      },
+      {
+        "name": "AMERICANO",
+        "duration": "15s"
+      },
+      {
+        "name": "CAPPUCCINO",
+        "duration": "20s"
+      }
+    ]
+  }
+}

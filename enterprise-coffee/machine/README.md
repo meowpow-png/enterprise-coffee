@@ -123,19 +123,22 @@ The service is available on port `8080` by default.
 
 ### Requirements
 
-* Go
-* Just
+* Go 1.25 or later
+* Just >= 1.50
 
 ### Commands
 
-| Command               | Description                   |
-|-----------------------|-------------------------------|
-| `just build`          | Build the application         |
-| `just run`            | Build and run the application |
-| `just status`         | Query machine status          |
-| `just progress`       | Query brewing progress        |
-| `just watch-progress` | Watch brewing progress        |
-| `just order <type>`   | Submit coffee order           |
-| `just clean`          | Remove build artifacts        |
+| Command               | Description                            |
+|-----------------------|----------------------------------------|
+| `just build`          | Build the application                  |
+| `just run`            | Build and run the application          |
+| `just test`           | Run unit tests with race detection     |
+| `just test-coverage`  | Run tests and generate coverage report |
+| `just status`         | Query machine status                   |
+| `just progress`       | Query brewing progress                 |
+| `just watch-progress` | Watch brewing progress in real time    |
+| `just order <type>`   | Submit coffee order                    |
+| `just clean`          | Remove build artifacts                 |
+| `just compose <args>` | Run docker compose commands            |
 
 See `config.json` for configured coffee types and brewing durations.

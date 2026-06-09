@@ -25,6 +25,16 @@ run:
 test *args:
 	go test -race -count=1 {{args}}
 
+# Run Go tests with coverage
+test-coverage:
+	@mkdir -p build/coverage
+	just test \
+		-coverprofile=build/coverage/coverage.out \
+		./...
+
+	go tool cover -html=build/coverage/coverage.out \
+		-o build/coverage/coverage.html
+
 # Get coffee machine status
 status:
     @curl -s {{machine-url}}/status | jq

@@ -20,6 +20,11 @@ run:
     just build-machine
     ./build/bin/machine --port={{machine-port}}
 
+# Run go tests
+[arg("args", help="test arguments")]
+test *args:
+	go test -race -count=1 {{args}}
+
 # Get coffee machine status
 status:
     @curl -s {{machine-url}}/status | jq

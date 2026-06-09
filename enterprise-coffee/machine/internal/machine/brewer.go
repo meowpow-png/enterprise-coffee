@@ -1,0 +1,31 @@
+package machine
+
+import (
+	"log"
+	"time"
+)
+
+// Brewer simulates coffee brewing.
+type Brewer struct {
+	duration time.Duration
+}
+
+// NewBrewer creates a new brewer.
+func NewBrewer(duration time.Duration) *Brewer {
+	return &Brewer{
+		duration: duration,
+	}
+}
+
+// Process processes a brewing operation.
+func (b *Brewer) Process(brew *Brew) {
+	log.Printf("started brewing %s", brew.Coffee())
+
+	step := b.duration / 10
+
+	for progress := 10; progress <= 100; progress += 10 {
+		time.Sleep(step)
+		brew.SetProgress(progress)
+	}
+	log.Printf("completed brewing %s", brew.Coffee())
+}

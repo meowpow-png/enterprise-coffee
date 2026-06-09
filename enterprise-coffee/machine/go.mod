@@ -1,3 +1,3 @@
 module senthora.com/gatlingfx/enterprise-coffee/machine
 
-go 1.26.3
+go 1.25.10

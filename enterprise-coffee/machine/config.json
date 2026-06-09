@@ -9,15 +9,15 @@
     "types": [
       {
         "name": "ESPRESSO",
-        "duration": "10s"
+        "duration": "3s"
       },
       {
         "name": "AMERICANO",
-        "duration": "15s"
+        "duration": "5s"
       },
       {
         "name": "CAPPUCCINO",
-        "duration": "20s"
+        "duration": "7s"
       }
     ]
   }

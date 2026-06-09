@@ -22,7 +22,7 @@ run:
 
 # Get coffee machine status
 status:
-    curl {{machine-url}}/status
+    @curl -s {{machine-url}}/status | jq
 
 # Submit coffee order
 [arg("type", help="coffee type")]

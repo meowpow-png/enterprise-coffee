@@ -33,18 +33,104 @@ just watch-progress
 
 See [commands](#commands) for more information.
 
-## Usage
+## API
 
-### Endpoints
+### Send Coffee Order
 
-| Method | Endpoint    | Description              |
-|--------|-------------|--------------------------|
-| `GET`  | `/health`   | Service health status    |
-| `GET`  | `/status`   | Current machine status   |
-| `GET`  | `/progress` | Current brewing progress |
-| `POST` | `/order`    | Submit coffee order      |
+Submit a brewing order for a specific coffee type.
 
-### Configuration
+**Path**
+
+```text
+POST /order
+```
+
+**Body (application/json)**
+
+| Field | Type   | Required | Description                                    |
+|-------|--------|----------|------------------------------------------------|
+| type  | string | yes      | Coffee type to brew (e.g. ESPRESSO, AMERICANO) |
+
+**Example:**
+
+```json
+{
+  "type": "ESPRESSO"
+}
+```
+
+**Responses**
+
+- `202 Accepted` - Order accepted and brewing started
+- `409 Conflict` - Order rejected (machine is busy or cannot accept request)
+- `400 Bad Request` - Invalid JSON payload
+
+### Get Brewing Progress
+
+Returns current brewing progress for the active coffee.
+
+**Path**
+
+```text
+GET /progress
+```
+
+**Response (application/json)**
+
+| Field     | Type    | Description                         |
+|-----------|---------|-------------------------------------|
+| type      | string  | Current coffee type being brewed    |
+| progress  | integer | Brewing progress (0–100)            |
+
+**Example:**
+
+```json
+{
+  "type": "ESPRESSO",
+  "progress": 42
+}
+```
+
+### Get Machine Status
+
+Returns current machine state.
+
+**Path**
+
+```text
+GET /status
+```
+
+**Response (application/json)**
+
+| Field  | Type   | Description                             |
+|--------|--------|-----------------------------------------|
+| status | string | Current machine status (READY, BREWING) |
+
+**Example:**
+
+```json
+{
+  "status": "BREWING"
+}
+```
+
+### Health Check
+
+Returns service health state.
+
+**Path**
+
+```text
+GET /health
+```
+
+**Responses**
+
+- `200 OK` - Service is healthy
+- `503 Service Unavailable` - Service is unhealthy
+
+## Configuration
 
 Configuration is loaded from `config.json`.
 
@@ -84,7 +170,7 @@ Configuration is loaded from `config.json`.
 | `coffee.types[].name`     | Supported coffee type             |
 | `coffee.types[].duration` | Brewing duration                  |
 
-### CLI Options
+## CLI Options
 
 The following command line options are available:
 
@@ -103,7 +189,7 @@ Run the service with a custom configuration file and port:
   --port=9090
 ```
 
-### Docker
+## Deployment
 
 Build and start the service:
 

@@ -4,7 +4,7 @@ import (
 	"sync"
 	"time"
 
-	"senthora.com/gatlingfx/enterprise-coffee/machine/internal/api/config"
+	"senthora.com/gatlingfx/enterprise-coffee/machine/internal/config"
 )
 
 // Service manages coffee machine state.

@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"senthora.com/gatlingfx/enterprise-coffee/machine/internal/api/config"
+	"senthora.com/gatlingfx/enterprise-coffee/machine/internal/config"
 	"senthora.com/gatlingfx/enterprise-coffee/machine/internal/machine"
 )
 

@@ -1,0 +1,42 @@
+set shell := ["bash", "-eu", "-o", "pipefail", "-c"]
+
+machine-url := "http://localhost:8080"
+
+# List available recipes
+default:
+    @just --list
+
+# Remove build artifacts
+clean:
+    rm -rf build
+
+# Build binary artifacts
+build:
+    just build-machine
+
+# Build and run coffee machine
+run:
+    just build-machine
+    ./build/bin/machine
+
+# Get coffee machine status
+status:
+    curl {{machine-url}}/status
+
+# Submit coffee order
+[arg("type", pattern="ESPRESSO|AMERICANO|CAPPUCINO", help="coffee type")]
+order type:
+    @curl \
+        -X POST \
+        -H "Content-Type: application/json" \
+        -d '{"type":"{{type}}"}' \
+        {{machine-url}}/order
+
+# Watch brewing progress until complete
+watch-progress:
+    @watch -n 1 "curl -s {{machine-url}}/progress | jq"
+
+[private]
+build-machine:
+    @mkdir -p build/bin
+    go build -o build/bin/machine ./cmd/machine

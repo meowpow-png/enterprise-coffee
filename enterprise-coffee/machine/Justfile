@@ -1,6 +1,7 @@
 set shell := ["bash", "-eu", "-o", "pipefail", "-c"]
 
-machine-url := "http://localhost:8080"
+machine-port := "8081"
+machine-url := "http://localhost:" + machine-port
 
 # List available recipes
 default:
@@ -17,7 +18,7 @@ build:
 # Build and run coffee machine
 run:
     just build-machine
-    ./build/bin/machine
+    ./build/bin/machine --port={{machine-port}}
 
 # Get coffee machine status
 status:

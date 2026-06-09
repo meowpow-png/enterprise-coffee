@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
 	"senthora.com/gatlingfx/enterprise-coffee/machine/internal/api/order"
@@ -12,16 +13,19 @@ import (
 
 // Server creates the machine HTTP server.
 type Server struct {
+	port           int
 	healthService  *health.Service
 	machineService *machine.Service
 }
 
 // NewServer creates a new server.
 func NewServer(
+	port int,
 	healthService *health.Service,
 	machineService *machine.Service,
 ) *Server {
 	return &Server{
+		port:           port,
 		healthService:  healthService,
 		machineService: machineService,
 	}
@@ -37,7 +41,7 @@ func (s *Server) Build() *http.Server {
 	mux.Handle("/order", order.NewOrderHandler(s.machineService))
 
 	return &http.Server{
-		Addr:    ":8080",
+		Addr:    fmt.Sprintf(":%d", s.port),
 		Handler: mux,
 	}
 }

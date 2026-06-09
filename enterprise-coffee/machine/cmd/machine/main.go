@@ -23,16 +23,21 @@ func main() {
 	)
 	defer stop()
 
+	flags := LoadFlags()
 	healthService := health.NewService(5 * time.Second)
 
 	go pulseHealth(ctx, healthService)
 
 	brewer := machine.NewBrewer(10 * time.Second)
 	machineService := machine.NewService(brewer)
-	server := NewServer(healthService, machineService).Build()
+	server := NewServer(
+		flags.Port,
+		healthService,
+		machineService,
+	).Build()
 
 	go NewShutdownHandler(server, 5*time.Second).Wait(ctx)
-	log.Println("listening on :8080")
+	log.Printf("listening on :%d", flags.Port)
 
 	if err := server.ListenAndServe(); err != nil {
 		if !errors.Is(err, http.ErrServerClosed) {

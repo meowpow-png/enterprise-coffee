@@ -1,6 +1,6 @@
 {
   "machine": {
-    "name": "Brewer 3000"
+    "name": "BrewMaster 3000"
   },
   "server": {
     "port": 8082

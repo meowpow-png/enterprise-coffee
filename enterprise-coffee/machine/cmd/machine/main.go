@@ -11,6 +11,7 @@ import (
 	"syscall"
 	"time"
 
+	"senthora.com/gatlingfx/enterprise-coffee/machine/internal/api/config"
 	"senthora.com/gatlingfx/enterprise-coffee/machine/internal/health"
 	"senthora.com/gatlingfx/enterprise-coffee/machine/internal/machine"
 )
@@ -23,7 +24,7 @@ func main() {
 	)
 	defer stop()
 
-	flags := LoadFlags()
+	flags := config.LoadFlags()
 	printBanner(flags.Port)
 
 	healthService := health.NewService(5 * time.Second)

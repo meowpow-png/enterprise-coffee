@@ -1,0 +1,23 @@
+## Java
+*.class
+
+## Gradle
+.gradle/
+build/
+lib/
+!gradle/wrapper/gradle-wrapper.jar
+
+## IntelliJ IDEA
+.idea/*
+*.iml
+!.idea/runConfigurations
+!.idea/codeStyles
+!.idea/scopes
+!.idea/dictionaries
+
+## OS files
+.DS_Store
+
+## Other
+logs
+*.env

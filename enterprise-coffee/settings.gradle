@@ -1,4 +1,0 @@
-rootProject.name ='enterprise-coffee-platform'
-
-include 'backend'
-include 'machine'

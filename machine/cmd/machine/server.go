@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"net/http"
 
-	"senthora.com/gatlingfx/enterprise-coffee/machine/internal/api/order"
-	"senthora.com/gatlingfx/enterprise-coffee/machine/internal/api/progress"
-	"senthora.com/gatlingfx/enterprise-coffee/machine/internal/api/status"
-	"senthora.com/gatlingfx/enterprise-coffee/machine/internal/health"
-	"senthora.com/gatlingfx/enterprise-coffee/machine/internal/machine"
+	"github.com/meowpow-png/enterprise-coffee/machine/internal/api/order"
+	"github.com/meowpow-png/enterprise-coffee/machine/internal/api/progress"
+	"github.com/meowpow-png/enterprise-coffee/machine/internal/api/status"
+	"github.com/meowpow-png/enterprise-coffee/machine/internal/health"
+	"github.com/meowpow-png/enterprise-coffee/machine/internal/machine"
 )
 
 // Server creates the machine HTTP server.

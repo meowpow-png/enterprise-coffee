@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"senthora.com/gatlingfx/enterprise-coffee/machine/internal/machine"
+	"github.com/meowpow-png/enterprise-coffee/machine/internal/machine"
 )
 
 // Handler handles brewing progress requests.

@@ -1,6 +1,6 @@
 package order
 
-import "senthora.com/gatlingfx/enterprise-coffee/machine/internal/machine"
+import "github.com/meowpow-png/enterprise-coffee/machine/internal/machine"
 
 // Request represents a coffee order request.
 type Request struct {

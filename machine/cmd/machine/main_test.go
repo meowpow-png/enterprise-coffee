@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"senthora.com/gatlingfx/enterprise-coffee/machine/internal/health"
-	"senthora.com/gatlingfx/enterprise-coffee/machine/internal/machine"
+	"github.com/meowpow-png/enterprise-coffee/machine/internal/health"
+	"github.com/meowpow-png/enterprise-coffee/machine/internal/machine"
 )
 
 func TestHealthEndpoint_ReturnsOK(t *testing.T) {

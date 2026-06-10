@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"senthora.com/gatlingfx/enterprise-coffee/machine/internal/config"
-	"senthora.com/gatlingfx/enterprise-coffee/machine/internal/machine"
+	"github.com/meowpow-png/enterprise-coffee/machine/internal/config"
+	"github.com/meowpow-png/enterprise-coffee/machine/internal/machine"
 )
 
 func TestNewStatusHandler_InitializesService(t *testing.T) {

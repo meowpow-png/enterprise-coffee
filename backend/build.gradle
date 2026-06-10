@@ -1,3 +1,10 @@
+buildscript {
+    // needed so flyway can connect to postgres database
+    dependencies {
+        classpath "org.postgresql:postgresql:42.7.11"
+        classpath 'org.flywaydb:flyway-database-postgresql:12.8.1'
+    }
+}
 plugins {
     id 'java'
     id 'org.springframework.boot' version '4.0.6'

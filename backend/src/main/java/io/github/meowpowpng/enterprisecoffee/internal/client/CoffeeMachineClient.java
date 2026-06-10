@@ -1,0 +1,38 @@
+package io.github.meowpowpng.enterprisecoffee.internal.client;
+
+import io.github.meowpowpng.enterprisecoffee.model.CoffeeType;
+
+/**
+ * Client for communicating with the coffee machine.
+ */
+public interface CoffeeMachineClient {
+
+    /**
+     * Returns the current operational
+     * status of the coffee machine.
+     *
+     * @throws CoffeeMachineException if communication with the
+     * machine fails, or the machine returns an invalid response
+     */
+    MachineStatusResponse status();
+
+    /**
+     * Returns the current brewing
+     * progress reported by the machine.
+     *
+     * @throws CoffeeMachineException if communication with the
+     * machine fails, or the machine returns an invalid response
+     */
+    MachineProgressResponse progress();
+
+    /**
+     * Submits a coffee order to the coffee machine.
+     *
+     * @param type coffee beverage to prepare
+     *
+     * @throws NullPointerException if {@code type} is {@code null}
+     * @throws CoffeeMachineException if communication with the
+     * machine fails, or the machine returns an invalid response
+     */
+    MachineOrderResponse order(CoffeeType type);
+}

@@ -1,12 +1,6 @@
 ## Java
 *.class
 
-## Gradle
-.gradle/
-build/
-lib/
-!gradle/wrapper/gradle-wrapper.jar
-
 ## IntelliJ IDEA
 .idea/*
 *.iml

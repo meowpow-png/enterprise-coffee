@@ -91,6 +91,15 @@ GET /progress
 }
 ```
 
+Idle machine:
+
+```json
+{
+  "type": "",
+  "progress": 0
+}
+```
+
 ### Get Machine Status
 
 Returns current machine state.

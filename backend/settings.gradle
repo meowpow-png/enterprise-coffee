@@ -4,7 +4,4 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
-rootProject.name ='enterprise-coffee-platform'
-
-include 'backend'
-include 'machine'
+rootProject.name ='enterprise-coffee-backend'

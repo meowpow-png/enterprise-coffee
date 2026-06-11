@@ -31,7 +31,7 @@ public class JpaCoffeeBrewJobRepository implements CoffeeBrewJobRepository {
         catch (CoffeeBrewJobMappingException e) {
             throw e;
         }
-        catch (Exception e) {
+        catch (RuntimeException e) {
             var message = "failed to create coffee brewing job";
             throw new CoffeeBrewJobPersistenceException(message, e);
         }

@@ -22,10 +22,19 @@ public class JpaCoffeeBrewJobRepository implements CoffeeBrewJobRepository {
     public CoffeeBrewJob create(CoffeeBrewJob job) {
         Objects.requireNonNull(job, "job");
 
-        var entity = CoffeeBrewJobMapper.toEntity(job);
-        var persisted = repository.save(entity);
+        try {
+            var entity = CoffeeBrewJobMapper.toEntity(job);
+            var persisted = repository.save(entity);
 
-        return CoffeeBrewJobMapper.toDomain(persisted);
+            return CoffeeBrewJobMapper.toDomain(persisted);
+        }
+        catch (CoffeeBrewJobMappingException e) {
+            throw e;
+        }
+        catch (Exception e) {
+            var message = "failed to create coffee brewing job";
+            throw new CoffeeBrewJobPersistenceException(message, e);
+        }
     }
 
     @Override
@@ -38,8 +47,8 @@ public class JpaCoffeeBrewJobRepository implements CoffeeBrewJobRepository {
                 job.progress()
         );
         if (updated == 0) {
-            var message = "coffee brewing job not found: %s";
-            throw new IllegalStateException(message.formatted(job.id().value()));
+            var message = "coffee brewing job not found: " + job.id().value();
+            throw new CoffeeBrewJobPersistenceException(message);
         }
         return job;
     }
@@ -48,8 +57,16 @@ public class JpaCoffeeBrewJobRepository implements CoffeeBrewJobRepository {
     public Optional<CoffeeBrewJob> findById(CoffeeBrewJob.Identifier id) {
         Objects.requireNonNull(id, "id");
 
-        return repository
-                .findById(id.value())
-                .map(CoffeeBrewJobMapper::toDomain);
+        try {
+            return repository.findById(id.value())
+                    .map(CoffeeBrewJobMapper::toDomain);
+        }
+        catch (CoffeeBrewJobMappingException e) {
+            throw e;
+        }
+        catch (RuntimeException e) {
+            var message = "failed to find coffee brewing job";
+            throw new CoffeeBrewJobPersistenceException(message, e);
+        }
     }
 }

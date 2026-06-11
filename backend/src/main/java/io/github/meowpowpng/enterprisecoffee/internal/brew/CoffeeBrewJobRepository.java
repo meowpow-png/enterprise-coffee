@@ -10,19 +10,19 @@ public interface CoffeeBrewJobRepository {
     /**
      * Creates a new coffee-brewing job.
      *
-     * @param job coffee brewing job to create
+     * @param job coffee-brewing job to create
      *
      * @return the created coffee-brewing job
+     *
      * @throws NullPointerException if {@code job} is {@code null}
-     * @throws IllegalStateException if a job with the same identifier
-     * already exists
+     * @throws CoffeeBrewJobMappingException if the job cannot be mapped
+     * @throws CoffeeBrewJobPersistenceException if the job cannot be persisted
      */
     CoffeeBrewJob create(CoffeeBrewJob job);
-
     /**
      * Updates an existing coffee-brewing job.
      *
-     * @param job coffee brewing job to update
+     * @param job coffee-brewing job to update
      *
      * @return the updated coffee brewing job
      * @throws NullPointerException if {@code job} is {@code null}
@@ -31,12 +31,15 @@ public interface CoffeeBrewJobRepository {
     CoffeeBrewJob update(CoffeeBrewJob job);
 
     /**
-     * Returns the coffee brewing job with the specified identifier.
+     * Returns the coffee-brewing job with the specified identifier.
      *
-     * @param id identifier of the coffee brewing job
+     * @param id identifier of the coffee-brewing job
      *
-     * @return the coffee brewing job if found; otherwise empty
+     * @return the coffee-brewing job if found; otherwise empty
+     *
      * @throws NullPointerException if {@code id} is {@code null}
+     * @throws CoffeeBrewJobMappingException if the job cannot be mapped
+     * @throws CoffeeBrewJobPersistenceException if the job cannot be retrieved
      */
     Optional<CoffeeBrewJob> findById(CoffeeBrewJob.Identifier id);
 }

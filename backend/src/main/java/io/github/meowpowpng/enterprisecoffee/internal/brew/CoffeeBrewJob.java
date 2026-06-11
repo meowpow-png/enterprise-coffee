@@ -118,7 +118,7 @@ public final class CoffeeBrewJob {
     /**
      * Unique identifier of a coffee-brewing job.
      */
-    public record Identifier(String value) {
+    public record Identifier(UUID value) {
 
         /**
          * Creates a new brewing job identifier.
@@ -126,21 +126,16 @@ public final class CoffeeBrewJob {
          * @param value identifier value
          *
          * @throws NullPointerException if {@code value} is null
-         * @throws IllegalArgumentException if {@code value} is blank
          */
         public Identifier {
             Objects.requireNonNull(value, "value must not be null");
-
-            if (value.isBlank()) {
-                throw new IllegalArgumentException("value must not be blank");
-            }
         }
 
         /**
          * Generates a new unique coffee-brewing job identifier.
          */
         static Identifier generate() {
-            return new Identifier(UUID.randomUUID().toString());
+            return new Identifier(UUID.randomUUID());
         }
     }
 

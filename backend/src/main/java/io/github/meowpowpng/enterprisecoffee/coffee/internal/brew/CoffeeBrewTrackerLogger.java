@@ -7,7 +7,8 @@ import java.util.UUID;
 
 final class CoffeeBrewTrackerLogger {
 
-    private static final Logger log = LoggerFactory.getLogger("CoffeeBrewTracker");
+    @SuppressWarnings("LoggerInitializedWithForeignClass")
+    private static final Logger log = LoggerFactory.getLogger(CoffeeBrewTracker.class);
 
     private enum Event {
         TRACKING_STARTED,

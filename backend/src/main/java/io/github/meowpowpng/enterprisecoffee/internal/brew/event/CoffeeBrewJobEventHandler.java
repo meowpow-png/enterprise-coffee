@@ -22,14 +22,21 @@ class CoffeeBrewJobEventHandler {
     @Async
     @Transactional
     @EventListener
-    public void onEvent(CoffeeBrewJobStartedEvent event) {
+    public void onStarted(CoffeeBrewJobStartedEvent event) {
         repository.create(event.job());
     }
 
     @Async
     @Transactional
     @EventListener
-    public void onEvent(CoffeeBrewJobProgressUpdatedEvent event) {
+    public void onProgressUpdated(CoffeeBrewJobProgressUpdatedEvent event) {
+        repository.update(event.job());
+    }
+
+    @Async
+    @Transactional
+    @EventListener
+    public void onFinished(CoffeeBrewJobFinishedEvent event) {
         repository.update(event.job());
     }
 }

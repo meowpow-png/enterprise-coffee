@@ -1,7 +1,9 @@
 package io.github.meowpowpng.enterprisecoffee.internal.brew;
 
 import io.github.meowpowpng.enterprisecoffee.common.DomainEventPublisher;
+import io.github.meowpowpng.enterprisecoffee.internal.brew.event.CoffeeBrewJobFinishedEvent;
 import io.github.meowpowpng.enterprisecoffee.internal.brew.event.CoffeeBrewJobProgressUpdatedEvent;
+import io.github.meowpowpng.enterprisecoffee.internal.brew.event.CoffeeBrewJobStartedEvent;
 import io.github.meowpowpng.enterprisecoffee.internal.client.CoffeeMachineClient;
 import io.github.meowpowpng.enterprisecoffee.internal.client.CoffeeMachineException;
 import io.github.meowpowpng.enterprisecoffee.internal.client.MachineProgressResponse;
@@ -60,7 +62,8 @@ public class CoffeeBrewTracker {
      */
     @Async
     public void track(CoffeeBrewJob job) {
-        applyAndPublish(job, job::start);
+        job.start();
+        publisher.publish(new CoffeeBrewJobStartedEvent(job));
 
         var deadline = clock.instant().plus(brewTimeout);
         while (!timedOut(deadline)) {
@@ -75,10 +78,11 @@ public class CoffeeBrewTracker {
             var progress = progressResponse.progress();
 
             if (progress == 100) {
-                applyAndPublish(job, job::complete);
+                job.complete();
+                publisher.publish(new CoffeeBrewJobFinishedEvent(job));
                 return;
             }
-            applyAndPublish(job, () -> job.updateProgress(progress));
+            updateProgress(job, progress);
             try {
                 sleeper.sleep();
             }
@@ -88,12 +92,19 @@ public class CoffeeBrewTracker {
                 break;
             }
         }
-        applyAndPublish(job, job::fail);
+        job.fail();
+        publisher.publish(new CoffeeBrewJobFinishedEvent(job));
     }
 
-    private void applyAndPublish(CoffeeBrewJob job, Runnable updateAction) {
-        updateAction.run();
-        publisher.publish(new CoffeeBrewJobProgressUpdatedEvent(job));
+    private void updateProgress(CoffeeBrewJob job, int newProgress) {
+        int previousProgress = job.progress();
+
+        job.updateProgress(newProgress);
+
+        publisher.publish(new CoffeeBrewJobProgressUpdatedEvent(
+                job,
+                previousProgress
+        ));
     }
 
     private boolean timedOut(Instant deadline) {

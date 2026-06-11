@@ -55,7 +55,7 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
         var orderStatus = CoffeeOrderStatus.RECEIVED;
         var brewJob = CoffeeBrewJob.create();
 
-        publisher.publish(CoffeeBrewJobUpdatedEvent.of(brewJob));
+        publisher.publish(new CoffeeBrewJobUpdatedEvent(brewJob));
         try {
             var response = client.order(request.type());
             orderStatus = CoffeeOrderStatus.DISPATCHED;

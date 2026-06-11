@@ -10,9 +10,5 @@ public record CoffeeBrewJobCreatedEvent(CoffeeBrewJob job) implements DomainEven
     public CoffeeBrewJobCreatedEvent {
         Objects.requireNonNull(job, "job must not be null");
     }
-
-    public static CoffeeBrewJobUpdatedEvent of(CoffeeBrewJob job) {
-        return new CoffeeBrewJobUpdatedEvent(job);
-    }
 }
 

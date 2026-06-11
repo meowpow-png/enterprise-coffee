@@ -93,7 +93,7 @@ public class CoffeeBrewTracker {
 
     private void applyAndPublish(CoffeeBrewJob job, Runnable updateAction) {
         updateAction.run();
-        publisher.publish(CoffeeBrewJobUpdatedEvent.of(job));
+        publisher.publish(new CoffeeBrewJobUpdatedEvent(job));
     }
 
     private boolean timedOut(Instant deadline) {

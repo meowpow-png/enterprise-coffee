@@ -29,12 +29,12 @@ class CoffeeBrewJobEventHandler {
     @EventListener
     public void onStarted(CoffeeBrewJobStartedEvent event) {
         var id = event.job().id().value();
-        log.debug("Persisting started coffee brew job (id={})", id);
+        log.debug("Started coffee brew job (id={})", id);
         try {
             repository.create(event.job());
         }
         catch (Exception e) {
-            log.error("Failed to persist started coffee brew job (id={})", id, e);
+            log.error("Failed to persist coffee brew job (id={})", id, e);
         }
     }
 
@@ -43,12 +43,15 @@ class CoffeeBrewJobEventHandler {
     @EventListener
     public void onProgressUpdated(CoffeeBrewJobProgressUpdatedEvent event) {
         var id = event.job().id().value();
-        log.debug("Persisting updated coffee brew job (id={})", id);
+        log.debug("Coffee brew job progress updated (id={}, progress={})",
+                id,
+                event.previousProgress() + "->" +event.job().progress()
+        );
         try {
             repository.update(event.job());
         }
         catch (Exception e) {
-            log.error("Failed to persist updated coffee brew job (id={})", id, e);
+            log.error("Failed to persist coffee brew job (id={})", id, e);
         }
     }
 
@@ -57,12 +60,15 @@ class CoffeeBrewJobEventHandler {
     @EventListener
     public void onFinished(CoffeeBrewJobFinishedEvent event) {
         var id = event.job().id().value();
-        log.debug("Persisting finished coffee brew job (id={})", id);
+        log.debug("Coffee brew job finished (id={}, progress={})",
+                id,
+                event.job().progress()
+        );
         try {
             repository.update(event.job());
         }
         catch (Exception e) {
-            log.error("Failed to persist finished coffee brew job (id={})", id, e);
+            log.error("Failed to persist coffee brew job (id={})", id, e);
         }
     }
 }

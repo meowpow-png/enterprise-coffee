@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 /**
  * Handles coffee order requests.
  */
@@ -20,7 +22,7 @@ public class CoffeeController {
 
     @PostMapping("/order")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    ClientOrderResponse order(@RequestBody ClientOrderRequest request) {
+    ClientOrderResponse order(@Valid @RequestBody ClientOrderRequest request) {
         return service.order(request);
     }
 }

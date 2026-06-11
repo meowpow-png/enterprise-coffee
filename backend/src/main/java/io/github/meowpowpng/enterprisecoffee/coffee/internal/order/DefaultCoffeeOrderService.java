@@ -5,6 +5,7 @@ import io.github.meowpowpng.enterprisecoffee.coffee.api.ClientOrderResponse;
 import io.github.meowpowpng.enterprisecoffee.coffee.api.CoffeeOrderService;
 import io.github.meowpowpng.enterprisecoffee.coffee.api.exception.CoffeeOrderInvalidException;
 import io.github.meowpowpng.enterprisecoffee.coffee.api.exception.CoffeeOrderProcessingException;
+import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
 import io.github.meowpowpng.enterprisecoffee.common.DomainEventPublisher;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.brew.CoffeeBrewJob;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.brew.event.CoffeeBrewJobFinishedEvent;
@@ -48,7 +49,7 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
         CoffeeBrewJob job = CoffeeBrewJob.create();
         MachineOrderResponse response;
         try {
-            response = client.order(request.type());
+            response = client.order(CoffeeType.valueOf(request.type()));
         }
         catch (CoffeeMachineException e) {
             job.fail();

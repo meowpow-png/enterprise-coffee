@@ -99,7 +99,9 @@ public class CoffeeBrewTracker {
 
     private void updateProgress(CoffeeBrewJob job, int newProgress) {
         int previousProgress = job.progress();
-
+        if (previousProgress == newProgress) {
+            return;
+        }
         job.updateProgress(newProgress);
 
         publisher.publish(new CoffeeBrewJobProgressUpdatedEvent(

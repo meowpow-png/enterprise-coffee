@@ -3,6 +3,7 @@ package io.github.meowpowpng.enterprisecoffee.internal.brew;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 
@@ -17,12 +18,14 @@ class CoffeeBrewJobEventHandler {
     }
 
     @Async
+    @Transactional
     @EventListener
     public void onEvent(CoffeeBrewJobCreatedEvent event) {
         repository.create(event.job());
     }
 
     @Async
+    @Transactional
     @EventListener
     public void onEvent(CoffeeBrewJobUpdatedEvent event) {
         repository.update(event.job());

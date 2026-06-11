@@ -10,11 +10,14 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import org.jspecify.annotations.NullUnmarked;
+
 import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
 @Entity
+@NullUnmarked
 @SuppressWarnings("unused")
 @Table(name = "coffee_brew_job")
 public class CoffeeBrewJobEntity {

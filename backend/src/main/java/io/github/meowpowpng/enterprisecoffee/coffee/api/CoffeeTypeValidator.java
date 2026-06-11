@@ -5,13 +5,15 @@ import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
+import org.jspecify.annotations.Nullable;
+
 /**
  * Validates coffee type values.
  */
 public final class CoffeeTypeValidator implements ConstraintValidator<ValidCoffeeType, String> {
 
     @Override
-    public boolean isValid(String value, ConstraintValidatorContext context) {
+    public boolean isValid(@Nullable String value, ConstraintValidatorContext context) {
         if (value == null || value.isBlank()) {
             return true;
         }

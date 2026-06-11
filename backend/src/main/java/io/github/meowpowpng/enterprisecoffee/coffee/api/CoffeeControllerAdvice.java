@@ -4,6 +4,7 @@ import io.github.meowpowpng.enterprisecoffee.coffee.api.exception.CoffeeOrderInv
 import io.github.meowpowpng.enterprisecoffee.coffee.api.exception.CoffeeOrderProcessingException;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -41,8 +42,10 @@ public class CoffeeControllerAdvice {
     ClientOrderResponse handleInvalidRequest(MethodArgumentNotValidException e) {
         var message = e.getBindingResult()
                 .getFieldErrors()
-                .getFirst()
-                .getDefaultMessage();
+                .stream()
+                .findFirst()
+                .map(FieldError::getDefaultMessage)
+                .orElse("coffee order request is invalid");
 
         return new ClientOrderResponse(message);
     }

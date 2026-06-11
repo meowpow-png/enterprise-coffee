@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -24,7 +26,7 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
 
     @Override
     public MachineStatusResponse status() {
-        Supplier<MachineStatusResponse> operation = () -> restClient.get()
+        ResponseSupplier<MachineStatusResponse> operation = () -> restClient.get()
                 .uri("/status")
                 .retrieve()
                 .body(MachineStatusResponse.class);
@@ -40,7 +42,7 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
     public MachineOrderResponse order(CoffeeType type) {
         Objects.requireNonNull(type, "type must not be null");
 
-        Supplier<MachineOrderResponse> operation = () -> restClient.post()
+        ResponseSupplier<MachineOrderResponse> operation = () -> restClient.post()
                 .uri("/order")
                 .body(new MachineOrderRequest(type))
                 .exchange((ignored, clientResponse) ->
@@ -56,7 +58,7 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
 
     @Override
     public MachineProgressResponse progress() {
-        Supplier<MachineProgressResponse> operation = () -> restClient.get()
+        ResponseSupplier<MachineProgressResponse> operation = () -> restClient.get()
                 .uri("/progress")
                 .retrieve()
                 .body(MachineProgressResponse.class);
@@ -69,12 +71,12 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
     }
 
     private static <T> T callMachine(
-            Supplier<T> operation,
+            ResponseSupplier<T> supplier,
             String failureMessage,
             String emptyResponseMessage
     ) {
         try {
-            var response = operation.get();
+            var response = supplier.get();
 
             if (response == null) {
                 throw new CoffeeMachineException(emptyResponseMessage);
@@ -84,5 +86,13 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
         catch (RestClientException e) {
             throw new CoffeeMachineException(failureMessage, e);
         }
+    }
+
+    @FunctionalInterface
+    private interface ResponseSupplier<T> extends Supplier<T> {
+
+        @Nullable
+        @Override
+        T get();
     }
 }

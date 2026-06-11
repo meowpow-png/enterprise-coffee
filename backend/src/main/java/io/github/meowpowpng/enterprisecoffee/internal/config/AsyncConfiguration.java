@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 @Configuration
 public class AsyncConfiguration {
 
-    @Bean
+    @Bean(name = "taskExecutor")
     Executor coffeeBrewTrackerExecutor() {
         return Executors.newVirtualThreadPerTaskExecutor();
     }

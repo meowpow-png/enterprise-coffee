@@ -5,6 +5,11 @@ package io.github.meowpowpng.enterprisecoffee.coffee.api.exception;
  */
 public class CoffeeOrderInvalidException extends CoffeeOrderException {
 
+    /**
+     * Creates a new invalid order exception.
+     *
+     * @param message exception message
+     */
     public CoffeeOrderInvalidException(String message) {
         super(message);
     }

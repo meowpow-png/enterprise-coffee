@@ -1,12 +1,13 @@
-package io.github.meowpowpng.enterprisecoffee.internal.brew;
+package io.github.meowpowpng.enterprisecoffee.internal.brew.event;
 
 import io.github.meowpowpng.enterprisecoffee.common.DomainEvent;
+import io.github.meowpowpng.enterprisecoffee.internal.brew.CoffeeBrewJob;
 
 import java.util.Objects;
 
-public record CoffeeBrewJobUpdatedEvent(CoffeeBrewJob job) implements DomainEvent {
+public record CoffeeBrewJobCreatedEvent(CoffeeBrewJob job) implements DomainEvent {
 
-    public CoffeeBrewJobUpdatedEvent {
+    public CoffeeBrewJobCreatedEvent {
         Objects.requireNonNull(job, "job must not be null");
     }
 
@@ -14,3 +15,4 @@ public record CoffeeBrewJobUpdatedEvent(CoffeeBrewJob job) implements DomainEven
         return new CoffeeBrewJobUpdatedEvent(job);
     }
 }
+

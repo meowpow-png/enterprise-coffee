@@ -1,6 +1,7 @@
 package io.github.meowpowpng.enterprisecoffee.internal.brew;
 
 import io.github.meowpowpng.enterprisecoffee.common.DomainEventPublisher;
+import io.github.meowpowpng.enterprisecoffee.internal.brew.event.CoffeeBrewJobUpdatedEvent;
 import io.github.meowpowpng.enterprisecoffee.internal.client.CoffeeMachineClient;
 import io.github.meowpowpng.enterprisecoffee.internal.client.CoffeeMachineException;
 import io.github.meowpowpng.enterprisecoffee.internal.client.MachineProgressResponse;

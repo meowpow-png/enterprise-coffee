@@ -5,7 +5,7 @@ import io.github.meowpowpng.enterprisecoffee.api.ClientOrderResponse;
 import io.github.meowpowpng.enterprisecoffee.api.CoffeeOrderService;
 import io.github.meowpowpng.enterprisecoffee.common.DomainEventPublisher;
 import io.github.meowpowpng.enterprisecoffee.internal.brew.CoffeeBrewJob;
-import io.github.meowpowpng.enterprisecoffee.internal.brew.CoffeeBrewJobUpdatedEvent;
+import io.github.meowpowpng.enterprisecoffee.internal.brew.event.CoffeeBrewJobUpdatedEvent;
 import io.github.meowpowpng.enterprisecoffee.internal.brew.CoffeeBrewJobRepository;
 import io.github.meowpowpng.enterprisecoffee.internal.brew.CoffeeBrewTracker;
 import io.github.meowpowpng.enterprisecoffee.internal.client.CoffeeMachineClient;

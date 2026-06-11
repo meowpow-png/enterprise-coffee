@@ -1,4 +1,6 @@
-package io.github.meowpowpng.enterprisecoffee.internal.brew;
+package io.github.meowpowpng.enterprisecoffee.internal.brew.event;
+
+import io.github.meowpowpng.enterprisecoffee.internal.brew.CoffeeBrewJobRepository;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;

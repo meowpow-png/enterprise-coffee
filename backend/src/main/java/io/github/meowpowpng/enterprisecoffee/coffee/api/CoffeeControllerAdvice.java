@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- * Handles REST API exceptions for coffee domain.
+ * Handles exceptions raised by coffee controllers.
  */
 @RestControllerAdvice
-public class CoffeeRestExceptionHandler {
+public class CoffeeControllerAdvice {
 
     /**
      * Handles invalid coffee order requests.

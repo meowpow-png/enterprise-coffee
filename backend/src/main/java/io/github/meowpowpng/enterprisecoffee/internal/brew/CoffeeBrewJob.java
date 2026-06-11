@@ -34,6 +34,31 @@ public final class CoffeeBrewJob {
     }
 
     /**
+     * Restores an existing coffee-brewing job.
+     *
+     * @param id unique identifier of the brewing job
+     * @param status current status of the brewing job
+     * @param progress current progress of the brewing job
+     *
+     * @throws NullPointerException if {@code id} or {@code status} is null
+     * @throws IllegalArgumentException if {@code progress}
+     * is outside valid range {@code 0-100}
+     */
+    static CoffeeBrewJob restore(Identifier id, Status status, int progress) {
+        Objects.requireNonNull(id, "id must not be null");
+        Objects.requireNonNull(status, "status must not be null");
+
+        if (progress < 0 || progress > 100) {
+            var message = "progress must be between 0 and 100 but was " + progress;
+            throw new IllegalArgumentException(message);
+        }
+        var job = new CoffeeBrewJob(id, status);
+        job.progress = progress;
+
+        return job;
+    }
+
+    /**
      * Marks the job as started.
      *
      * @throws IllegalStateException if the job is not pending

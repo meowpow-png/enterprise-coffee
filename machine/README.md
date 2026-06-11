@@ -200,6 +200,12 @@ Run the service with a custom configuration file and port:
 
 ## Deployment
 
+Build the application:
+
+```shell
+just build
+```
+
 Build and start the service:
 
 ```

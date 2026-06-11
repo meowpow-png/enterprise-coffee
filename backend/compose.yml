@@ -17,5 +17,10 @@ services:
       timeout: 3s
       retries: 30
 
+  machine:
+    image: meowpow-png/enterprise-coffee-machine
+    ports:
+      - "8081:8080"
+
 volumes:
   postgres-data:

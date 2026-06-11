@@ -16,6 +16,9 @@ import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.MachineOrder
 
 import org.springframework.stereotype.Service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Objects;
 
 /**
@@ -23,6 +26,8 @@ import java.util.Objects;
  */
 @Service
 public class DefaultCoffeeOrderService implements CoffeeOrderService {
+
+    private static final Logger log = LoggerFactory.getLogger(DefaultCoffeeOrderService.class);
 
     private final CoffeeMachineClient client;
     private final DomainEventPublisher publisher;
@@ -52,6 +57,7 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
             response = client.order(CoffeeType.valueOf(request.type()));
         }
         catch (CoffeeMachineException e) {
+            log.warn("Coffee order failed because machine is unavailable", e);
             job.fail();
 
             publisher.publish(new CoffeeBrewJobFinishedEvent(job));
@@ -60,13 +66,17 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
             throw new CoffeeOrderProcessingException(message, e);
         }
         if (response.isAccepted()) {
+            log.info("Coffee order accepted (id={})", job.id().value());
+
             tracker.track(job);
             return ClientOrderResponse.accepted();
         }
         if (response.isRejected()) {
+            log.info("Coffee order rejected because machine is busy");
             throw new CoffeeOrderProcessingException("coffee machine is busy");
         }
         if (response.isInvalid()) {
+            log.info("Coffee order rejected because request is invalid");
             throw new CoffeeOrderInvalidException("coffee order is invalid");
         }
         var message = "Unexpected response from coffee machine (status=%s)";

@@ -75,9 +75,10 @@ public class CoffeeBrewTracker {
                 finish(job, job::fail);
                 return;
             }
-            var progress = progressResponse.progress();
-
-            if (progress == 100) {
+            var progress = CoffeeBrewJob.Progress.of(
+                    progressResponse.progress()
+            );
+            if (progress.value() == 100) {
                 log.trackingCompleted(id);
 
                 finish(job, job::complete);
@@ -88,7 +89,7 @@ public class CoffeeBrewTracker {
                 sleeper.sleep();
             }
             catch (IllegalStateException e) {
-                log.trackingInterrupted(id, job.status(), progress);
+                log.trackingInterrupted(id, job.status(), progress.value());
                 finish(job, job::fail);
                 return;
             }
@@ -97,12 +98,12 @@ public class CoffeeBrewTracker {
         finish(job, job::fail);
     }
 
-    private void updateProgress(CoffeeBrewJob job, int newProgress) {
-        int previousProgress = job.progress();
-        if (previousProgress == newProgress) {
+    private void updateProgress(CoffeeBrewJob job, CoffeeBrewJob.Progress newProgress) {
+        var previousProgress = job.progress();
+        if (previousProgress == newProgress.value()) {
             return;
         }
-        job.updateProgress(newProgress);
+        job.updateProgress(newProgress.value());
 
         publisher.publish(new CoffeeBrewJobProgressUpdatedEvent(
                 job,

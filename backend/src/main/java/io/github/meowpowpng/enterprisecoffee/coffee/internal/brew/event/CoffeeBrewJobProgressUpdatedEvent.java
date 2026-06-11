@@ -12,8 +12,5 @@ public record CoffeeBrewJobProgressUpdatedEvent(
 
     public CoffeeBrewJobProgressUpdatedEvent {
         Objects.requireNonNull(job, "job must not be null");
-        if (previousProgress < 0 || previousProgress > 100) {
-            throw new IllegalArgumentException("previousProgress must be between 0 and 100");
-        }
     }
 }

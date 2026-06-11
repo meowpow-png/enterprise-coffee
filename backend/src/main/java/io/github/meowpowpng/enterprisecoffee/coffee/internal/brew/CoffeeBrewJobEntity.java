@@ -44,43 +44,23 @@ public class CoffeeBrewJobEntity {
         this.progress = progress;
     }
 
-    public UUID getId() {
+    UUID getId() {
         return id;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public CoffeeBrewJob.Status getStatus() {
+    CoffeeBrewJob.Status getStatus() {
         return status;
     }
 
-    public void setStatus(CoffeeBrewJob.Status status) {
-        this.status = status;
-    }
-
-    public int getProgress() {
+    int getProgress() {
         return progress;
     }
 
-    public void setProgress(int progress) {
-        this.progress = progress;
-    }
-
-    public Instant getCreatedAt() {
+    Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Instant getUpdatedAt() {
+    Instant getUpdatedAt() {
         return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }

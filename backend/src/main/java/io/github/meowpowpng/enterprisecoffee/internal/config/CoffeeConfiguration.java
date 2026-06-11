@@ -1,5 +1,6 @@
 package io.github.meowpowpng.enterprisecoffee.internal.config;
 
+import io.github.meowpowpng.enterprisecoffee.common.DomainEventPublisher;
 import io.github.meowpowpng.enterprisecoffee.internal.brew.CoffeeBrewTracker;
 import io.github.meowpowpng.enterprisecoffee.internal.brew.DefaultThreadSleeper;
 import io.github.meowpowpng.enterprisecoffee.internal.brew.ThreadSleeper;
@@ -31,12 +32,18 @@ public class CoffeeConfiguration {
     @Bean
     CoffeeBrewTracker coffeeBrewTracker(
             CoffeeMachineClient client,
+            DomainEventPublisher publisher,
             ThreadSleeper sleeper,
             CoffeeProperties properties,
             Clock clock
     ) {
-        var timeout = properties.brewTimeout();
-        return new CoffeeBrewTracker(client, sleeper, timeout, clock);
+        return new CoffeeBrewTracker(
+                client,
+                publisher,
+                sleeper,
+                properties.brewTimeout(),
+                clock
+        );
     }
 
     @Bean

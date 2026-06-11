@@ -37,6 +37,9 @@ func (b *Brewer) Process(brew *Brew) {
 
 		log.Printf("%s... %d%%", brew.Coffee(), progress)
 	}
+	// give clients a chance to observe 100%
+	time.Sleep(step)
+
 	fmt.Println()
 	log.Printf("completed brewing %s", brew.Coffee())
 }

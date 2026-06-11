@@ -19,16 +19,29 @@ public class JpaCoffeeBrewJobRepository implements CoffeeBrewJobRepository {
     }
 
     @Override
-    public CoffeeBrewJob save(CoffeeBrewJob job) {
+    public CoffeeBrewJob create(CoffeeBrewJob job) {
         Objects.requireNonNull(job, "job");
 
-        var entity = repository.findById(job.id().value()).orElseGet(() ->
-                CoffeeBrewJobMapper.toEntity(job)
-        );
+        var entity = CoffeeBrewJobMapper.toEntity(job);
+        var persisted = repository.save(entity);
+
+        return CoffeeBrewJobMapper.toDomain(persisted);
+    }
+
+    @Override
+    public CoffeeBrewJob update(CoffeeBrewJob job) {
+        Objects.requireNonNull(job, "job");
+
+        var entity = repository.findById(job.id().value()).orElseThrow(() -> {
+            var message = "coffee brewing job not found: %s";
+            return new IllegalStateException(message.formatted(job.id().value()));
+        });
         entity.setStatus(job.status());
         entity.setProgress(job.progress());
 
-        return CoffeeBrewJobMapper.toDomain(entity);
+        var persisted = repository.save(entity);
+
+        return CoffeeBrewJobMapper.toDomain(persisted);
     }
 
     @Override

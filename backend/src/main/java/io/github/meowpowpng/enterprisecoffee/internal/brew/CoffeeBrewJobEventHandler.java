@@ -18,7 +18,13 @@ class CoffeeBrewJobEventHandler {
 
     @Async
     @EventListener
-    public void onEvent(CoffeeBrewJobChangedEvent event) {
-        repository.save(event.job());
+    public void onEvent(CoffeeBrewJobCreatedEvent event) {
+        repository.create(event.job());
+    }
+
+    @Async
+    @EventListener
+    public void onEvent(CoffeeBrewJobUpdatedEvent event) {
+        repository.update(event.job());
     }
 }

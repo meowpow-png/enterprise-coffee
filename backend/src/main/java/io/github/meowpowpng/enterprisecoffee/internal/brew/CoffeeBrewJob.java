@@ -63,7 +63,7 @@ public final class CoffeeBrewJob {
      *
      * @throws IllegalStateException if the job is not pending
      */
-    void start() {
+    public void start() {
         if (status != Status.PENDING) {
             var message = "expected status PENDING but was " + status;
             throw new IllegalStateException(message);
@@ -80,7 +80,7 @@ public final class CoffeeBrewJob {
      * @throws IllegalArgumentException if {@code progress}
      * is outside valid range {@code 0-100}
      */
-    void updateProgress(int progress) {
+    public void updateProgress(int progress) {
         if (status != Status.IN_PROGRESS) {
             var message = "cannot update progress for job with status " + status;
             throw new IllegalStateException(message);
@@ -97,7 +97,7 @@ public final class CoffeeBrewJob {
      *
      * @throws IllegalStateException if the job is not in progress
      */
-    void complete() {
+    public void complete() {
         if (status != Status.IN_PROGRESS) {
             var message =  "cannot complete job with status " + status;
             throw new IllegalStateException(message);
@@ -111,7 +111,7 @@ public final class CoffeeBrewJob {
      *
      * @throws IllegalStateException if the job has already completed or failed
      */
-    void fail() {
+    public void fail() {
         if (status == Status.COMPLETED || status == Status.FAILED) {
             var message = "cannot fail job with status " + status;
             throw new IllegalStateException(message);
@@ -122,7 +122,7 @@ public final class CoffeeBrewJob {
     /**
      * Returns the job identifier.
      */
-    Identifier id() {
+    public Identifier id() {
         return id;
     }
 
@@ -136,7 +136,7 @@ public final class CoffeeBrewJob {
     /**
      * Returns the current job progress.
      */
-    int progress() {
+    public int progress() {
         return progress;
     }
 

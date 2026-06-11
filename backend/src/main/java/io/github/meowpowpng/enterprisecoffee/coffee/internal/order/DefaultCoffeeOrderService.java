@@ -15,9 +15,6 @@ import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.MachineOrder
 
 import org.springframework.stereotype.Service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Objects;
 
 /**
@@ -25,8 +22,6 @@ import java.util.Objects;
  */
 @Service
 public class DefaultCoffeeOrderService implements CoffeeOrderService {
-
-    private static final Logger log = LoggerFactory.getLogger(DefaultCoffeeOrderService.class);
 
     private final CoffeeMachineClient client;
     private final DomainEventPublisher publisher;

@@ -86,7 +86,7 @@ public final class CoffeeBrewJob {
             throw new IllegalStateException(message);
         }
         if (progress < 0 || progress > 100) {
-            var message =  "progress must be between 0 and 100 but was " + progress;
+            var message = "progress must be between 0 and 100 but was " + progress;
             throw new IllegalArgumentException(message);
         }
         this.progress = progress;
@@ -99,7 +99,7 @@ public final class CoffeeBrewJob {
      */
     public void complete() {
         if (status != Status.IN_PROGRESS) {
-            var message =  "cannot complete job with status " + status;
+            var message = "cannot complete job with status " + status;
             throw new IllegalStateException(message);
         }
         progress = 100;

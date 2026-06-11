@@ -22,7 +22,7 @@ public record MachineProgressResponse(String type, int progress) {
      *
      * @throws NullPointerException if {@code type} is {@code null}
      * @throws IllegalArgumentException if {@code progress}
-     *         is outside the valid range {@code 0-100}
+     * is outside the valid range {@code 0-100}
      */
     public MachineProgressResponse {
         Objects.requireNonNull(type, "type must not be null");

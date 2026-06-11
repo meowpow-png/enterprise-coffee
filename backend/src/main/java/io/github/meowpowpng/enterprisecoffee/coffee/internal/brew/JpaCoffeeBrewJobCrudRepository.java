@@ -12,6 +12,7 @@ import java.util.UUID;
 @SuppressWarnings("unused")
 interface JpaCoffeeBrewJobCrudRepository extends JpaRepository<CoffeeBrewJobEntity, UUID> {
 
+    //@formatter:off
     @Modifying
     @Query("""
         UPDATE CoffeeBrewJobEntity job
@@ -26,4 +27,5 @@ interface JpaCoffeeBrewJobCrudRepository extends JpaRepository<CoffeeBrewJobEnti
             CoffeeBrewJob.Status status,
             int progress
     );
+    //@formatter:on
 }

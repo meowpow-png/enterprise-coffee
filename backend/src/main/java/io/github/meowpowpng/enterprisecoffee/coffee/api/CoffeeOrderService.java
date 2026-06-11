@@ -14,7 +14,6 @@ public interface CoffeeOrderService {
      * @param request coffee order request
      *
      * @return order processing result
-     *
      * @throws NullPointerException if {@code request} is {@code null}
      * @throws CoffeeOrderInvalidException if the request cannot be
      * accepted because the specified coffee order is invalid

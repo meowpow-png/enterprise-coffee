@@ -13,12 +13,12 @@ public interface CoffeeBrewJobRepository {
      * @param job coffee-brewing job to create
      *
      * @return the created coffee-brewing job
-     *
      * @throws NullPointerException if {@code job} is {@code null}
      * @throws CoffeeBrewJobMappingException if the job cannot be mapped
      * @throws CoffeeBrewJobPersistenceException if the job cannot be persisted
      */
     CoffeeBrewJob create(CoffeeBrewJob job);
+
     /**
      * Updates an existing coffee-brewing job.
      *
@@ -36,7 +36,6 @@ public interface CoffeeBrewJobRepository {
      * @param id identifier of the coffee-brewing job
      *
      * @return the coffee-brewing job if found; otherwise empty
-     *
      * @throws NullPointerException if {@code id} is {@code null}
      * @throws CoffeeBrewJobMappingException if the job cannot be mapped
      * @throws CoffeeBrewJobPersistenceException if the job cannot be retrieved

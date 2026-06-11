@@ -10,9 +10,6 @@ import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.MachineProgr
 
 import org.springframework.scheduling.annotation.Async;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
@@ -24,7 +21,7 @@ import java.util.Objects;
  */
 public class CoffeeBrewTracker {
 
-    private static final Logger log = LoggerFactory.getLogger(CoffeeBrewTracker.class);
+    private static final CoffeeBrewTrackerLogger log = new CoffeeBrewTrackerLogger();
 
     private final CoffeeMachineClient client;
     private final DomainEventPublisher publisher;
@@ -62,8 +59,10 @@ public class CoffeeBrewTracker {
      */
     @Async
     public void track(CoffeeBrewJob job) {
-        job.start();
-        publisher.publish(new CoffeeBrewJobStartedEvent(job));
+        var id = job.id().value();
+
+        log.trackingStarted(id);
+        start(job);
 
         var deadline = clock.instant().plus(brewTimeout);
         while (!timedOut(deadline)) {
@@ -72,14 +71,16 @@ public class CoffeeBrewTracker {
                 progressResponse = client.progress();
             }
             catch (CoffeeMachineException e) {
-                log.error("Coffee machine communication failed", e);
-                break;
+                log.communicationFailed(id, e);
+                finish(job, job::fail);
+                return;
             }
             var progress = progressResponse.progress();
 
             if (progress == 100) {
-                job.complete();
-                publisher.publish(new CoffeeBrewJobFinishedEvent(job));
+                log.trackingCompleted(id);
+
+                finish(job, job::complete);
                 return;
             }
             updateProgress(job, progress);
@@ -87,13 +88,13 @@ public class CoffeeBrewTracker {
                 sleeper.sleep();
             }
             catch (IllegalStateException e) {
-                var message = "Coffee brew tracker interrupted (status={}, progress={})";
-                log.info(message, job.status(), progress);
-                break;
+                log.trackingInterrupted(id, job.status(), progress);
+                finish(job, job::fail);
+                return;
             }
         }
-        job.fail();
-        publisher.publish(new CoffeeBrewJobFinishedEvent(job));
+        log.trackingTimedOut(id, job.progress());
+        finish(job, job::fail);
     }
 
     private void updateProgress(CoffeeBrewJob job, int newProgress) {
@@ -105,6 +106,16 @@ public class CoffeeBrewTracker {
                 job,
                 previousProgress
         ));
+    }
+
+    private void start(CoffeeBrewJob job) {
+        job.start();
+        publisher.publish(new CoffeeBrewJobStartedEvent(job));
+    }
+
+    private void finish(CoffeeBrewJob job, Runnable action) {
+        action.run();
+        publisher.publish(new CoffeeBrewJobFinishedEvent(job));
     }
 
     private boolean timedOut(Instant deadline) {

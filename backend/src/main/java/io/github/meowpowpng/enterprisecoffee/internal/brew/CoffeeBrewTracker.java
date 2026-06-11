@@ -1,7 +1,7 @@
 package io.github.meowpowpng.enterprisecoffee.internal.brew;
 
 import io.github.meowpowpng.enterprisecoffee.common.DomainEventPublisher;
-import io.github.meowpowpng.enterprisecoffee.internal.brew.event.CoffeeBrewJobUpdatedEvent;
+import io.github.meowpowpng.enterprisecoffee.internal.brew.event.CoffeeBrewJobProgressUpdatedEvent;
 import io.github.meowpowpng.enterprisecoffee.internal.client.CoffeeMachineClient;
 import io.github.meowpowpng.enterprisecoffee.internal.client.CoffeeMachineException;
 import io.github.meowpowpng.enterprisecoffee.internal.client.MachineProgressResponse;
@@ -93,7 +93,7 @@ public class CoffeeBrewTracker {
 
     private void applyAndPublish(CoffeeBrewJob job, Runnable updateAction) {
         updateAction.run();
-        publisher.publish(new CoffeeBrewJobUpdatedEvent(job));
+        publisher.publish(new CoffeeBrewJobProgressUpdatedEvent(job));
     }
 
     private boolean timedOut(Instant deadline) {

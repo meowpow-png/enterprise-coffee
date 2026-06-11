@@ -44,7 +44,7 @@ public class JpaCoffeeBrewJobRepository implements CoffeeBrewJobRepository {
         var updated = repository.update(
                 job.id().value(),
                 job.status(),
-                job.progress()
+                job.progress().value()
         );
         if (updated == 0) {
             var message = "coffee brewing job not found: " + job.id().value();

@@ -1,6 +1,7 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.internal.client;
 
 import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
+import io.github.meowpowpng.enterprisecoffee.coffee.model.Progress;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -60,8 +61,18 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
     public MachineProgressResponse progress() {
         ResponseSupplier<MachineProgressResponse> operation = () -> restClient.get()
                 .uri("/progress")
-                .retrieve()
-                .body(MachineProgressResponse.class);
+                .exchange((request, response) -> {
+                    var payload = response.bodyTo(MachineProgressPayload.class);
+
+                    if (payload == null) {
+                        return null;
+                    }
+                    var type = payload.type();
+                    return new MachineProgressResponse(
+                            type.isBlank() ? null : CoffeeType.valueOf(payload.type()),
+                            Progress.of(payload.progress())
+                    );
+                });
 
         return callMachine(
                 operation,
@@ -83,7 +94,7 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
             }
             return response;
         }
-        catch (RestClientException e) {
+        catch (RestClientException | IllegalArgumentException e) {
             throw new CoffeeMachineException(failureMessage, e);
         }
     }
@@ -95,4 +106,6 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
         @Override
         T get();
     }
+
+    private record MachineProgressPayload(String type, int progress) {}
 }

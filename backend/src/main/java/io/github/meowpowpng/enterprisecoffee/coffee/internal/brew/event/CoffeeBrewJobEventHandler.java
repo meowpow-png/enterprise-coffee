@@ -40,7 +40,7 @@ class CoffeeBrewJobEventHandler {
     @EventListener
     public void onProgressUpdated(CoffeeBrewJobProgressUpdatedEvent event) {
         var id = event.job().id().value();
-        log.progressUpdated(id, event.previousProgress(), event.job().progress());
+        log.progressUpdated(id, event.previousProgress(), event.job().progress().value());
         try {
             repository.update(event.job());
         }
@@ -54,7 +54,7 @@ class CoffeeBrewJobEventHandler {
     @EventListener
     public void onFinished(CoffeeBrewJobFinishedEvent event) {
         var id = event.job().id().value();
-        log.finished(id, event.job().progress());
+        log.finished(id, event.job().progress().value());
         try {
             repository.update(event.job());
         }

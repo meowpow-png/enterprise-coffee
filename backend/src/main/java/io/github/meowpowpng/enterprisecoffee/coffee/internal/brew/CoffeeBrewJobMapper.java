@@ -21,7 +21,7 @@ final class CoffeeBrewJobMapper {
             return new CoffeeBrewJobEntity(
                     job.id().value(),
                     job.status(),
-                    job.progress()
+                    job.progress().value()
             );
         }
         catch (RuntimeException e) {

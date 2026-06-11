@@ -1,5 +1,7 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.internal.brew;
 
+import io.github.meowpowpng.enterprisecoffee.coffee.model.Progress;
+
 import java.util.Objects;
 import java.util.UUID;
 
@@ -9,9 +11,9 @@ import java.util.UUID;
 public final class CoffeeBrewJob {
 
     private final Identifier id;
-    private final Progress progress;
 
     private Status status;
+    private Progress progress;
 
     /**
      * Creates a new coffee-brewing job.
@@ -23,9 +25,8 @@ public final class CoffeeBrewJob {
      */
     private CoffeeBrewJob(Identifier id, Status status) {
         this.id = Objects.requireNonNull(id, "id must not be null");
-        this.progress = new Progress();
-
         this.status = Objects.requireNonNull(status, "status must not be null");
+        this.progress = Progress.initial();
     }
 
     /**
@@ -51,7 +52,7 @@ public final class CoffeeBrewJob {
         Objects.requireNonNull(status, "status must not be null");
 
         var job = new CoffeeBrewJob(id, status);
-        job.progress.update(progress);
+        job.progress = Progress.of(progress);
 
         return job;
     }
@@ -75,15 +76,17 @@ public final class CoffeeBrewJob {
      * @param progress new progress value
      *
      * @throws IllegalStateException if the job is not in progress
-     * @throws IllegalArgumentException if {@code progress}
-     * is outside valid range {@code 0-100}
+     * @throws IllegalArgumentException if {@code progress} decreases
      */
-    public void updateProgress(int progress) {
+    public void updateProgress(Progress progress) {
         if (status != Status.IN_PROGRESS) {
             var message = "cannot update progress for job with status " + status;
             throw new IllegalStateException(message);
         }
-        this.progress.update(progress);
+        if (progress.value() < this.progress.value()) {
+            throw new IllegalArgumentException("progress cannot decrease");
+        }
+        this.progress = progress;
     }
 
     /**
@@ -96,7 +99,7 @@ public final class CoffeeBrewJob {
             var message = "cannot complete job with status " + status;
             throw new IllegalStateException(message);
         }
-        progress.update(100);
+        progress = Progress.of(100);
         status = Status.COMPLETED;
     }
 
@@ -130,8 +133,8 @@ public final class CoffeeBrewJob {
     /**
      * Returns the current job progress.
      */
-    public int progress() {
-        return progress.value();
+    public Progress progress() {
+        return progress;
     }
 
     /**
@@ -155,55 +158,6 @@ public final class CoffeeBrewJob {
          */
         static Identifier generate() {
             return new Identifier(UUID.randomUUID());
-        }
-    }
-
-    /**
-     * Brewing progress reported as a percentage.
-     */
-    public static final class Progress {
-
-        private int value;
-
-        private Progress() {
-            this.value = 0;
-        }
-
-        static Progress of(int value) {
-            var progress = new Progress();
-            progress.update(value);
-
-            return progress;
-        }
-
-        int value() {
-            return value;
-        }
-
-        void update(int value) {
-            if (value < 0 || value > 100) {
-                var message = "progress must be between 0 and 100 but was " + value;
-                throw new IllegalArgumentException(message);
-            }
-            this.value = value;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (!(o instanceof Progress other)) {
-                return false;
-            }
-            return value == other.value;
-        }
-
-        @Override
-        public int hashCode() {
-            return Integer.hashCode(value);
-        }
-
-        @Override
-        public String toString() {
-            return String.valueOf(value);
         }
     }
 

@@ -6,6 +6,7 @@ import io.github.meowpowpng.enterprisecoffee.coffee.internal.brew.event.CoffeeBr
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.CoffeeMachineClient;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.CoffeeMachineException;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.MachineProgressResponse;
+import io.github.meowpowpng.enterprisecoffee.coffee.model.Progress;
 import io.github.meowpowpng.enterprisecoffee.common.DomainEventPublisher;
 
 import org.springframework.scheduling.annotation.Async;
@@ -75,9 +76,8 @@ public class CoffeeBrewTracker {
                 finish(job, job::fail);
                 return;
             }
-            var progress = CoffeeBrewJob.Progress.of(
-                    progressResponse.progress()
-            );
+            var progress = progressResponse.progress();
+
             if (progress.value() == 100) {
                 log.trackingCompleted(id);
 
@@ -94,20 +94,20 @@ public class CoffeeBrewTracker {
                 return;
             }
         }
-        log.trackingTimedOut(id, job.progress());
+        log.trackingTimedOut(id, job.progress().value());
         finish(job, job::fail);
     }
 
-    private void updateProgress(CoffeeBrewJob job, CoffeeBrewJob.Progress newProgress) {
+    private void updateProgress(CoffeeBrewJob job, Progress newProgress) {
         var previousProgress = job.progress();
-        if (previousProgress == newProgress.value()) {
+        if (previousProgress.equals(newProgress)) {
             return;
         }
-        job.updateProgress(newProgress.value());
+        job.updateProgress(newProgress);
 
         publisher.publish(new CoffeeBrewJobProgressUpdatedEvent(
                 job,
-                previousProgress
+                previousProgress.value()
         ));
     }
 

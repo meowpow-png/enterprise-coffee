@@ -15,7 +15,7 @@ import java.util.UUID;
 @NullUnmarked
 @SuppressWarnings("unused")
 @Table(name = "coffee_job")
-public class CoffeeBrewJobEntity {
+public class CoffeeJobEntity {
 
     @Id
     @Column(nullable = false, updatable = false)
@@ -26,7 +26,7 @@ public class CoffeeBrewJobEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private CoffeeBrewJob.Status status;
+    private CoffeeJob.Status status;
 
     @Column(nullable = false)
     private int progress;
@@ -39,9 +39,9 @@ public class CoffeeBrewJobEntity {
     @Column(nullable = false)
     private Instant updatedAt;
 
-    protected CoffeeBrewJobEntity() {}
+    protected CoffeeJobEntity() {}
 
-    public CoffeeBrewJobEntity(UUID id, UUID orderId, CoffeeBrewJob.Status status, int progress) {
+    public CoffeeJobEntity(UUID id, UUID orderId, CoffeeJob.Status status, int progress) {
         this.id = Objects.requireNonNull(id, "id must not be null");
         this.status = Objects.requireNonNull(status, "status must not be null");
         this.progress = progress;
@@ -55,7 +55,7 @@ public class CoffeeBrewJobEntity {
         return orderId;
     }
 
-    CoffeeBrewJob.Status getStatus() {
+    CoffeeJob.Status getStatus() {
         return status;
     }
 

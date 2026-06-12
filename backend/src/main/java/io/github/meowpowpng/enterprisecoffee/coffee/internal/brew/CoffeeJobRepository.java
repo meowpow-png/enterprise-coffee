@@ -5,7 +5,7 @@ import java.util.Optional;
 /**
  * Repository for coffee-brewing jobs.
  */
-public interface CoffeeBrewJobRepository {
+public interface CoffeeJobRepository {
 
     /**
      * Creates a new coffee-brewing job.
@@ -14,10 +14,10 @@ public interface CoffeeBrewJobRepository {
      *
      * @return the created coffee-brewing job
      * @throws NullPointerException if {@code job} is {@code null}
-     * @throws CoffeeBrewJobMappingException if the job cannot be mapped
-     * @throws CoffeeBrewJobPersistenceException if the job cannot be persisted
+     * @throws CoffeeJobMappingException if the job cannot be mapped
+     * @throws CoffeeJobPersistenceException if the job cannot be persisted
      */
-    CoffeeBrewJob create(CoffeeBrewJob job);
+    CoffeeJob create(CoffeeJob job);
 
     /**
      * Updates an existing coffee-brewing job.
@@ -28,7 +28,7 @@ public interface CoffeeBrewJobRepository {
      * @throws NullPointerException if {@code job} is {@code null}
      * @throws IllegalStateException if the job does not exist
      */
-    CoffeeBrewJob update(CoffeeBrewJob job);
+    CoffeeJob update(CoffeeJob job);
 
     /**
      * Returns the coffee-brewing job with the specified identifier.
@@ -37,8 +37,8 @@ public interface CoffeeBrewJobRepository {
      *
      * @return the coffee-brewing job if found; otherwise empty
      * @throws NullPointerException if {@code id} is {@code null}
-     * @throws CoffeeBrewJobMappingException if the job cannot be mapped
-     * @throws CoffeeBrewJobPersistenceException if the job cannot be retrieved
+     * @throws CoffeeJobMappingException if the job cannot be mapped
+     * @throws CoffeeJobPersistenceException if the job cannot be retrieved
      */
-    Optional<CoffeeBrewJob> findById(CoffeeBrewJob.Id id);
+    Optional<CoffeeJob> findById(CoffeeJob.Id id);
 }

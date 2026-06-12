@@ -9,36 +9,36 @@ import java.util.Optional;
  * JPA-backed coffee-brewing job repository.
  */
 @Repository
-public class JpaCoffeeBrewJobRepository implements CoffeeBrewJobRepository {
+public class JpaCoffeeJobRepository implements CoffeeJobRepository {
 
-    private final JpaCoffeeBrewJobCrudRepository repository;
+    private final JpaCoffeeJobCrudRepository repository;
 
-    JpaCoffeeBrewJobRepository(JpaCoffeeBrewJobCrudRepository repository) {
+    JpaCoffeeJobRepository(JpaCoffeeJobCrudRepository repository) {
         Objects.requireNonNull(repository, "repository must not be null");
         this.repository = repository;
     }
 
     @Override
-    public CoffeeBrewJob create(CoffeeBrewJob job) {
+    public CoffeeJob create(CoffeeJob job) {
         Objects.requireNonNull(job, "job");
 
         try {
-            var entity = CoffeeBrewJobMapper.toEntity(job);
+            var entity = CoffeeJobMapper.toEntity(job);
             var persisted = repository.save(entity);
 
-            return CoffeeBrewJobMapper.toDomain(persisted);
+            return CoffeeJobMapper.toDomain(persisted);
         }
-        catch (CoffeeBrewJobMappingException e) {
+        catch (CoffeeJobMappingException e) {
             throw e;
         }
         catch (RuntimeException e) {
             var message = "failed to create coffee brewing job";
-            throw new CoffeeBrewJobPersistenceException(message, e);
+            throw new CoffeeJobPersistenceException(message, e);
         }
     }
 
     @Override
-    public CoffeeBrewJob update(CoffeeBrewJob job) {
+    public CoffeeJob update(CoffeeJob job) {
         Objects.requireNonNull(job, "job");
 
         var updated = repository.update(
@@ -48,25 +48,25 @@ public class JpaCoffeeBrewJobRepository implements CoffeeBrewJobRepository {
         );
         if (updated == 0) {
             var message = "coffee brewing job not found: " + job.id().value();
-            throw new CoffeeBrewJobPersistenceException(message);
+            throw new CoffeeJobPersistenceException(message);
         }
         return job;
     }
 
     @Override
-    public Optional<CoffeeBrewJob> findById(CoffeeBrewJob.Id id) {
+    public Optional<CoffeeJob> findById(CoffeeJob.Id id) {
         Objects.requireNonNull(id, "id");
 
         try {
             return repository.findById(id.value())
-                    .map(CoffeeBrewJobMapper::toDomain);
+                    .map(CoffeeJobMapper::toDomain);
         }
-        catch (CoffeeBrewJobMappingException e) {
+        catch (CoffeeJobMappingException e) {
             throw e;
         }
         catch (RuntimeException e) {
             var message = "failed to find coffee brewing job";
-            throw new CoffeeBrewJobPersistenceException(message, e);
+            throw new CoffeeJobPersistenceException(message, e);
         }
     }
 }

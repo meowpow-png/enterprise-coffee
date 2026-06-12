@@ -20,9 +20,9 @@ import java.util.Objects;
  * Tracks the status and progress
  * of a coffee-brewing job.
  */
-public class CoffeeBrewTracker {
+public class CoffeeTracker {
 
-    private static final CoffeeBrewTrackerLogger log = new CoffeeBrewTrackerLogger();
+    private static final CoffeeTrackerLogger log = new CoffeeTrackerLogger();
 
     private final CoffeeMachineClient client;
     private final DomainEventPublisher publisher;
@@ -30,7 +30,7 @@ public class CoffeeBrewTracker {
     private final Duration brewTimeout;
     private final Clock clock;
 
-    public CoffeeBrewTracker(
+    public CoffeeTracker(
             CoffeeMachineClient client,
             DomainEventPublisher publisher,
             ThreadSleeper sleeper,
@@ -59,7 +59,7 @@ public class CoffeeBrewTracker {
      * @throws IllegalStateException if the job is not pending
      */
     @Async
-    public void track(CoffeeBrewJob job) {
+    public void track(CoffeeJob job) {
         var id = job.id().value();
 
         log.trackingStarted(id);
@@ -98,7 +98,7 @@ public class CoffeeBrewTracker {
         finish(job, job::fail);
     }
 
-    private void updateProgress(CoffeeBrewJob job, Progress newProgress) {
+    private void updateProgress(CoffeeJob job, Progress newProgress) {
         var previousProgress = job.progress();
         if (previousProgress.equals(newProgress)) {
             return;
@@ -111,12 +111,12 @@ public class CoffeeBrewTracker {
         ));
     }
 
-    private void start(CoffeeBrewJob job) {
+    private void start(CoffeeJob job) {
         job.start();
         publisher.publish(new CoffeeJobStartedEvent(job));
     }
 
-    private void finish(CoffeeBrewJob job, Runnable action) {
+    private void finish(CoffeeJob job, Runnable action) {
         action.run();
         publisher.publish(new CoffeeJobFinishedEvent(job));
     }

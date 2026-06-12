@@ -9,7 +9,7 @@ import java.util.UUID;
 /**
  * Coffee brewing job managed by coffee backend.
  */
-public final class CoffeeBrewJob {
+public final class CoffeeJob {
 
     private final Id id;
     private final CoffeeOrder.Id orderId;
@@ -26,7 +26,7 @@ public final class CoffeeBrewJob {
      *
      * @throws NullPointerException if {@code id} or {@code status} is null
      */
-    private CoffeeBrewJob(Id id, CoffeeOrder.Id orderId, Status status) {
+    private CoffeeJob(Id id, CoffeeOrder.Id orderId, Status status) {
         this.id = Objects.requireNonNull(id, "id must not be null");
         this.orderId = Objects.requireNonNull(orderId, "orderId must not be null");
         this.status = Objects.requireNonNull(status, "status must not be null");
@@ -38,8 +38,8 @@ public final class CoffeeBrewJob {
      *
      * @param orderId unique identifier of the coffee order
      */
-    public static CoffeeBrewJob create(CoffeeOrder.Id orderId) {
-        return new CoffeeBrewJob(CoffeeBrewJob.Id.generate(), orderId, Status.PENDING);
+    public static CoffeeJob create(CoffeeOrder.Id orderId) {
+        return new CoffeeJob(CoffeeJob.Id.generate(), orderId, Status.PENDING);
     }
 
     /**
@@ -54,12 +54,12 @@ public final class CoffeeBrewJob {
      * @throws IllegalArgumentException if {@code progress}
      * is outside valid range {@code 0-100}
      */
-    static CoffeeBrewJob restore(Id id, CoffeeOrder.Id orderId, Status status, int progress) {
+    static CoffeeJob restore(Id id, CoffeeOrder.Id orderId, Status status, int progress) {
         Objects.requireNonNull(id, "id must not be null");
         Objects.requireNonNull(orderId, "orderId must not be null");
         Objects.requireNonNull(status, "status must not be null");
 
-        var job = new CoffeeBrewJob(id, orderId, status);
+        var job = new CoffeeJob(id, orderId, status);
         job.progress = Progress.of(progress);
 
         return job;

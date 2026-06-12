@@ -6,21 +6,21 @@ import io.github.meowpowpng.enterprisecoffee.coffee.internal.order.CoffeeOrder;
  * Maps coffee brewing jobs
  * between domain and persistence models.
  */
-final class CoffeeBrewJobMapper {
+final class CoffeeJobMapper {
 
-    private CoffeeBrewJobMapper() {}
+    private CoffeeJobMapper() {}
 
     /**
      * Converts a coffee-brewing job into a persistence entity.
      *
      * @param job coffee-brewing job to convert
      *
-     * @throws CoffeeBrewJobMappingException if the job
+     * @throws CoffeeJobMappingException if the job
      * cannot be converted to a persistence entity
      */
-    static CoffeeBrewJobEntity toEntity(CoffeeBrewJob job) {
+    static CoffeeJobEntity toEntity(CoffeeJob job) {
         try {
-            return new CoffeeBrewJobEntity(
+            return new CoffeeJobEntity(
                     job.orderId().value(),
                     job.id().value(),
                     job.status(),
@@ -29,7 +29,7 @@ final class CoffeeBrewJobMapper {
         }
         catch (RuntimeException e) {
             var message = "Failed to map job to entity";
-            throw new CoffeeBrewJobMappingException(message, e);
+            throw new CoffeeJobMappingException(message, e);
         }
     }
 
@@ -38,13 +38,13 @@ final class CoffeeBrewJobMapper {
      *
      * @param entity persistence entity to convert
      *
-     * @throws CoffeeBrewJobMappingException if the entity
+     * @throws CoffeeJobMappingException if the entity
      * cannot be converted to a coffee-brewing job
      */
-    static CoffeeBrewJob toDomain(CoffeeBrewJobEntity entity) {
+    static CoffeeJob toDomain(CoffeeJobEntity entity) {
         try {
-            return CoffeeBrewJob.restore(
-                    new CoffeeBrewJob.Id(entity.getId()),
+            return CoffeeJob.restore(
+                    new CoffeeJob.Id(entity.getId()),
                     new CoffeeOrder.Id(entity.getOrderId()),
                     entity.getStatus(),
                     entity.getProgress()
@@ -52,7 +52,7 @@ final class CoffeeBrewJobMapper {
         }
         catch (RuntimeException e) {
             var message = "Failed to map entity to job";
-            throw new CoffeeBrewJobMappingException(message, e);
+            throw new CoffeeJobMappingException(message, e);
         }
     }
 }

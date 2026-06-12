@@ -10,12 +10,12 @@ import java.util.UUID;
  * Spring Data repository for coffee-brewing job entities.
  */
 @SuppressWarnings("unused")
-interface JpaCoffeeBrewJobCrudRepository extends JpaRepository<CoffeeBrewJobEntity, UUID> {
+interface JpaCoffeeJobCrudRepository extends JpaRepository<CoffeeJobEntity, UUID> {
 
     //@formatter:off
     @Modifying
     @Query("""
-        UPDATE CoffeeBrewJobEntity job
+        UPDATE CoffeeJobEntity job
         SET
             job.status = :status,
             job.progress = :progress,
@@ -24,7 +24,7 @@ interface JpaCoffeeBrewJobCrudRepository extends JpaRepository<CoffeeBrewJobEnti
         """)
     int update(
             UUID id,
-            CoffeeBrewJob.Status status,
+            CoffeeJob.Status status,
             int progress
     );
     //@formatter:on

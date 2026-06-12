@@ -1,12 +1,12 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.internal.brew.event;
 
-import io.github.meowpowpng.enterprisecoffee.coffee.internal.brew.CoffeeBrewJob;
+import io.github.meowpowpng.enterprisecoffee.coffee.internal.brew.CoffeeJob;
 import io.github.meowpowpng.enterprisecoffee.common.DomainEvent;
 
 import java.util.Objects;
 
 public record CoffeeJobProgressUpdatedEvent(
-        CoffeeBrewJob job,
+        CoffeeJob job,
         int previousProgress
 ) implements DomainEvent {
 

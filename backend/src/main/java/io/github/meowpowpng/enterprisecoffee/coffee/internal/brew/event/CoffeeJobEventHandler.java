@@ -1,6 +1,6 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.internal.brew.event;
 
-import io.github.meowpowpng.enterprisecoffee.coffee.internal.brew.CoffeeBrewJobRepository;
+import io.github.meowpowpng.enterprisecoffee.coffee.internal.brew.CoffeeJobRepository;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
@@ -14,9 +14,9 @@ class CoffeeJobEventHandler {
 
     private static final CoffeeJobEventHandlerLogger log = new CoffeeJobEventHandlerLogger();
 
-    private final CoffeeBrewJobRepository repository;
+    private final CoffeeJobRepository repository;
 
-    CoffeeJobEventHandler(CoffeeBrewJobRepository repository) {
+    CoffeeJobEventHandler(CoffeeJobRepository repository) {
         Objects.requireNonNull(repository, "repository must not be null");
         this.repository = repository;
     }

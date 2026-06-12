@@ -46,6 +46,10 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
         var order = CoffeeOrder.create(type);
         var orderId = order.id();
 
+        log.info("Coffee order created (id={}, type={})",
+                orderId.value(),
+                order.type().value()
+        );
         MachineOrderResponse response;
         try {
             response = client.order(type);

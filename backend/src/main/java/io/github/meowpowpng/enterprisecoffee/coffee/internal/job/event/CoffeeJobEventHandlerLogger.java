@@ -1,4 +1,4 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.internal.brew.event;
+package io.github.meowpowpng.enterprisecoffee.coffee.internal.job.event;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

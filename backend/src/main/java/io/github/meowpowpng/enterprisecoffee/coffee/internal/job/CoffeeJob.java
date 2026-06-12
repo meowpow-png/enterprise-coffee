@@ -1,4 +1,4 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.internal.brew;
+package io.github.meowpowpng.enterprisecoffee.coffee.internal.job;
 
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.order.CoffeeOrder;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.Progress;

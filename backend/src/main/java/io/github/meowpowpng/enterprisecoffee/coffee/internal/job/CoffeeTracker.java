@@ -1,8 +1,8 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.internal.brew;
+package io.github.meowpowpng.enterprisecoffee.coffee.internal.job;
 
-import io.github.meowpowpng.enterprisecoffee.coffee.internal.brew.event.CoffeeJobFinishedEvent;
-import io.github.meowpowpng.enterprisecoffee.coffee.internal.brew.event.CoffeeJobProgressUpdatedEvent;
-import io.github.meowpowpng.enterprisecoffee.coffee.internal.brew.event.CoffeeJobStartedEvent;
+import io.github.meowpowpng.enterprisecoffee.coffee.internal.job.event.CoffeeJobFinishedEvent;
+import io.github.meowpowpng.enterprisecoffee.coffee.internal.job.event.CoffeeJobProgressUpdatedEvent;
+import io.github.meowpowpng.enterprisecoffee.coffee.internal.job.event.CoffeeJobStartedEvent;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.CoffeeMachineClient;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.CoffeeMachineException;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.MachineProgressResponse;

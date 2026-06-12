@@ -1,4 +1,4 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.internal.brew;
+package io.github.meowpowpng.enterprisecoffee.coffee.internal.job;
 
 import java.time.Duration;
 import java.util.Objects;

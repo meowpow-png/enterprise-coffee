@@ -1,6 +1,6 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.internal.brew.event;
+package io.github.meowpowpng.enterprisecoffee.coffee.internal.job.event;
 
-import io.github.meowpowpng.enterprisecoffee.coffee.internal.brew.CoffeeJob;
+import io.github.meowpowpng.enterprisecoffee.coffee.internal.job.CoffeeJob;
 import io.github.meowpowpng.enterprisecoffee.common.DomainEvent;
 
 import java.util.Objects;

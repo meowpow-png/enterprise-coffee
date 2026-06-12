@@ -20,4 +20,4 @@ progress:
 
 # Watch brewing progress until complete
 watch-progress:
-    @watch -n 1 "curl -s {{machine-url}}/progress | jq"
+    @watch -n 0.500 "curl -s {{machine-url}}/progress | jq"

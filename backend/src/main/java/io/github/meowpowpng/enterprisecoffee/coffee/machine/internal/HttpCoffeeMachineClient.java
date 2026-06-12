@@ -4,7 +4,6 @@ import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.*;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.Progress;
 
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
@@ -30,49 +29,48 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
     }
 
     @Override
-    public MachineStatusResponse status() {
-        var operation = CallOperation.of("status", () -> restClient.get()
+    public CoffeeMachineStatus status() {
+        return callMachine(CallOperation.of("status", () -> restClient.get()
                 .uri("/status")
-                .retrieve()
-                .body(MachineStatusResponse.class),
-                "Failed to retrieve coffee machine status"
-        );
-        var response = callMachine(operation);
-
-        Logger.logStatusReceived(response.status().name());
-        return response;
+                .exchange((ignored, response) -> {
+                    var payload = response.bodyTo(MachineStatusPayload.class);
+                    if (payload == null) {
+                        return null;
+                    }
+                    Logger.logStatusReceived(payload.status());
+                    return CoffeeMachineStatus.valueOf(payload.status());
+                }),
+        "Failed to retrieve coffee machine status"
+        ));
     }
 
     @Override
     public MachineOrderResult order(CoffeeType type) {
         Objects.requireNonNull(type, "type must not be null");
 
-        var operation = CallOperation.of("order", () -> restClient.post()
+        return callMachine(CallOperation.of("order", () -> restClient.post()
                 .uri("/order")
                 .body(new MachineOrderRequest(type.value()))
-                .exchange((ignored, clientResponse) ->
-                        new MachineOrderResponse(clientResponse.getStatusCode())
-                ),
+                .exchange((ignored, clientResponse) -> {
+                    var statusCode = clientResponse.getStatusCode().value();
+                    Logger.logOrderReceived(String.valueOf(statusCode));
+
+                    return switch (statusCode) {
+                        case 202 -> MachineOrderResult.ACCEPTED;
+                        case 409 -> MachineOrderResult.BUSY;
+                        case 400 -> MachineOrderResult.INVALID;
+                        default -> throw new IllegalStateException(
+                                "Unexpected machine order response: HTTP " + statusCode
+                        );
+                    };
+                }),
                 "Failed to submit coffee order"
-        );
-        var response = callMachine(operation);
-
-        var statusCode = response.status.value();
-        Logger.logOrderReceived(String.valueOf(statusCode));
-
-        return switch (statusCode) {
-            case 202 -> MachineOrderResult.ACCEPTED;
-            case 409 -> MachineOrderResult.BUSY;
-            case 400 -> MachineOrderResult.INVALID;
-            default -> throw new IllegalStateException(
-                    "Unexpected machine order response: HTTP " + statusCode
-            );
-        };
+        ));
     }
 
     @Override
     public MachineCoffeeProgress progress() {
-        var operation = CallOperation.of("progress", () -> restClient.get()
+        return callMachine(CallOperation.of("progress", () -> restClient.get()
                 .uri("/progress")
                 .exchange((ignored, response) -> {
                     var payload = response.bodyTo(MachineProgressPayload.class);
@@ -81,19 +79,14 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
                         return null;
                     }
                     var type = payload.type();
-                    return new MachineCoffeeProgress(
-                            !type.isBlank() ? new CoffeeType(type) : null,
-                            Progress.of(payload.progress())
-                    );
+                    var coffeeType = !type.isBlank() ? new CoffeeType(type) : null;
+                    var progress = payload.progress();
+
+                    Logger.logProgressReceived(coffeeType, progress);
+                    return new MachineCoffeeProgress(coffeeType, Progress.of(progress));
                 }),
                 "Failed to retrieve coffee machine progress"
-        );
-        var response = callMachine(operation);
-        Logger.logProgressReceived(
-                response.type(),
-                response.progress().value()
-        );
-        return response;
+        ));
     }
 
     private static <T> T callMachine(CallOperation<T> op) {
@@ -137,7 +130,7 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
         T get();
     }
 
-    private record MachineOrderResponse(HttpStatusCode status) {}
+    private record MachineStatusPayload(String status) {}
 
     private record MachineProgressPayload(String type, int progress) {}
 

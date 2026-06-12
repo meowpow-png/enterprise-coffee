@@ -14,7 +14,7 @@ public interface CoffeeMachineClient {
      * @throws CoffeeMachineException if communication with the
      * machine fails, or the machine returns an invalid response
      */
-    MachineStatusResponse status();
+    CoffeeMachineStatus status();
 
     /**
      * Returns the current coffee brewing
@@ -33,8 +33,8 @@ public interface CoffeeMachineClient {
      * @return result of the coffee order request
      *
      * @throws NullPointerException if {@code type} is {@code null}
-     * @throws CoffeeMachineException if communication with the
-     * machine fails or the machine returns an unexpected response
+     * @throws CoffeeMachineException if communication with the machine fails
+     * @throws IllegalStateException if the machine returns an unexpected response
      */
     MachineOrderResult order(CoffeeType type);
 }

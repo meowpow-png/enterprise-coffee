@@ -28,16 +28,20 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
     private static final Logger log = LoggerFactory.getLogger(DefaultCoffeeOrderService.class);
 
     private final CoffeeMachineClient client;
+    private final CoffeeOrderRepository repository;
     private final CoffeeBrewTracker tracker;
 
     DefaultCoffeeOrderService(
             CoffeeMachineClient client,
+            CoffeeOrderRepository repository,
             CoffeeBrewTracker tracker
     ) {
         Objects.requireNonNull(client, "client must not be null");
+        Objects.requireNonNull(repository, "repository must not be null");
         Objects.requireNonNull(tracker, "tracker must not be null");
 
         this.client = client;
+        this.repository = repository;
         this.tracker = tracker;
     }
 
@@ -45,19 +49,29 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
     public ClientOrderResponse order(ClientOrderRequest request) {
         Objects.requireNonNull(request, "request must not be null");
 
+        var type = CoffeeType.valueOf(request.type());
+        var order = CoffeeOrder.create(type);
+        var orderId = order.id().value();
+
         MachineOrderResponse response;
         try {
             response = client.order(type);
         }
         catch (CoffeeMachineException e) {
-            log.warn("Coffee order failed because machine is unavailable", e);
-
+            log.warn("Coffee order failed because machine is unavailable (id={})",
+                    orderId,
+                    e
+            );
+            repository.save(order.fail());
 
             var message = "coffee machine is not responding";
             throw new CoffeeOrderProcessingException(message, e);
         }
         if (response.isAccepted()) {
-            log.info("Coffee order accepted (id={})", job.id().value());
+            repository.save(order.accept());
+
+            log.info("Coffee order accepted (id={})", orderId);
+
             var job = CoffeeBrewJob.create();
             log.info("Coffee brew job created (id={})", job.id().value());
 
@@ -65,11 +79,15 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
             return ClientOrderResponse.accepted();
         }
         if (response.isRejected()) {
-            log.info("Coffee order rejected because machine is busy");
+            repository.save(order.reject());
+
+            log.info("Coffee order rejected because machine is busy (id={})", orderId);
             throw new CoffeeOrderProcessingException("coffee machine is busy");
         }
         if (response.isInvalid()) {
-            log.info("Coffee order rejected because request is invalid");
+            repository.save(order.markInvalid());
+
+            log.info("Coffee order rejected because request is invalid (id={})", orderId);
             throw new CoffeeOrderInvalidException("coffee order is invalid");
         }
         var message = "Unexpected response from coffee machine (status=%s)";

@@ -1,70 +1,11 @@
 set shell := ["bash", "-eu", "-o", "pipefail", "-c"]
 
-machine-port := `jq -r '.server.port' config.json`
-machine-url := "http://localhost:" + machine-port
+import 'just/machine.just'
+import 'just/docker.just'
+import 'just/api.just'
+
+machine-url := "http://localhost:8080"
 
 # List available recipes
 default:
     @just --list
-
-# Remove build artifacts
-machine-clean:
-    rm -rf build
-
-# Build binary artifacts
-machine-build:
-    just build-machine
-
-# Build and run coffee machine
-machine-run:
-    just build-machine
-    ./build/bin/machine --port={{machine-port}}
-
-# Run go tests
-[arg("args", help="test arguments")]
-machine-test *args:
-	go test -race -count=1 {{args}}
-
-# Run Go tests with coverage
-machine-test-coverage:
-	@mkdir -p build/coverage
-	just machine-test \
-		-coverprofile=build/coverage/coverage.out \
-		./...
-
-	go tool cover -html=build/coverage/coverage.out \
-		-o build/coverage/coverage.html
-
-# Get coffee machine status
-machine-status:
-    @curl -s {{machine-url}}/status | jq
-
-# Submit coffee order
-[arg("type", help="coffee type")]
-machine-order type:
-    @curl \
-        -s \
-        -o /dev/null \
-        -w "HTTP %{http_code}\n" \
-        -X POST \
-        -H "Content-Type: application/json" \
-        -d '{"type":"{{type}}"}' \
-        {{machine-url}}/order
-
-# Get brewing progress
-machine-progress:
-    @curl -s {{machine-url}}/progress | jq
-
-# Watch brewing progress until complete
-machine-watch-progress:
-    @watch -n 1 "curl -s {{machine-url}}/progress | jq"
-
-# Execute docker compose command
-machine-compose +args:
-    docker compose -p coffee-machine {{args}}
-
-[private]
-build-machine:
-    @mkdir -p build/bin
-    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
-    go build -ldflags="-s -w" -o build/bin/machine ./cmd/machine

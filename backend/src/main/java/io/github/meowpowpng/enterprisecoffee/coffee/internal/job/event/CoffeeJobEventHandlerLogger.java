@@ -11,10 +11,19 @@ final class CoffeeJobEventHandlerLogger {
     private static final Logger log = LoggerFactory.getLogger(CoffeeJobEventHandler.class);
 
     private enum Event {
+        JOB_CREATED,
         JOB_STARTED,
         JOB_PROGRESS_UPDATED,
         JOB_FINISHED,
         JOB_PERSISTENCE_FAILED
+    }
+
+    void created(UUID jobId, UUID orderId) {
+        log.info("event={} job_id={} order_id={}",
+                Event.JOB_CREATED,
+                jobId,
+                orderId
+        );
     }
 
     void started(UUID id) {

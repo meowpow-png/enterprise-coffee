@@ -5,12 +5,12 @@ import io.github.meowpowpng.enterprisecoffee.coffee.api.ClientOrderResponse;
 import io.github.meowpowpng.enterprisecoffee.coffee.api.CoffeeOrderService;
 import io.github.meowpowpng.enterprisecoffee.coffee.api.exception.CoffeeOrderInvalidException;
 import io.github.meowpowpng.enterprisecoffee.coffee.api.exception.CoffeeOrderProcessingException;
-import io.github.meowpowpng.enterprisecoffee.coffee.internal.job.CoffeeJob;
-import io.github.meowpowpng.enterprisecoffee.coffee.internal.job.CoffeeJobTracker;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.CoffeeMachineClient;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.CoffeeMachineException;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.MachineOrderResponse;
+import io.github.meowpowpng.enterprisecoffee.coffee.internal.order.event.CoffeeOrderEvents;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
+import io.github.meowpowpng.enterprisecoffee.common.DomainEventPublisher;
 
 import org.springframework.stereotype.Service;
 
@@ -28,21 +28,14 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
     private static final Logger log = LoggerFactory.getLogger(DefaultCoffeeOrderService.class);
 
     private final CoffeeMachineClient client;
-    private final CoffeeOrderRepository repository;
-    private final CoffeeJobTracker tracker;
+    private final DomainEventPublisher publisher;
 
-    DefaultCoffeeOrderService(
-            CoffeeMachineClient client,
-            CoffeeOrderRepository repository,
-            CoffeeJobTracker tracker
-    ) {
+    DefaultCoffeeOrderService(CoffeeMachineClient client, DomainEventPublisher publisher) {
         Objects.requireNonNull(client, "client must not be null");
-        Objects.requireNonNull(repository, "repository must not be null");
-        Objects.requireNonNull(tracker, "tracker must not be null");
+        Objects.requireNonNull(publisher, "publisher must not be null");
 
         this.client = client;
-        this.repository = repository;
-        this.tracker = tracker;
+        this.publisher = publisher;
     }
 
     @Override
@@ -62,30 +55,26 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
                     orderId.value(),
                     e
             );
-            repository.save(order.fail());
+            publisher.publish(CoffeeOrderEvents.failed(order.fail()));
 
             var message = "coffee machine is not responding";
             throw new CoffeeOrderProcessingException(message, e);
         }
         if (response.isAccepted()) {
-            repository.save(order.accept());
+            order = order.accept();
+            publisher.publish(CoffeeOrderEvents.accepted(order));
 
             log.info("Coffee order accepted (id={})", orderId.value());
-
-            var job = CoffeeJob.create(order.id());
-            log.info("Coffee job created (id={})", job.id().value());
-
-            tracker.track(job);
             return ClientOrderResponse.accepted();
         }
         if (response.isRejected()) {
-            repository.save(order.reject());
+            publisher.publish(CoffeeOrderEvents.rejected(order.reject()));
 
             log.info("Coffee order rejected because machine is busy (id={})", orderId.value());
             throw new CoffeeOrderProcessingException("coffee machine is busy");
         }
         if (response.isInvalid()) {
-            repository.save(order.markInvalid());
+            publisher.publish(CoffeeOrderEvents.invalid(order.markInvalid()));
 
             log.info("Coffee order rejected because request is invalid (id={})", orderId.value());
             throw new CoffeeOrderInvalidException("coffee order is invalid");

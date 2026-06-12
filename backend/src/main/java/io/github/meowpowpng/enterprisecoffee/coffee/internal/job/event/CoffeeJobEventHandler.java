@@ -1,10 +1,15 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.internal.job.event;
 
+import io.github.meowpowpng.enterprisecoffee.coffee.internal.job.CoffeeJob;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.job.CoffeeJobRepository;
+import io.github.meowpowpng.enterprisecoffee.coffee.internal.job.CoffeeJobTracker;
+import io.github.meowpowpng.enterprisecoffee.coffee.internal.order.event.CoffeeOrderEvents;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.Objects;
 
@@ -14,10 +19,30 @@ class CoffeeJobEventHandler {
     private static final CoffeeJobEventHandlerLogger log = new CoffeeJobEventHandlerLogger();
 
     private final CoffeeJobRepository repository;
+    private final CoffeeJobTracker tracker;
 
-    CoffeeJobEventHandler(CoffeeJobRepository repository) {
+    CoffeeJobEventHandler(CoffeeJobRepository repository, CoffeeJobTracker tracker) {
         Objects.requireNonNull(repository, "repository must not be null");
+        Objects.requireNonNull(tracker, "tracker must not be null");
+
         this.repository = repository;
+        this.tracker = tracker;
+    }
+
+    /**
+     * <strong>Implementation Note:</strong>
+     * Triggered after {@link CoffeeOrderEvents.Accepted}
+     * event transaction commits to ensure that the
+     * referenced order is visible in the database.
+     */
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    public void onOrderStored(CoffeeOrderEvents.Stored event) {
+        var orderId = event.order().id();
+        var job = CoffeeJob.create(orderId);
+
+        log.created(job.id().value(), orderId.value());
+
+        tracker.track(job);
     }
 
     @Async

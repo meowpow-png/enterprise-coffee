@@ -24,7 +24,7 @@ class CoffeeJobEventHandler {
     @Async
     @Transactional
     @EventListener
-    public void onStarted(CoffeeJobStartedEvent event) {
+    public void onStarted(CoffeeJobEvents.Started event) {
         var id = event.job().id().value();
         log.started(id);
         try {
@@ -38,9 +38,12 @@ class CoffeeJobEventHandler {
     @Async
     @Transactional
     @EventListener
-    public void onProgressUpdated(CoffeeJobProgressUpdatedEvent event) {
+    public void onProgressUpdated(CoffeeJobEvents.ProgressUpdated event) {
         var id = event.job().id().value();
-        log.progressUpdated(id, event.previousProgress(), event.job().progress().value());
+        log.progressUpdated(id,
+                event.previous().value(),
+                event.job().progress().value()
+        );
         try {
             repository.update(event.job());
         }
@@ -52,7 +55,7 @@ class CoffeeJobEventHandler {
     @Async
     @Transactional
     @EventListener
-    public void onFinished(CoffeeJobFinishedEvent event) {
+    public void onFinished(CoffeeJobEvents.Finished event) {
         var id = event.job().id().value();
         log.finished(id, event.job().progress().value());
         try {

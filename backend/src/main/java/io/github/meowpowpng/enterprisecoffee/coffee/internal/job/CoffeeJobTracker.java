@@ -1,11 +1,9 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.internal.job;
 
-import io.github.meowpowpng.enterprisecoffee.coffee.internal.job.event.CoffeeJobFinishedEvent;
-import io.github.meowpowpng.enterprisecoffee.coffee.internal.job.event.CoffeeJobProgressUpdatedEvent;
-import io.github.meowpowpng.enterprisecoffee.coffee.internal.job.event.CoffeeJobStartedEvent;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.CoffeeMachineClient;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.CoffeeMachineException;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.MachineProgressResponse;
+import io.github.meowpowpng.enterprisecoffee.coffee.internal.job.event.CoffeeJobEvents;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.Progress;
 import io.github.meowpowpng.enterprisecoffee.common.DomainEventPublisher;
 
@@ -104,20 +102,18 @@ public class CoffeeJobTracker {
         }
         job.updateProgress(newProgress);
 
-        publisher.publish(new CoffeeJobProgressUpdatedEvent(
-                job,
-                previousProgress.value()
-        ));
+        var event = CoffeeJobEvents.progressUpdated(job, previousProgress);
+        publisher.publish(event);
     }
 
     private void start(CoffeeJob job) {
         job.start();
-        publisher.publish(new CoffeeJobStartedEvent(job));
+        publisher.publish(CoffeeJobEvents.started(job));
     }
 
     private void finish(CoffeeJob job, Runnable action) {
         action.run();
-        publisher.publish(new CoffeeJobFinishedEvent(job));
+        publisher.publish(CoffeeJobEvents.finished(job));
     }
 
     private boolean timedOut(Instant deadline) {

@@ -7,17 +7,5 @@ public enum CoffeeMachineStatus {
 
     READY,
     BREWING,
-    OFFLINE;
-
-    public boolean isReady() {
-        return this == READY;
-    }
-
-    public boolean isBrewing() {
-        return this == BREWING;
-    }
-
-    public boolean isOffline() {
-        return this == OFFLINE;
-    }
+    OFFLINE
 }

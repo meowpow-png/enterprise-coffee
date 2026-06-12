@@ -12,11 +12,11 @@ import jakarta.validation.Valid;
  * Handles coffee order requests.
  */
 @RestController
-public class CoffeeController {
+public class CoffeeOrderController {
 
     private final CoffeeOrderService service;
 
-    CoffeeController(CoffeeOrderService service) {
+    CoffeeOrderController(CoffeeOrderService service) {
         this.service = service;
     }
 

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 /**
  * Handles exceptions raised by coffee controllers.
  */
-@RestControllerAdvice(assignableTypes = CoffeeController.class)
-public class CoffeeControllerAdvice {
+@RestControllerAdvice(assignableTypes = CoffeeOrderController.class)
+public class CoffeeOrderControllerAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(CoffeeOrderInvalidException.class)

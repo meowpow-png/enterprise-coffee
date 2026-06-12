@@ -12,7 +12,7 @@ public final class CoffeeMachineException extends RuntimeException {
      * @param message exception detail message
      * @param cause underlying failure
      */
-    CoffeeMachineException(String message, Throwable cause) {
+   public CoffeeMachineException(String message, Throwable cause) {
         super(message, cause);
     }
 
@@ -21,7 +21,7 @@ public final class CoffeeMachineException extends RuntimeException {
      *
      * @param message exception detail message
      */
-    CoffeeMachineException(String message) {
+    public CoffeeMachineException(String message) {
         super(message);
     }
 }

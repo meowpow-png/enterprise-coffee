@@ -6,7 +6,7 @@ import io.github.meowpowpng.enterprisecoffee.coffee.order.api.CoffeeOrderService
 import io.github.meowpowpng.enterprisecoffee.coffee.order.api.exception.CoffeeOrderInvalidException;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.api.exception.CoffeeOrderProcessingException;
 import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.CoffeeMachineClient;
-import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.CoffeeMachineException;
+import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception.CoffeeMachineException;
 import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.MachineOrderResult;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.event.CoffeeOrderEvents;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;

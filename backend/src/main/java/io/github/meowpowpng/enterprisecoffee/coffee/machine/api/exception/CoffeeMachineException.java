@@ -1,4 +1,4 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.machine.api;
+package io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception;
 
 /**
  * Exception thrown when communication

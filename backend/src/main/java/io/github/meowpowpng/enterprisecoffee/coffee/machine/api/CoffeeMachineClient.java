@@ -1,5 +1,6 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.machine.api;
 
+import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception.CoffeeMachineException;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
 
 /**

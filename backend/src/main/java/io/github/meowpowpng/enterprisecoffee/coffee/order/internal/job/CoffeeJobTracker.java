@@ -1,7 +1,7 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job;
 
 import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.CoffeeMachineClient;
-import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.CoffeeMachineException;
+import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception.CoffeeMachineException;
 import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.MachineCoffeeProgress;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job.event.CoffeeJobEvents;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.Progress;

@@ -6,7 +6,7 @@ import java.util.Objects;
  * Current operational status
  * reported by the coffee machine.
  */
-public record MachineStatusResponse(CoffeeMachineStatus status) {
+record MachineStatusResponse(String status) {
 
     /**
      * Creates a new machine status response.
@@ -15,7 +15,7 @@ public record MachineStatusResponse(CoffeeMachineStatus status) {
      *
      * @throws NullPointerException if {@code status} is {@code null}
      */
-    public MachineStatusResponse {
+    MachineStatusResponse {
         Objects.requireNonNull(status, "status must not be null");
     }
 }

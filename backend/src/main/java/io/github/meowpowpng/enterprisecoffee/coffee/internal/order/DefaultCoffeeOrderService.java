@@ -1,10 +1,10 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.internal.order;
 
-import io.github.meowpowpng.enterprisecoffee.coffee.api.ClientOrderRequest;
-import io.github.meowpowpng.enterprisecoffee.coffee.api.ClientOrderResponse;
-import io.github.meowpowpng.enterprisecoffee.coffee.api.CoffeeOrderService;
-import io.github.meowpowpng.enterprisecoffee.coffee.api.exception.CoffeeOrderInvalidException;
-import io.github.meowpowpng.enterprisecoffee.coffee.api.exception.CoffeeOrderProcessingException;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.api.ClientOrderRequest;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.api.ClientOrderResponse;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.api.CoffeeOrderService;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.api.exception.CoffeeOrderInvalidException;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.api.exception.CoffeeOrderProcessingException;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.CoffeeMachineClient;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.CoffeeMachineException;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.MachineOrderResult;

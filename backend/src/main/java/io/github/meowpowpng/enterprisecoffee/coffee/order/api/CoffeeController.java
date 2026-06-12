@@ -1,4 +1,4 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.api;
+package io.github.meowpowpng.enterprisecoffee.coffee.order.api;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;

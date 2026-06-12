@@ -1,4 +1,4 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.api;
+package io.github.meowpowpng.enterprisecoffee.coffee.order.api;
 
 import jakarta.validation.constraints.NotBlank;
 

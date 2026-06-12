@@ -1,7 +1,7 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.api;
+package io.github.meowpowpng.enterprisecoffee.coffee.order.api;
 
-import io.github.meowpowpng.enterprisecoffee.coffee.api.exception.CoffeeOrderInvalidException;
-import io.github.meowpowpng.enterprisecoffee.coffee.api.exception.CoffeeOrderProcessingException;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.api.exception.CoffeeOrderInvalidException;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.api.exception.CoffeeOrderProcessingException;
 
 /**
  * Manages coffee order operations.

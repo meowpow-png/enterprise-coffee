@@ -1,4 +1,4 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.api.exception;
+package io.github.meowpowpng.enterprisecoffee.coffee.order.api.exception;
 
 /**
  * Base class for coffee order processing failures.

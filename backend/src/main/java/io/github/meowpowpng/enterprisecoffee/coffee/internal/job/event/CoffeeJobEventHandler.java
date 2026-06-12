@@ -5,7 +5,6 @@ import io.github.meowpowpng.enterprisecoffee.coffee.internal.job.CoffeeJobReposi
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 
@@ -22,7 +21,6 @@ class CoffeeJobEventHandler {
     }
 
     @Async
-    @Transactional
     @EventListener
     public void onStarted(CoffeeJobEvents.Started event) {
         var id = event.job().id().value();
@@ -36,7 +34,6 @@ class CoffeeJobEventHandler {
     }
 
     @Async
-    @Transactional
     @EventListener
     public void onProgressUpdated(CoffeeJobEvents.ProgressUpdated event) {
         var id = event.job().id().value();
@@ -53,7 +50,6 @@ class CoffeeJobEventHandler {
     }
 
     @Async
-    @Transactional
     @EventListener
     public void onFinished(CoffeeJobEvents.Finished event) {
         var id = event.job().id().value();

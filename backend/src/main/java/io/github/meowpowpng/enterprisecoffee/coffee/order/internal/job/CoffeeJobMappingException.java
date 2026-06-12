@@ -1,4 +1,4 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.internal.job;
+package io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job;
 
 /**
  * Indicates that a coffee job could not be mapped.

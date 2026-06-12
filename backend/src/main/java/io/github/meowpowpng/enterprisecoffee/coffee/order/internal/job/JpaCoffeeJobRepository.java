@@ -1,4 +1,4 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.internal.job;
+package io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,6 +1,6 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.internal.job.event;
+package io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job.event;
 
-import io.github.meowpowpng.enterprisecoffee.coffee.internal.job.CoffeeJob;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job.CoffeeJob;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.Progress;
 import io.github.meowpowpng.enterprisecoffee.common.DomainEvent;
 

@@ -1,0 +1,5 @@
+set shell := ["bash", "-eu", "-o", "pipefail", "-c"]
+
+# Execute docker compose command
+compose +args:
+    docker compose -p coffee-backend {{args}}

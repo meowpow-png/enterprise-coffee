@@ -46,19 +46,4 @@ public class CoffeeConfiguration {
                 clock
         );
     }
-
-    @Bean
-    RestClient restClient(CoffeeProperties properties) {
-        var httpClient = HttpClient.newBuilder()
-                .connectTimeout(properties.connectTimeout())
-                .build();
-
-        var factory = new JdkClientHttpRequestFactory(httpClient);
-        factory.setReadTimeout(properties.readTimeout());
-
-        return RestClient.builder()
-                .baseUrl(properties.machineUrl())
-                .requestFactory(factory)
-                .build();
-    }
 }

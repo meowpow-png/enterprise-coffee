@@ -1,4 +1,4 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.internal.config;
+package io.github.meowpowpng.enterprisecoffee.coffee.machine.internal;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -8,12 +8,14 @@ import jakarta.validation.constraints.Positive;
 
 import java.time.Duration;
 
-@ConfigurationProperties("coffee")
-public record CoffeeProperties(
+@ConfigurationProperties("coffee.machine")
+public record MachineProperties(
+        @NotBlank
+        String baseUrl,
         @NotNull
         @Positive
-        Duration pollingInterval,
+        Duration connectTimeout,
         @NotNull
         @Positive
-        Duration jobTimeout
+        Duration readTimeout
 ) {}

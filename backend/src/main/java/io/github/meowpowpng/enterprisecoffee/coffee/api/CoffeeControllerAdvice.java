@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 /**
  * Handles exceptions raised by coffee controllers.
  */
-@RestControllerAdvice
+@RestControllerAdvice(assignableTypes = CoffeeController.class)
 public class CoffeeControllerAdvice {
 
     /**

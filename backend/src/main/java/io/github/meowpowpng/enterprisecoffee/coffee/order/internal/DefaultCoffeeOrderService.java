@@ -1,12 +1,13 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.order.internal;
 
+import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception.CoffeeMachineProtocolException;
+import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception.CoffeeMachineUnavailableException;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.api.CoffeeOrderRequest;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.api.CoffeeOrderResponse;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.api.CoffeeOrderService;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.api.exception.CoffeeOrderInvalidException;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.api.exception.CoffeeOrderProcessingException;
 import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.CoffeeMachineClient;
-import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception.CoffeeMachineException;
 import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.MachineOrderResult;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.event.CoffeeOrderEvents;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
@@ -54,12 +55,16 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
         try {
             result = client.order(type);
         }
-        catch (CoffeeMachineException e) {
+        catch (CoffeeMachineUnavailableException e) {
             log.warn("Coffee order failed (id={})", orderId.value(), e);
             publisher.publish(CoffeeOrderEvents.failed(order.fail()));
 
             var message = "coffee machine is not responding";
             throw new CoffeeOrderProcessingException(message, e);
+        }
+        catch (CoffeeMachineProtocolException e) {
+            log.error("Coffee machine protocol violation (id={})", orderId.value(), e);
+            throw e;
         }
         if (result == MachineOrderResult.ACCEPTED) {
             order = order.accept();

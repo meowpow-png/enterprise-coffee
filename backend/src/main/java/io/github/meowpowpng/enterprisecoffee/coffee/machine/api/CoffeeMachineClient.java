@@ -1,6 +1,7 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.machine.api;
 
-import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception.CoffeeMachineException;
+import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception.CoffeeMachineProtocolException;
+import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception.CoffeeMachineUnavailableException;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
 
 /**
@@ -12,8 +13,8 @@ public interface CoffeeMachineClient {
      * Returns the current operational
      * status of the coffee machine.
      *
-     * @throws CoffeeMachineException if communication with the
-     * machine fails, or the machine returns an invalid response
+     * @throws CoffeeMachineUnavailableException if communication with the machine fails
+     * @throws CoffeeMachineProtocolException if the machine returns an invalid response
      */
     CoffeeMachineStatus status();
 
@@ -21,8 +22,8 @@ public interface CoffeeMachineClient {
      * Returns the current coffee brewing
      * progress reported by the machine.
      *
-     * @throws CoffeeMachineException if communication with the
-     * machine fails, or the machine returns an invalid response
+     * @throws CoffeeMachineUnavailableException if communication with the machine fails
+     * @throws CoffeeMachineProtocolException if the machine returns an invalid response
      */
     MachineCoffeeProgress progress();
 
@@ -34,8 +35,8 @@ public interface CoffeeMachineClient {
      * @return result of the coffee order request
      *
      * @throws NullPointerException if {@code type} is {@code null}
-     * @throws CoffeeMachineException if communication with the machine fails
-     * @throws IllegalStateException if the machine returns an unexpected response
+     * @throws CoffeeMachineUnavailableException if communication with the machine fails
+     * @throws CoffeeMachineProtocolException if the machine returns an invalid response
      */
     MachineOrderResult order(CoffeeType type);
 }

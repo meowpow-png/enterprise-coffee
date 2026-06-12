@@ -1,27 +1,26 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception;
 
 /**
- * Exception thrown when communication
- * with the coffee machine fails.
+ * Base class for machine communication exceptions.
  */
-public final class CoffeeMachineException extends RuntimeException {
+public abstract class CoffeeMachineException extends RuntimeException {
 
     /**
-     * Creates a new coffee machine exception.
+     * Creates new coffee machine exception.
      *
      * @param message exception detail message
      * @param cause underlying failure
      */
-   public CoffeeMachineException(String message, Throwable cause) {
+    CoffeeMachineException(String message, Throwable cause) {
         super(message, cause);
     }
 
     /**
-     * Creates a new coffee machine exception.
+     * Creates new coffee machine exception.
      *
      * @param message exception detail message
      */
-    public CoffeeMachineException(String message) {
+    CoffeeMachineException(String message) {
         super(message);
     }
 }

@@ -1,7 +1,8 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.machine.internal;
 
 import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.*;
-import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception.CoffeeMachineException;
+import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception.CoffeeMachineProtocolException;
+import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception.CoffeeMachineUnavailableException;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.Progress;
 
@@ -96,16 +97,20 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
 
             if (response == null) {
                 var message = "Coffee machine returned an empty %s response";
-                var exception = new CoffeeMachineException(message.formatted(op.name));
+                var exception = new CoffeeMachineProtocolException(message.formatted(op.name));
 
                 Logger.logRequestFailed(op.name, exception);
                 throw exception;
             }
             return response;
         }
-        catch (RestClientException | IllegalArgumentException e) {
+        catch (RestClientException e) {
             Logger.logRequestFailed(op.name, e);
-            throw new CoffeeMachineException(op.failMessage, e);
+            throw new CoffeeMachineUnavailableException(op.failMessage, e);
+        }
+        catch (IllegalArgumentException | IllegalStateException e) {
+            Logger.logRequestFailed(op.name, e);
+            throw new CoffeeMachineProtocolException(op.failMessage, e);
         }
     }
 

@@ -17,8 +17,7 @@ import java.time.Instant;
 import java.util.Objects;
 
 /**
- * Tracks the status and progress
- * of a coffee-brewing job.
+ * Tracks the status and progress of a coffee job.
  */
 public class CoffeeJobTracker {
 
@@ -27,34 +26,34 @@ public class CoffeeJobTracker {
     private final CoffeeMachineClient client;
     private final DomainEventPublisher publisher;
     private final ThreadSleeper sleeper;
-    private final Duration brewTimeout;
+    private final Duration timeout;
     private final Clock clock;
 
     public CoffeeJobTracker(
             CoffeeMachineClient client,
             DomainEventPublisher publisher,
             ThreadSleeper sleeper,
-            Duration brewTimeout,
+            Duration timeout,
             Clock clock
     ) {
         Objects.requireNonNull(client, "client must not be null");
         Objects.requireNonNull(publisher, "publisher must not be null");
         Objects.requireNonNull(sleeper, "properties must not be null");
-        Objects.requireNonNull(brewTimeout, "brewTimeout must not be null");
+        Objects.requireNonNull(timeout, "jobTimeout must not be null");
         Objects.requireNonNull(clock, "clock must not be null");
 
         this.client = client;
         this.publisher = publisher;
         this.sleeper = sleeper;
-        this.brewTimeout = brewTimeout;
+        this.timeout = timeout;
         this.clock = clock;
     }
 
     /**
-     * Tracks the specified brewing job
+     * Tracks the specified coffee job
      * until it completes or fails.
      *
-     * @param job brewing job to track
+     * @param job coffee job to track
      *
      * @throws IllegalStateException if the job is not pending
      */
@@ -65,7 +64,7 @@ public class CoffeeJobTracker {
         log.trackingStarted(id);
         start(job);
 
-        var deadline = clock.instant().plus(brewTimeout);
+        var deadline = clock.instant().plus(timeout);
         while (!timedOut(deadline)) {
             MachineProgressResponse progressResponse;
             try {

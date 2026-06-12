@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.UUID;
 
 /**
- * Spring Data repository for coffee-brewing job entities.
+ * Spring Data repository for coffee job entities.
  */
 @SuppressWarnings("unused")
 interface JpaCoffeeJobCrudRepository extends JpaRepository<CoffeeJobEntity, UUID> {

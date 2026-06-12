@@ -17,7 +17,7 @@ public record CoffeeProperties(
         Duration pollingInterval,
         @NotNull
         @Positive
-        Duration brewTimeout,
+        Duration jobTimeout,
         @NotNull
         @Positive
         Duration connectTimeout,

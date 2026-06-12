@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Coffee brewing job managed by coffee backend.
+ * Coffee brewing job managed by backend.
  */
 public final class CoffeeJob {
 
@@ -18,11 +18,11 @@ public final class CoffeeJob {
     private Progress progress;
 
     /**
-     * Creates a new coffee-brewing job.
+     * Creates a new coffee job.
      *
-     * @param id unique identifier of the brewing job
+     * @param id unique identifier of the job
      * @param orderId unique identifier of the coffee order
-     * @param status current status of the brewing job
+     * @param status current status of the job
      *
      * @throws NullPointerException if {@code id} or {@code status} is null
      */
@@ -34,7 +34,7 @@ public final class CoffeeJob {
     }
 
     /**
-     * Creates a new coffee-brewing job.
+     * Creates a new coffee job.
      *
      * @param orderId unique identifier of the coffee order
      */
@@ -43,12 +43,12 @@ public final class CoffeeJob {
     }
 
     /**
-     * Restores an existing coffee-brewing job.
+     * Restores an existing coffee job.
      *
-     * @param id unique identifier of the brewing job
+     * @param id unique identifier of the job
      * @param orderId unique identifier of the coffee order
-     * @param status current status of the brewing job
-     * @param progress current progress of the brewing job
+     * @param status current status of the job
+     * @param progress current progress of the job
      *
      * @throws NullPointerException if {@code id} or {@code status} is null
      * @throws IllegalArgumentException if {@code progress}
@@ -153,12 +153,12 @@ public final class CoffeeJob {
     }
 
     /**
-     * Unique identifier of a coffee-brewing job.
+     * Unique identifier of a coffee job.
      */
     public record Id(UUID value) {
 
         /**
-         * Creates a new brewing job identifier.
+         * Creates a new job identifier.
          *
          * @param value identifier value
          *
@@ -169,7 +169,7 @@ public final class CoffeeJob {
         }
 
         /**
-         * Generates a new unique coffee-brewing job identifier.
+         * Generates a new unique coffee job identifier.
          */
         static Id generate() {
             return new Id(UUID.randomUUID());
@@ -177,7 +177,7 @@ public final class CoffeeJob {
     }
 
     /**
-     * Current status of a coffee brewing job.
+     * Current status of a coffee job.
      */
     public enum Status {
 

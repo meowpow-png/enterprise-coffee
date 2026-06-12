@@ -3,17 +3,17 @@ package io.github.meowpowpng.enterprisecoffee.coffee.internal.job;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.order.CoffeeOrder;
 
 /**
- * Maps coffee brewing jobs
- * between domain and persistence models.
+ * Maps coffee jobs between
+ * domain and persistence models.
  */
 final class CoffeeJobMapper {
 
     private CoffeeJobMapper() {}
 
     /**
-     * Converts a coffee-brewing job into a persistence entity.
+     * Converts a coffee job into a persistence entity.
      *
-     * @param job coffee-brewing job to convert
+     * @param job coffee job to convert
      *
      * @throws CoffeeJobMappingException if the job
      * cannot be converted to a persistence entity
@@ -34,12 +34,12 @@ final class CoffeeJobMapper {
     }
 
     /**
-     * Reconstructs a coffee-brewing job from a persistence entity.
+     * Reconstructs a coffee job from a persistence entity.
      *
      * @param entity persistence entity to convert
      *
      * @throws CoffeeJobMappingException if the entity
-     * cannot be converted to a coffee-brewing job
+     * cannot be converted to a coffee job
      */
     static CoffeeJob toDomain(CoffeeJobEntity entity) {
         try {

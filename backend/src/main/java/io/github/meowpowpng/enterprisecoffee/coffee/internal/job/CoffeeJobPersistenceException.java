@@ -2,7 +2,7 @@ package io.github.meowpowpng.enterprisecoffee.coffee.internal.job;
 
 /**
  * Indicates that an error occurred while
- * persisting or retrieving a coffee-brewing job.
+ * persisting or retrieving a coffee job.
  */
 final class CoffeeJobPersistenceException extends RuntimeException {
 

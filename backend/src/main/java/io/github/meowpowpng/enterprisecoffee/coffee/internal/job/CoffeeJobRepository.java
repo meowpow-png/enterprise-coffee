@@ -3,16 +3,16 @@ package io.github.meowpowpng.enterprisecoffee.coffee.internal.job;
 import java.util.Optional;
 
 /**
- * Repository for coffee-brewing jobs.
+ * Repository for coffee jobs.
  */
 public interface CoffeeJobRepository {
 
     /**
-     * Creates a new coffee-brewing job.
+     * Creates a new coffee job.
      *
-     * @param job coffee-brewing job to create
+     * @param job coffee job to create
      *
-     * @return the created coffee-brewing job
+     * @return the created coffee job
      * @throws NullPointerException if {@code job} is {@code null}
      * @throws CoffeeJobMappingException if the job cannot be mapped
      * @throws CoffeeJobPersistenceException if the job cannot be persisted
@@ -20,22 +20,22 @@ public interface CoffeeJobRepository {
     CoffeeJob create(CoffeeJob job);
 
     /**
-     * Updates an existing coffee-brewing job.
+     * Updates an existing coffee job.
      *
-     * @param job coffee-brewing job to update
+     * @param job coffee job to update
      *
-     * @return the updated coffee brewing job
+     * @return the updated coffee job
      * @throws NullPointerException if {@code job} is {@code null}
      * @throws IllegalStateException if the job does not exist
      */
     CoffeeJob update(CoffeeJob job);
 
     /**
-     * Returns the coffee-brewing job with the specified identifier.
+     * Returns the coffee job with the specified identifier.
      *
-     * @param id identifier of the coffee-brewing job
+     * @param id identifier of the coffee job
      *
-     * @return the coffee-brewing job if found; otherwise empty
+     * @return the coffee job if found; otherwise empty
      * @throws NullPointerException if {@code id} is {@code null}
      * @throws CoffeeJobMappingException if the job cannot be mapped
      * @throws CoffeeJobPersistenceException if the job cannot be retrieved

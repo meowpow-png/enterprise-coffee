@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * JPA-backed coffee-brewing job repository.
+ * JPA-backed coffee job repository.
  */
 @Repository
 public class JpaCoffeeJobRepository implements CoffeeJobRepository {
@@ -32,7 +32,7 @@ public class JpaCoffeeJobRepository implements CoffeeJobRepository {
             throw e;
         }
         catch (RuntimeException e) {
-            var message = "failed to create coffee brewing job";
+            var message = "failed to create coffee job";
             throw new CoffeeJobPersistenceException(message, e);
         }
     }
@@ -47,7 +47,7 @@ public class JpaCoffeeJobRepository implements CoffeeJobRepository {
                 job.progress().value()
         );
         if (updated == 0) {
-            var message = "coffee brewing job not found: " + job.id().value();
+            var message = "coffee job not found: " + job.id().value();
             throw new CoffeeJobPersistenceException(message);
         }
         return job;
@@ -65,7 +65,7 @@ public class JpaCoffeeJobRepository implements CoffeeJobRepository {
             throw e;
         }
         catch (RuntimeException e) {
-            var message = "failed to find coffee brewing job";
+            var message = "failed to find coffee job";
             throw new CoffeeJobPersistenceException(message, e);
         }
     }

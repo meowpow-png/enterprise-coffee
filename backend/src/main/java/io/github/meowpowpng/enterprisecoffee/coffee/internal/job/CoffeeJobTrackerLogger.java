@@ -23,7 +23,7 @@ final class CoffeeJobTrackerLogger {
     }
 
     void trackingCompleted(UUID id) {
-        log.info("Coffee brew job completed (id={})", id);
+        log.info("Coffee job completed (id={})", id);
         debug(Event.TRACKING_COMPLETED, id);
     }
 

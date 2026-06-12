@@ -30,7 +30,7 @@ public class CoffeeConfiguration {
     }
 
     @Bean
-    CoffeeJobTracker coffeeBrewTracker(
+    CoffeeJobTracker coffeeJobTracker(
             CoffeeMachineClient client,
             DomainEventPublisher publisher,
             ThreadSleeper sleeper,
@@ -41,7 +41,7 @@ public class CoffeeConfiguration {
                 client,
                 publisher,
                 sleeper,
-                properties.brewTimeout(),
+                properties.jobTimeout(),
                 clock
         );
     }

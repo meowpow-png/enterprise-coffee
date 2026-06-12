@@ -73,7 +73,7 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
             log.info("Coffee order accepted (id={})", orderId.value());
 
             var job = CoffeeJob.create(order.id());
-            log.info("Coffee brew job created (id={})", job.id().value());
+            log.info("Coffee job created (id={})", job.id().value());
 
             tracker.track(job);
             return ClientOrderResponse.accepted();

@@ -1,7 +1,7 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.internal.job;
 
 /**
- * Indicates that a coffee-brewing job could not be mapped.
+ * Indicates that a coffee job could not be mapped.
  */
 final class CoffeeJobMappingException extends RuntimeException {
 

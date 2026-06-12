@@ -45,4 +45,14 @@ public class GlobalControllerAdvice {
         log.debug("event=REQUEST_VALIDATION_FAILED message={}", message);
         return new MessageResponse(message);
     }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    MessageResponse handleUnexpectedException(Exception e) {
+        log.error("event=UNEXPECTED_EXCEPTION error={}",
+                e.getClass().getSimpleName(),
+                e
+        );
+        return new MessageResponse("internal server error");
+    }
 }

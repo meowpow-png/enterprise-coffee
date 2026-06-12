@@ -1,6 +1,7 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.internal.job;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -37,7 +38,13 @@ public class JpaCoffeeJobRepository implements CoffeeJobRepository {
         }
     }
 
+    /**
+     * <strong>Implementation Note:</strong>
+     * Marked as transactional because JPQL update
+     * queries require an active transaction.
+     */
     @Override
+    @Transactional
     public CoffeeJob update(CoffeeJob job) {
         Objects.requireNonNull(job, "job");
 

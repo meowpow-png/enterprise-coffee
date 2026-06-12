@@ -6,7 +6,7 @@ import io.github.meowpowpng.enterprisecoffee.coffee.api.CoffeeOrderService;
 import io.github.meowpowpng.enterprisecoffee.coffee.api.exception.CoffeeOrderInvalidException;
 import io.github.meowpowpng.enterprisecoffee.coffee.api.exception.CoffeeOrderProcessingException;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.job.CoffeeJob;
-import io.github.meowpowpng.enterprisecoffee.coffee.internal.job.CoffeeTracker;
+import io.github.meowpowpng.enterprisecoffee.coffee.internal.job.CoffeeJobTracker;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.CoffeeMachineClient;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.CoffeeMachineException;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.MachineOrderResponse;
@@ -29,12 +29,12 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
 
     private final CoffeeMachineClient client;
     private final CoffeeOrderRepository repository;
-    private final CoffeeTracker tracker;
+    private final CoffeeJobTracker tracker;
 
     DefaultCoffeeOrderService(
             CoffeeMachineClient client,
             CoffeeOrderRepository repository,
-            CoffeeTracker tracker
+            CoffeeJobTracker tracker
     ) {
         Objects.requireNonNull(client, "client must not be null");
         Objects.requireNonNull(repository, "repository must not be null");

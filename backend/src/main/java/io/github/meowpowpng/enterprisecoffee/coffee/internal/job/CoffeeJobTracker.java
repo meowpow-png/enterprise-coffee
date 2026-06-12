@@ -20,9 +20,9 @@ import java.util.Objects;
  * Tracks the status and progress
  * of a coffee-brewing job.
  */
-public class CoffeeTracker {
+public class CoffeeJobTracker {
 
-    private static final CoffeeTrackerLogger log = new CoffeeTrackerLogger();
+    private static final CoffeeJobTrackerLogger log = new CoffeeJobTrackerLogger();
 
     private final CoffeeMachineClient client;
     private final DomainEventPublisher publisher;
@@ -30,7 +30,7 @@ public class CoffeeTracker {
     private final Duration brewTimeout;
     private final Clock clock;
 
-    public CoffeeTracker(
+    public CoffeeJobTracker(
             CoffeeMachineClient client,
             DomainEventPublisher publisher,
             ThreadSleeper sleeper,

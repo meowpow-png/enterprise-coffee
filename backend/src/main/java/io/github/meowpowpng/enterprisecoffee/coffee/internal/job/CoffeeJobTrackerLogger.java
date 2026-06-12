@@ -5,10 +5,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
 
-final class CoffeeTrackerLogger {
+final class CoffeeJobTrackerLogger {
 
     @SuppressWarnings("LoggerInitializedWithForeignClass")
-    private static final Logger log = LoggerFactory.getLogger(CoffeeTracker.class);
+    private static final Logger log = LoggerFactory.getLogger(CoffeeJobTracker.class);
 
     private enum Event {
         TRACKING_STARTED,

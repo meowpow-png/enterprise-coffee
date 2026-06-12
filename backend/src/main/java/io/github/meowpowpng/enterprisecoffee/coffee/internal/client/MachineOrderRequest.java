@@ -1,13 +1,11 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.internal.client;
 
-import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
-
 import java.util.Objects;
 
 /**
  * Coffee order request submitted to the coffee machine.
  */
-record MachineOrderRequest(CoffeeType type) {
+record MachineOrderRequest(String type) {
 
     /**
      * Creates a new machine brewing request.

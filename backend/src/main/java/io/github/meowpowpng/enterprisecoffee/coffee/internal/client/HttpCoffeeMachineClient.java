@@ -45,7 +45,7 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
 
         ResponseSupplier<MachineOrderResponse> operation = () -> restClient.post()
                 .uri("/order")
-                .body(new MachineOrderRequest(type))
+                .body(new MachineOrderRequest(type.value()))
                 .exchange((ignored, clientResponse) ->
                         new MachineOrderResponse(clientResponse.getStatusCode())
                 );

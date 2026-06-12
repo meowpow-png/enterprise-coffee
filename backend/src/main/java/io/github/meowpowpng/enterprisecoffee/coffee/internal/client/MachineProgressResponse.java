@@ -15,7 +15,7 @@ public record MachineProgressResponse(@Nullable CoffeeType type, Progress progre
     /**
      * Creates a new machine progress response.
      *
-     * @param type currently brewed coffee type, or {@code null} if the machine is idle
+     * @param type currently brewed coffee type, or {@code null}
      * @param progress current brewing progress
      *
      * @throws NullPointerException if {@code progress} is {@code null}

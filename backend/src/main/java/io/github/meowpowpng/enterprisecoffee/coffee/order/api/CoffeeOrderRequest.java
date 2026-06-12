@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 /**
  * Coffee order request submitted by client.
  */
-public record ClientOrderRequest(
+public record CoffeeOrderRequest(
         @NotBlank(message = "coffee type is required")
         String type
 ) {}

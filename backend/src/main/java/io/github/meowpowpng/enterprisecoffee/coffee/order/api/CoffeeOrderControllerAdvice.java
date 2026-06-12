@@ -16,13 +16,13 @@ public class CoffeeOrderControllerAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(CoffeeOrderInvalidException.class)
-    ClientOrderResponse handleInvalidOrder(CoffeeOrderInvalidException exception) {
-        return new ClientOrderResponse(exception.getMessage());
+    CoffeeOrderResponse handleInvalidOrder(CoffeeOrderInvalidException exception) {
+        return new CoffeeOrderResponse(exception.getMessage());
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(CoffeeOrderProcessingException.class)
-    ClientOrderResponse handleProcessingFailure(CoffeeOrderProcessingException exception) {
-        return new ClientOrderResponse(exception.getMessage());
+    CoffeeOrderResponse handleProcessingFailure(CoffeeOrderProcessingException exception) {
+        return new CoffeeOrderResponse(exception.getMessage());
     }
 }

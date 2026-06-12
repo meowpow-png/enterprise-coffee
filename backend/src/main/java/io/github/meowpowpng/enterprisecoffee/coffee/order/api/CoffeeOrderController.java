@@ -22,7 +22,7 @@ public class CoffeeOrderController {
 
     @PostMapping("/order")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    ClientOrderResponse order(@Valid @RequestBody ClientOrderRequest request) {
+    CoffeeOrderResponse order(@Valid @RequestBody CoffeeOrderRequest request) {
         return service.order(request);
     }
 }

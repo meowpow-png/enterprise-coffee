@@ -1,7 +1,7 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.order.internal;
 
-import io.github.meowpowpng.enterprisecoffee.coffee.order.api.ClientOrderRequest;
-import io.github.meowpowpng.enterprisecoffee.coffee.order.api.ClientOrderResponse;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.api.CoffeeOrderRequest;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.api.CoffeeOrderResponse;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.api.CoffeeOrderService;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.api.exception.CoffeeOrderInvalidException;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.api.exception.CoffeeOrderProcessingException;
@@ -39,7 +39,7 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
     }
 
     @Override
-    public ClientOrderResponse order(ClientOrderRequest request) {
+    public CoffeeOrderResponse order(CoffeeOrderRequest request) {
         Objects.requireNonNull(request, "request must not be null");
 
         var type = new CoffeeType(request.type());
@@ -66,7 +66,7 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
             publisher.publish(CoffeeOrderEvents.accepted(order));
 
             log.info("Coffee order accepted (id={})", orderId.value());
-            return ClientOrderResponse.accepted();
+            return CoffeeOrderResponse.accepted();
         }
         if (result == MachineOrderResult.BUSY) {
             publisher.publish(CoffeeOrderEvents.rejected(order.reject()));

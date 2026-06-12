@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * Result of a coffee order request.
  */
-public record ClientOrderResponse(String message) {
+public record CoffeeOrderResponse(String message) {
 
     /**
      * Creates a new coffee order response.
@@ -14,11 +14,11 @@ public record ClientOrderResponse(String message) {
      *
      * @throws NullPointerException if {@code message} is {@code null}
      */
-    public ClientOrderResponse {
+    public CoffeeOrderResponse {
         Objects.requireNonNull(message, "message must not be null");
     }
 
-    public static ClientOrderResponse accepted() {
-        return new ClientOrderResponse("Coffee order was successfully accepted");
+    public static CoffeeOrderResponse accepted() {
+        return new CoffeeOrderResponse("Coffee order was successfully accepted");
     }
 }

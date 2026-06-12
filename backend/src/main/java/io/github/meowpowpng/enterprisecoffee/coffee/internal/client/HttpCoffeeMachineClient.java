@@ -9,6 +9,8 @@ import org.springframework.web.client.RestClientException;
 
 import org.jspecify.annotations.Nullable;
 
+import org.slf4j.LoggerFactory;
+
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -17,8 +19,6 @@ import java.util.function.Supplier;
  */
 @Component
 class HttpCoffeeMachineClient implements CoffeeMachineClient {
-
-    private static final CoffeeMachineClientLogger log = new CoffeeMachineClientLogger();
 
     private final RestClient restClient;
 
@@ -37,7 +37,7 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
         );
         var response = callMachine(operation);
 
-        log.statusReceived(response.status().name());
+        Logger.logStatusReceived(response.status().name());
         return response;
     }
 
@@ -54,7 +54,7 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
                 "Failed to submit coffee order"
         );
         var response = callMachine(operation);
-        log.orderReceived(response.toString());
+        Logger.logOrderReceived(response.toString());
         return response;
     }
 
@@ -77,7 +77,7 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
                 "Failed to retrieve coffee machine progress"
         );
         var response = callMachine(operation);
-        log.progressReceived(
+        Logger.logProgressReceived(
                 response.type(),
                 response.progress().value()
         );
@@ -92,13 +92,13 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
                 var message = "Coffee machine returned an empty %s response";
                 var exception = new CoffeeMachineException(message.formatted(op.name));
 
-                log.requestFailed(op.name, exception);
+                Logger.logRequestFailed(op.name, exception);
                 throw exception;
             }
             return response;
         }
         catch (RestClientException | IllegalArgumentException e) {
-            log.requestFailed(op.name, e);
+            Logger.logRequestFailed(op.name, e);
             throw new CoffeeMachineException(op.failMessage, e);
         }
     }
@@ -126,4 +126,46 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
     }
 
     private record MachineProgressPayload(String type, int progress) {}
+
+    private static final class Logger {
+
+        private static final org.slf4j.Logger log =
+                LoggerFactory.getLogger(HttpCoffeeMachineClient.class);
+
+        private enum Event {
+            MACHINE_STATUS_RECEIVED,
+            MACHINE_ORDER_RECEIVED,
+            MACHINE_PROGRESS_RECEIVED,
+            MACHINE_REQUEST_FAILED
+        }
+
+        static void logStatusReceived(String status) {
+            debugStatus(Event.MACHINE_STATUS_RECEIVED, status);
+        }
+
+        static void logOrderReceived(String status) {
+            debugStatus(Event.MACHINE_ORDER_RECEIVED, status);
+        }
+
+        static void logProgressReceived(@Nullable CoffeeType type, int progress) {
+            log.debug("event={} type={} progress={}",
+                    Event.MACHINE_PROGRESS_RECEIVED,
+                    type != null ? type.value() : "''",
+                    progress
+            );
+        }
+
+        static void logRequestFailed(String operation, Exception exception) {
+            log.warn("event={} operation={} error={}",
+                    Event.MACHINE_REQUEST_FAILED,
+                    operation,
+                    exception.getClass().getSimpleName(),
+                    exception
+            );
+        }
+
+        private static void debugStatus(Event event, String status) {
+            log.debug("event={} status={}", event, status);
+        }
+    }
 }

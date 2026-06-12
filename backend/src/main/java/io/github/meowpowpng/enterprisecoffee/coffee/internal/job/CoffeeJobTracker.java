@@ -9,17 +9,18 @@ import io.github.meowpowpng.enterprisecoffee.common.DomainEventPublisher;
 
 import org.springframework.scheduling.annotation.Async;
 
+import org.slf4j.LoggerFactory;
+
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Tracks the status and progress of a coffee job.
  */
 public class CoffeeJobTracker {
-
-    private static final CoffeeJobTrackerLogger log = new CoffeeJobTrackerLogger();
 
     private final CoffeeMachineClient client;
     private final DomainEventPublisher publisher;
@@ -59,7 +60,7 @@ public class CoffeeJobTracker {
     public void track(CoffeeJob job) {
         var id = job.id().value();
 
-        log.trackingStarted(id);
+        Logger.logTrackingStarted(id);
         start(job);
 
         var deadline = clock.instant().plus(timeout);
@@ -69,14 +70,14 @@ public class CoffeeJobTracker {
                 progressResponse = client.progress();
             }
             catch (CoffeeMachineException e) {
-                log.communicationFailed(id, e);
+                Logger.logCommunicationFailed(id, e);
                 finish(job, job::fail);
                 return;
             }
             var progress = progressResponse.progress();
 
             if (progress.value() == 100) {
-                log.trackingCompleted(id);
+                Logger.logTrackingCompleted(id);
 
                 finish(job, job::complete);
                 return;
@@ -86,12 +87,12 @@ public class CoffeeJobTracker {
                 sleeper.sleep();
             }
             catch (IllegalStateException e) {
-                log.trackingInterrupted(id, job.status(), progress.value());
+                Logger.logTrackingInterrupted(id, job.status(), progress.value());
                 finish(job, job::fail);
                 return;
             }
         }
-        log.trackingTimedOut(id, job.progress().value());
+        Logger.logTrackingTimedOut(id, job.progress().value());
         finish(job, job::fail);
     }
 
@@ -119,5 +120,58 @@ public class CoffeeJobTracker {
     private boolean timedOut(Instant deadline) {
         var now = clock.instant();
         return now.equals(deadline) || now.isAfter(deadline);
+    }
+
+    private static final class Logger {
+
+        private static final org.slf4j.Logger log =
+                LoggerFactory.getLogger(CoffeeJobTracker.class);
+
+        private enum Event {
+            TRACKING_STARTED,
+            TRACKING_COMPLETED,
+            TRACKING_TIMED_OUT,
+            TRACKING_INTERRUPTED,
+            COMMUNICATION_FAILED
+        }
+
+        static void logTrackingStarted(UUID id) {
+            debug(Event.TRACKING_STARTED, id);
+        }
+
+        static void logTrackingCompleted(UUID id) {
+            log.info("Coffee job completed (id={})", id);
+            debug(Event.TRACKING_COMPLETED, id);
+        }
+
+        static void logTrackingTimedOut(UUID id, int progress) {
+            log.warn("event={} id={} progress={}",
+                    Event.TRACKING_TIMED_OUT,
+                    id,
+                    progress
+            );
+        }
+
+        static void logTrackingInterrupted(UUID id, CoffeeJob.Status status, int progress) {
+            log.warn("event={} id={} status={} progress={}",
+                    Event.TRACKING_INTERRUPTED,
+                    id,
+                    status,
+                    progress
+            );
+        }
+
+        static void logCommunicationFailed(UUID id, Throwable cause) {
+            log.error("event={} id={} error={}",
+                    Event.COMMUNICATION_FAILED,
+                    id,
+                    cause.getClass().getSimpleName(),
+                    cause
+            );
+        }
+
+        private static void debug(Event event, UUID id) {
+            log.debug("event={} id={}", event, id);
+        }
     }
 }

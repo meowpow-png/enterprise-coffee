@@ -11,12 +11,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
+import org.slf4j.LoggerFactory;
+
 import java.util.Objects;
+import java.util.UUID;
 
 @Component
 class CoffeeJobEventHandler {
-
-    private static final CoffeeJobEventHandlerLogger log = new CoffeeJobEventHandlerLogger();
 
     private final CoffeeJobRepository repository;
     private final CoffeeJobTracker tracker;
@@ -40,7 +41,7 @@ class CoffeeJobEventHandler {
         var orderId = event.order().id();
         var job = CoffeeJob.create(orderId);
 
-        log.created(job.id().value(), orderId.value());
+        Logger.logCreated(job.id().value(), orderId.value());
 
         tracker.track(job);
     }
@@ -49,12 +50,12 @@ class CoffeeJobEventHandler {
     @EventListener
     public void onStarted(CoffeeJobEvents.Started event) {
         var id = event.job().id().value();
-        log.started(id);
+        Logger.logStarted(id);
         try {
             repository.create(event.job());
         }
         catch (Exception e) {
-            log.persistenceFailed(id, e);
+            Logger.logPersistenceFailed(id, e);
         }
     }
 
@@ -62,7 +63,7 @@ class CoffeeJobEventHandler {
     @EventListener
     public void onProgressUpdated(CoffeeJobEvents.ProgressUpdated event) {
         var id = event.job().id().value();
-        log.progressUpdated(id,
+        Logger.logProgressUpdated(id,
                 event.previous().value(),
                 event.job().progress().value()
         );
@@ -70,7 +71,7 @@ class CoffeeJobEventHandler {
             repository.update(event.job());
         }
         catch (Exception e) {
-            log.persistenceFailed(id, e);
+            Logger.logPersistenceFailed(id, e);
         }
     }
 
@@ -78,12 +79,60 @@ class CoffeeJobEventHandler {
     @EventListener
     public void onFinished(CoffeeJobEvents.Finished event) {
         var id = event.job().id().value();
-        log.finished(id, event.job().progress().value());
+        Logger.logFinished(id, event.job().progress().value());
         try {
             repository.update(event.job());
         }
         catch (Exception e) {
-            log.persistenceFailed(id, e);
+            Logger.logPersistenceFailed(id, e);
+        }
+    }
+
+    private static final class Logger {
+
+        private static final org.slf4j.Logger log =
+                LoggerFactory.getLogger(CoffeeJobEventHandler.class);
+
+        private enum Event {
+            JOB_CREATED,
+            JOB_STARTED,
+            JOB_PROGRESS_UPDATED,
+            JOB_FINISHED,
+            JOB_PERSISTENCE_FAILED
+        }
+
+        static void logCreated(UUID jobId, UUID orderId) {
+            log.info("event={} job_id={} order_id={}",
+                    Event.JOB_CREATED,
+                    jobId,
+                    orderId
+            );
+        }
+
+        static void logStarted(UUID id) {
+            log.debug("event={} id={}", Event.JOB_STARTED, id);
+        }
+
+        static void logProgressUpdated(UUID id, int previousProgress, int currentProgress) {
+            var progress = previousProgress + "->" + currentProgress;
+            debugProgress(Event.JOB_PROGRESS_UPDATED, id, progress);
+        }
+
+        static void logFinished(UUID id, int progress) {
+            debugProgress(Event.JOB_FINISHED, id, progress);
+        }
+
+        static void logPersistenceFailed(UUID id, Exception exception) {
+            log.error("event={} id={} error={}",
+                    Event.JOB_PERSISTENCE_FAILED,
+                    id,
+                    exception.getClass().getSimpleName(),
+                    exception
+            );
+        }
+
+        private static void debugProgress(Event event, UUID id, Object progress) {
+            log.debug("event={} id={} progress={}", event, id, progress);
         }
     }
 }

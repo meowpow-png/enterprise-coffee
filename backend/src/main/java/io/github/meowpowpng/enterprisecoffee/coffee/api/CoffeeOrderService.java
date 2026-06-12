@@ -18,6 +18,7 @@ public interface CoffeeOrderService {
      * @throws CoffeeOrderInvalidException if the request cannot be
      * accepted because the specified coffee order is invalid
      * @throws CoffeeOrderProcessingException if the order cannot be processed
+     * @throws IllegalStateException if the machine client returned an unexpected result
      */
     ClientOrderResponse order(ClientOrderRequest request);
 }

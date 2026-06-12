@@ -1,51 +1,24 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.internal.client;
 
-import org.springframework.http.HttpStatusCode;
-
-import java.util.Objects;
-
 /**
- * Represents a coffee order
- * response returned by the machine.
+ * Result of a coffee order request submitted to the machine.
  */
-public final class MachineOrderResult {
-
-    private final HttpStatusCode status;
+public enum MachineOrderResult {
 
     /**
-     * Creates a new coffee order response.
-     *
-     * @param status HTTP status returned by the machine
-     *
-     * @throws NullPointerException if {@code status} is null
+     * Represents the result of an order that was accepted.
      */
-    MachineOrderResult(HttpStatusCode status) {
-        this.status = Objects.requireNonNull(status, "status must not be null");
-    }
+    ACCEPTED,
 
     /**
-     * Returns whether the machine accepted the order.
+     * Represents the result of an order
+     * that was rejected because the machine is busy.
      */
-    public boolean isAccepted() {
-        return status.value() == 202;
-    }
+    BUSY,
 
     /**
-     * Returns whether the machine rejected the order.
+     * Represents the result of an order
+     * that was rejected because the request is invalid.
      */
-    public boolean isRejected() {
-        return status.value() == 409;
-    }
-
-    /**
-     * Returns whether the request was invalid.
-     */
-    public boolean isInvalid() {
-        return status.value() == 400;
-    }
-
-    @Override
-    public String toString() {
-        return "HTTP " + status.value();
-    }
+    INVALID
 }

@@ -55,35 +55,39 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
             result = client.order(type);
         }
         catch (CoffeeMachineException e) {
-            log.warn("Coffee order failed because an exception occurred (id={})",
-                    orderId.value(),
-                    e
-            );
+            log.warn("Coffee order failed (id={})", orderId.value(), e);
             publisher.publish(CoffeeOrderEvents.failed(order.fail()));
 
             var message = "coffee machine is not responding";
             throw new CoffeeOrderProcessingException(message, e);
         }
-        if (result.isAccepted()) {
+        if (result == MachineOrderResult.ACCEPTED) {
             order = order.accept();
             publisher.publish(CoffeeOrderEvents.accepted(order));
 
             log.info("Coffee order accepted (id={})", orderId.value());
             return ClientOrderResponse.accepted();
         }
-        if (result.isRejected()) {
+        if (result == MachineOrderResult.BUSY) {
             publisher.publish(CoffeeOrderEvents.rejected(order.reject()));
 
-            log.info("Coffee order was rejected by machine (id={})", orderId.value());
-            throw new CoffeeOrderProcessingException("coffee order was rejected");
+            var reason = "coffee machine is busy";
+            log.info("Coffee order was rejected by machine (id={} reason={})",
+                    orderId.value(),
+                    reason
+            );
+            throw new CoffeeOrderProcessingException(reason);
         }
-        if (result.isInvalid()) {
+        if (result == MachineOrderResult.INVALID) {
             publisher.publish(CoffeeOrderEvents.invalid(order.markInvalid()));
 
-            log.info("Coffee order rejected because request is invalid (id={})", orderId.value());
-            throw new CoffeeOrderInvalidException("coffee order is invalid");
+            var reason = "coffee order request is invalid";
+            log.info("Coffee order was rejected by machine (id={} reason={})",
+                    orderId.value(),
+                    reason
+            );
+            throw new CoffeeOrderInvalidException(reason);
         }
-        var message = "Unexpected result from coffee machine (status=%s)";
-        throw new IllegalStateException(message.formatted(result));
+        throw new IllegalStateException("Unexpected order result: " + result);
     }
 }

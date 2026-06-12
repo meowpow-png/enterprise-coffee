@@ -3,6 +3,7 @@ package io.github.meowpowpng.enterprisecoffee.coffee.internal.client;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.Progress;
 
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
@@ -49,13 +50,23 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
                 .uri("/order")
                 .body(new MachineOrderRequest(type.value()))
                 .exchange((ignored, clientResponse) ->
-                        new MachineOrderResult(clientResponse.getStatusCode())
+                        new MachineOrderResponse(clientResponse.getStatusCode())
                 ),
                 "Failed to submit coffee order"
         );
         var response = callMachine(operation);
-        Logger.logOrderReceived(response.toString());
-        return response;
+
+        var statusCode = response.status.value();
+        Logger.logOrderReceived(String.valueOf(statusCode));
+
+        return switch (statusCode) {
+            case 202 -> MachineOrderResult.ACCEPTED;
+            case 409 -> MachineOrderResult.BUSY;
+            case 400 -> MachineOrderResult.INVALID;
+            default -> throw new IllegalStateException(
+                    "Unexpected machine order response: HTTP " + statusCode
+            );
+        };
     }
 
     @Override
@@ -124,6 +135,8 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
         @Override
         T get();
     }
+
+    private record MachineOrderResponse(HttpStatusCode status) {}
 
     private record MachineProgressPayload(String type, int progress) {}
 

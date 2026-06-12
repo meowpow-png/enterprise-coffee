@@ -1,25 +1,25 @@
 # Remove build artifacts
-machine-clean:
+clean:
     rm -rf build
 
 # Build binary artifacts
-machine-build:
+build:
     just build-machine
 
 # Build and run coffee machine
-machine-run:
+run:
     just build-machine
     ./build/bin/machine --port=8080
 
 # Run go tests
 [arg("args", help="test arguments")]
-machine-test *args:
+test *args:
 	go test -race -count=1 {{args}}
 
 # Run Go tests with coverage
-machine-test-coverage:
+test-coverage:
 	@mkdir -p build/coverage
-	just machine-test \
+	just test \
 		-coverprofile=build/coverage/coverage.out \
 		./...
 

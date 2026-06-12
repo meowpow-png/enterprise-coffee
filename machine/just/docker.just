@@ -1,3 +1,3 @@
 # Execute docker compose command
-machine-compose +args:
+compose +args:
     docker compose -p coffee-machine {{args}}

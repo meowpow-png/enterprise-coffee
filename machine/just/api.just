@@ -1,10 +1,10 @@
 # Get coffee machine status
-machine-status:
+status:
     @curl -s {{machine-url}}/status | jq
 
 # Submit coffee order
 [arg("type", help="coffee type")]
-machine-order type:
+order type:
     @curl \
         -s \
         -o /dev/null \
@@ -15,9 +15,9 @@ machine-order type:
         {{machine-url}}/order
 
 # Get brewing progress
-machine-progress:
+progress:
     @curl -s {{machine-url}}/progress | jq
 
 # Watch brewing progress until complete
-machine-watch-progress:
+watch-progress:
     @watch -n 1 "curl -s {{machine-url}}/progress | jq"

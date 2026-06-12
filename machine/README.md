@@ -10,25 +10,25 @@ and exposes machine status through a simple REST API.
 Build the application:
 
 ```shell
-just machine-build
+just build
 ```
 
 Run the application:
 
 ```shell
-just machine-run
+just run
 ```
 
 Submit an order:
 
 ```shell
-just machine-order <coffee-type>
+just order <coffee-type>
 ```
 
 Watch brewing progress:
 
 ```shell
-just machine-watch-progress
+just watch-progress
 ```
 
 See [commands](#commands) for more information.
@@ -203,19 +203,19 @@ Run the service with a custom configuration file and port:
 Build the application:
 
 ```shell
-just machine-build
+just build
 ```
 
 Build and start the service:
 
 ```shell
-just machine-compose up --build
+just compose up --build
 ```
 
 Stop the service:
 
 ```shell
-just machine-compose down
+just compose down
 ```
 
 The service is available on port `8080` by default.
@@ -229,17 +229,17 @@ The service is available on port `8080` by default.
 
 ### Commands
 
-| Command                       | Description                            |
-|-------------------------------|----------------------------------------|
-| `just machine-build`          | Build the application                  |
-| `just machine-run`            | Build and run the application          |
-| `just machine-test` <args>    | Run unit tests with race detection     |
-| `just machine-test-coverage`  | Run tests and generate coverage report |
-| `just machine-status`         | Query machine status                   |
-| `just machine-progress`       | Query brewing progress                 |
-| `just machine-watch-progress` | Watch brewing progress in real time    |
-| `just machine-order <type>`   | Submit coffee order                    |
-| `just machine-clean`          | Remove build artifacts                 |
-| `just machine-compose <args>` | Run docker compose commands            |
+| Command               | Description                            |
+|-----------------------|----------------------------------------|
+| `just build`          | Build the application                  |
+| `just run`            | Build and run the application          |
+| `just test` <args>    | Run unit tests with race detection     |
+| `just test-coverage`  | Run tests and generate coverage report |
+| `just status`         | Query machine status                   |
+| `just progress`       | Query brewing progress                 |
+| `just watch-progress` | Watch brewing progress in real time    |
+| `just order <type>`   | Submit coffee order                    |
+| `just clean`          | Remove build artifacts                 |
+| `just compose <args>` | Run docker compose commands            |
 
 See `config.json` for configured coffee types and brewing durations.

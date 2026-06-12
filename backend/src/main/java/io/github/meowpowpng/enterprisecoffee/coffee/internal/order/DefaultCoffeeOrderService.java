@@ -42,7 +42,7 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
     public ClientOrderResponse order(ClientOrderRequest request) {
         Objects.requireNonNull(request, "request must not be null");
 
-        var type = CoffeeType.valueOf(request.type());
+        var type = new CoffeeType(request.type());
         var order = CoffeeOrder.create(type);
         var orderId = order.id();
 

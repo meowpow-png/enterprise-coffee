@@ -22,7 +22,7 @@ final class CoffeeOrderMapper {
         try {
             return new CoffeeOrderEntity(
                     order.id().value(),
-                    order.type().name(),
+                    order.type().value(),
                     order.status()
             );
         }
@@ -44,7 +44,7 @@ final class CoffeeOrderMapper {
         try {
             return CoffeeOrder.restore(
                     new CoffeeOrder.Id(entity.getId()),
-                    CoffeeType.valueOf(entity.getType()),
+                    new CoffeeType(entity.getType()),
                     entity.getStatus()
             );
         }

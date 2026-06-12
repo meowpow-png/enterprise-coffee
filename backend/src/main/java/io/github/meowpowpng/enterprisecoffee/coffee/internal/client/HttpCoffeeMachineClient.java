@@ -67,9 +67,8 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
                     if (payload == null) {
                         return null;
                     }
-                    var type = payload.type();
                     return new MachineProgressResponse(
-                            type.isBlank() ? null : CoffeeType.valueOf(payload.type()),
+                            new CoffeeType(payload.type()),
                             Progress.of(payload.progress())
                     );
                 });

@@ -2,6 +2,7 @@ package order
 
 import (
 	"encoding/json"
+	"errors"
 	"log"
 	"net/http"
 
@@ -36,10 +37,18 @@ func (h *Handler) ServeHTTP(
 		writer.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	if !h.service.Brew(order.Type) {
-		log.Printf("rejected %s order", order.Type)
+	err := h.service.Brew(order.Type)
+	if err != nil {
+		log.Printf("rejected %s order: %v", order.Type, err)
 
-		writer.WriteHeader(http.StatusConflict)
+		switch {
+		case errors.Is(err, machine.ErrMachineBusy):
+			writer.WriteHeader(http.StatusConflict)
+		case errors.Is(err, machine.ErrInvalidCoffeeType):
+			writer.WriteHeader(http.StatusBadRequest)
+		default:
+			writer.WriteHeader(http.StatusInternalServerError)
+		}
 		return
 	}
 	log.Printf("accepted %s order", order.Type)

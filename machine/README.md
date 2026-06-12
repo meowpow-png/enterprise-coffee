@@ -47,9 +47,9 @@ POST /order
 
 **Body (application/json)**
 
-| Field | Type   | Required | Description                                    |
-|-------|--------|----------|------------------------------------------------|
-| type  | string | yes      | Coffee type to brew (e.g. ESPRESSO, AMERICANO) |
+| Field | Type   | Required | Description         |
+|-------|--------|----------|---------------------|
+| type  | string | yes      | Coffee type to brew |
 
 **Example:**
 
@@ -62,8 +62,8 @@ POST /order
 **Responses**
 
 - `202 Accepted` - Order accepted and brewing started
-- `409 Conflict` - Order rejected (machine is busy or cannot accept request)
-- `400 Bad Request` - Invalid JSON payload
+- `409 Conflict` - Order rejected because the machine is busy
+- `400 Bad Request` - Invalid JSON payload or unsupported coffee type
 
 ### Get Brewing Progress
 

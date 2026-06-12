@@ -1,10 +1,16 @@
 package machine
 
 import (
+	"errors"
 	"sync"
 	"time"
 
 	"github.com/meowpow-png/enterprise-coffee/machine/internal/config"
+)
+
+var (
+	ErrMachineBusy       = errors.New("machine busy")
+	ErrInvalidCoffeeType = errors.New("invalid coffee type")
 )
 
 // Service manages coffee machine state.
@@ -55,17 +61,17 @@ func (s *Service) Progress() (CoffeeType, int) {
 }
 
 // Brew attempts to start a brewing operation.
-func (s *Service) Brew(coffee CoffeeType) bool {
+func (s *Service) Brew(coffee CoffeeType) error {
 	s.mu.Lock()
 
 	brewer, exists := s.brewers[coffee]
 	if !exists {
 		s.mu.Unlock()
-		return false
+		return ErrInvalidCoffeeType
 	}
 	if s.brew != nil {
 		s.mu.Unlock()
-		return false
+		return ErrMachineBusy
 	}
 	brew := NewBrew(coffee)
 	s.brew = brew
@@ -82,5 +88,5 @@ func (s *Service) Brew(coffee CoffeeType) bool {
 			s.brew = nil
 		}
 	}()
-	return true
+	return nil
 }

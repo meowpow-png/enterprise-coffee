@@ -1,6 +1,7 @@
 package machine
 
 import (
+	"errors"
 	"testing"
 	"time"
 
@@ -88,34 +89,42 @@ func TestBrew_StartsBrewingOperation(t *testing.T) {
 
 	service := NewService(testEspressoConfig(t))
 
-	if !service.Brew("ESPRESSO") {
-		t.Fatal("expected brewing to start")
+	if err := service.Brew("ESPRESSO"); err != nil {
+		t.Fatalf("expected brewing to start, got %v", err)
 	}
 	if service.Status() != StatusBrewing {
 		t.Fatalf("expected status %q, got %q", StatusBrewing, service.Status())
 	}
 }
 
-func TestBrew_ReturnsFalseWhenCoffeeTypeIsUnsupported(t *testing.T) {
+func TestBrew_ReturnsErrInvalidCoffeeTypeWhenUnsupported(t *testing.T) {
 	t.Parallel()
 
 	service := NewService(testEspressoConfig(t))
 
-	if service.Brew("AMERICANO") {
-		t.Fatal("expected brewing to be rejected")
+	if err := service.Brew("AMERICANO"); !errors.Is(err, ErrInvalidCoffeeType) {
+		t.Fatalf(
+			"expected error %q, got %v",
+			ErrInvalidCoffeeType,
+			err,
+		)
 	}
 }
 
-func TestBrew_ReturnsFalseWhenAlreadyBrewing(t *testing.T) {
+func TestBrew_ReturnsErrMachineBusyWhenAlreadyBrewing(t *testing.T) {
 	t.Parallel()
 
 	service := NewService(testEspressoConfig(t))
 
-	if !service.Brew("ESPRESSO") {
-		t.Fatal("expected first brew to start")
+	if err := service.Brew("ESPRESSO"); err != nil {
+		t.Fatalf("expected first brew to start, got %v", err)
 	}
-	if service.Brew("ESPRESSO") {
-		t.Fatal("expected second brew to be rejected")
+	if err := service.Brew("ESPRESSO"); !errors.Is(err, ErrMachineBusy) {
+		t.Fatalf(
+			"expected error %q, got %v",
+			ErrMachineBusy,
+			err,
+		)
 	}
 }
 

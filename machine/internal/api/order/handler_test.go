@@ -57,7 +57,7 @@ func TestServeHTTP_ReturnsBadRequestWhenRequestIsInvalid(t *testing.T) {
 	}
 }
 
-func TestServeHTTP_ReturnsConflictWhenOrderIsRejected(t *testing.T) {
+func TestServeHTTP_ReturnsBadRequestWhenCoffeeTypeIsUnsupported(t *testing.T) {
 	t.Parallel()
 
 	handler := NewOrderHandler(
@@ -67,6 +67,33 @@ func TestServeHTTP_ReturnsConflictWhenOrderIsRejected(t *testing.T) {
 		http.MethodPost,
 		"/order",
 		strings.NewReader(`{"type":"AMERICANO"}`),
+	)
+	response := httptest.NewRecorder()
+
+	handler.ServeHTTP(response, request)
+
+	if response.Code != http.StatusBadRequest {
+		t.Fatalf(
+			"expected status %d, got %d",
+			http.StatusBadRequest,
+			response.Code,
+		)
+	}
+}
+
+func TestServeHTTP_ReturnsConflictWhenMachineIsBusy(t *testing.T) {
+	t.Parallel()
+
+	service := machine.NewService(testEspressoConfig(t))
+
+	if err := service.Brew("ESPRESSO"); err != nil {
+		t.Fatalf("expected brewing to start, got %v", err)
+	}
+	handler := NewOrderHandler(service)
+	request := httptest.NewRequest(
+		http.MethodPost,
+		"/order",
+		strings.NewReader(`{"type":"ESPRESSO"}`),
 	)
 	response := httptest.NewRecorder()
 

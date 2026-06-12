@@ -8,27 +8,27 @@ default:
     @just --list
 
 # Remove build artifacts
-clean:
+machine-clean:
     rm -rf build
 
 # Build binary artifacts
-build:
+machine-build:
     just build-machine
 
 # Build and run coffee machine
-run:
+machine-run:
     just build-machine
     ./build/bin/machine --port={{machine-port}}
 
 # Run go tests
 [arg("args", help="test arguments")]
-test *args:
+machine-test *args:
 	go test -race -count=1 {{args}}
 
 # Run Go tests with coverage
-test-coverage:
+machine-test-coverage:
 	@mkdir -p build/coverage
-	just test \
+	just machine-test \
 		-coverprofile=build/coverage/coverage.out \
 		./...
 
@@ -36,12 +36,12 @@ test-coverage:
 		-o build/coverage/coverage.html
 
 # Get coffee machine status
-status:
+machine-status:
     @curl -s {{machine-url}}/status | jq
 
 # Submit coffee order
 [arg("type", help="coffee type")]
-order type:
+machine-order type:
     @curl \
         -s \
         -o /dev/null \
@@ -52,16 +52,16 @@ order type:
         {{machine-url}}/order
 
 # Get brewing progress
-progress:
+machine-progress:
     @curl -s {{machine-url}}/progress | jq
 
 # Watch brewing progress until complete
-watch-progress:
+machine-watch-progress:
     @watch -n 1 "curl -s {{machine-url}}/progress | jq"
 
 # Execute docker compose command
-compose +args:
     docker compose -p enterprise-coffee {{args}}
+machine-compose +args:
 
 [private]
 build-machine:

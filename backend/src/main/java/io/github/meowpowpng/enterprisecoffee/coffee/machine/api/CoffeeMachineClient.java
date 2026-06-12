@@ -23,7 +23,7 @@ public interface CoffeeMachineClient {
      * @throws CoffeeMachineException if communication with the
      * machine fails, or the machine returns an invalid response
      */
-    MachineProgressResponse progress();
+    MachineCoffeeProgress progress();
 
     /**
      * Submits a coffee order to the coffee machine.

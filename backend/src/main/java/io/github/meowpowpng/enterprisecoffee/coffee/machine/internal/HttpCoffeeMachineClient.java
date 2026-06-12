@@ -71,7 +71,7 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
     }
 
     @Override
-    public MachineProgressResponse progress() {
+    public MachineCoffeeProgress progress() {
         var operation = CallOperation.of("progress", () -> restClient.get()
                 .uri("/progress")
                 .exchange((ignored, response) -> {
@@ -81,7 +81,7 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
                         return null;
                     }
                     var type = payload.type();
-                    return new MachineProgressResponse(
+                    return new MachineCoffeeProgress(
                             !type.isBlank() ? new CoffeeType(type) : null,
                             Progress.of(payload.progress())
                     );

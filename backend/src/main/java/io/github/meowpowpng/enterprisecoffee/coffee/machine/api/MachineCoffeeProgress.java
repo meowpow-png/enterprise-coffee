@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * Current brewing progress reported by the machine.
  */
-public record MachineProgressResponse(@Nullable CoffeeType type, Progress progress) {
+public record MachineCoffeeProgress(@Nullable CoffeeType type, Progress progress) {
 
     /**
      * Creates a new machine progress response.
@@ -20,7 +20,7 @@ public record MachineProgressResponse(@Nullable CoffeeType type, Progress progre
      *
      * @throws NullPointerException if {@code progress} is {@code null}
      */
-    public MachineProgressResponse {
+    public MachineCoffeeProgress {
         Objects.requireNonNull(progress, "progress must not be null");
     }
 }

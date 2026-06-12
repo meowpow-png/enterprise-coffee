@@ -1,9 +1,9 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.internal.config;
 
+import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.CoffeeMachineClient;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.job.CoffeeJobTracker;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.job.DefaultThreadSleeper;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.job.ThreadSleeper;
-import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.CoffeeMachineClient;
 import io.github.meowpowpng.enterprisecoffee.common.DomainEventPublisher;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

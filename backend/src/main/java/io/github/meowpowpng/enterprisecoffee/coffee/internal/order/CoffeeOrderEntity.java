@@ -31,8 +31,7 @@ class CoffeeOrderEntity {
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
 
-    protected CoffeeOrderEntity() {
-    }
+    protected CoffeeOrderEntity() {}
 
     CoffeeOrderEntity(UUID id, String type, CoffeeOrder.Status status) {
         Objects.requireNonNull(id, "id must not be null");

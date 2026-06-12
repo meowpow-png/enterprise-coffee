@@ -5,10 +5,12 @@ import io.github.meowpowpng.enterprisecoffee.common.DomainEvent;
 
 import java.util.Objects;
 
-public record CoffeeBrewJobStartedEvent(CoffeeBrewJob job) implements DomainEvent {
+public record CoffeeJobProgressUpdatedEvent(
+        CoffeeBrewJob job,
+        int previousProgress
+) implements DomainEvent {
 
-    public CoffeeBrewJobStartedEvent {
+    public CoffeeJobProgressUpdatedEvent {
         Objects.requireNonNull(job, "job must not be null");
     }
 }
-

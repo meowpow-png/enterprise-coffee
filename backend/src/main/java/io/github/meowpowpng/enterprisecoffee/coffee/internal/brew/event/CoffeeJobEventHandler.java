@@ -10,13 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Objects;
 
 @Component
-class CoffeeBrewJobEventHandler {
+class CoffeeJobEventHandler {
 
-    private static final CoffeeBrewJobEventHandlerLogger log = new CoffeeBrewJobEventHandlerLogger();
+    private static final CoffeeJobEventHandlerLogger log = new CoffeeJobEventHandlerLogger();
 
     private final CoffeeBrewJobRepository repository;
 
-    CoffeeBrewJobEventHandler(CoffeeBrewJobRepository repository) {
+    CoffeeJobEventHandler(CoffeeBrewJobRepository repository) {
         Objects.requireNonNull(repository, "repository must not be null");
         this.repository = repository;
     }
@@ -24,7 +24,7 @@ class CoffeeBrewJobEventHandler {
     @Async
     @Transactional
     @EventListener
-    public void onStarted(CoffeeBrewJobStartedEvent event) {
+    public void onStarted(CoffeeJobStartedEvent event) {
         var id = event.job().id().value();
         log.started(id);
         try {
@@ -38,7 +38,7 @@ class CoffeeBrewJobEventHandler {
     @Async
     @Transactional
     @EventListener
-    public void onProgressUpdated(CoffeeBrewJobProgressUpdatedEvent event) {
+    public void onProgressUpdated(CoffeeJobProgressUpdatedEvent event) {
         var id = event.job().id().value();
         log.progressUpdated(id, event.previousProgress(), event.job().progress().value());
         try {
@@ -52,7 +52,7 @@ class CoffeeBrewJobEventHandler {
     @Async
     @Transactional
     @EventListener
-    public void onFinished(CoffeeBrewJobFinishedEvent event) {
+    public void onFinished(CoffeeJobFinishedEvent event) {
         var id = event.job().id().value();
         log.finished(id, event.job().progress().value());
         try {

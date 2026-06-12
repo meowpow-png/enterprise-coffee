@@ -8,12 +8,13 @@ import org.jspecify.annotations.Nullable;
 import java.util.Objects;
 
 /**
- * Current brewing progress reported by the machine.
+ * Current coffee brewing
+ * progress reported by the machine.
  */
 public record MachineCoffeeProgress(@Nullable CoffeeType type, Progress progress) {
 
     /**
-     * Creates a new machine progress response.
+     * Creates new machine coffee brewing progress.
      *
      * @param type currently brewed coffee type, or {@code null}
      * @param progress current brewing progress

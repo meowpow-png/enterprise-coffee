@@ -17,7 +17,7 @@ public interface CoffeeMachineClient {
     MachineStatusResponse status();
 
     /**
-     * Returns the current brewing
+     * Returns the current coffee brewing
      * progress reported by the machine.
      *
      * @throws CoffeeMachineException if communication with the
@@ -30,7 +30,7 @@ public interface CoffeeMachineClient {
      *
      * @param type coffee beverage to prepare
      *
-     * @return result of the order request
+     * @return result of the coffee order request
      *
      * @throws NullPointerException if {@code type} is {@code null}
      * @throws CoffeeMachineException if communication with the

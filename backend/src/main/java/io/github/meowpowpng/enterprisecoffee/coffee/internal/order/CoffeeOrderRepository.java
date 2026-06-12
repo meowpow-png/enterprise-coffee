@@ -26,5 +26,5 @@ public interface CoffeeOrderRepository {
      * @throws NullPointerException if {@code id} is {@code null}
      * @throws CoffeeOrderPersistenceException if the order cannot be retrieved
      */
-    Optional<CoffeeOrder> findById(CoffeeOrder.Identifier id);
+    Optional<CoffeeOrder> findById(CoffeeOrder.Id id);
 }

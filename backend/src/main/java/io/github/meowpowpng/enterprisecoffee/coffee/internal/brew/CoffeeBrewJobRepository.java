@@ -40,5 +40,5 @@ public interface CoffeeBrewJobRepository {
      * @throws CoffeeBrewJobMappingException if the job cannot be mapped
      * @throws CoffeeBrewJobPersistenceException if the job cannot be retrieved
      */
-    Optional<CoffeeBrewJob> findById(CoffeeBrewJob.Identifier id);
+    Optional<CoffeeBrewJob> findById(CoffeeBrewJob.Id id);
 }

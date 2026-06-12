@@ -11,8 +11,8 @@ import java.util.UUID;
  */
 public final class CoffeeBrewJob {
 
-    private final Identifier id;
-    private final CoffeeOrder.Identifier orderId;
+    private final Id id;
+    private final CoffeeOrder.Id orderId;
 
     private Status status;
     private Progress progress;
@@ -26,7 +26,7 @@ public final class CoffeeBrewJob {
      *
      * @throws NullPointerException if {@code id} or {@code status} is null
      */
-    private CoffeeBrewJob(Identifier id, CoffeeOrder.Identifier orderId, Status status) {
+    private CoffeeBrewJob(Id id, CoffeeOrder.Id orderId, Status status) {
         this.id = Objects.requireNonNull(id, "id must not be null");
         this.orderId = Objects.requireNonNull(orderId, "orderId must not be null");
         this.status = Objects.requireNonNull(status, "status must not be null");
@@ -38,8 +38,8 @@ public final class CoffeeBrewJob {
      *
      * @param orderId unique identifier of the coffee order
      */
-    public static CoffeeBrewJob create(CoffeeOrder.Identifier orderId) {
-        return new CoffeeBrewJob(Identifier.generate(), orderId, Status.PENDING);
+    public static CoffeeBrewJob create(CoffeeOrder.Id orderId) {
+        return new CoffeeBrewJob(CoffeeBrewJob.Id.generate(), orderId, Status.PENDING);
     }
 
     /**
@@ -54,7 +54,7 @@ public final class CoffeeBrewJob {
      * @throws IllegalArgumentException if {@code progress}
      * is outside valid range {@code 0-100}
      */
-    static CoffeeBrewJob restore(Identifier id, CoffeeOrder.Identifier orderId, Status status, int progress) {
+    static CoffeeBrewJob restore(Id id, CoffeeOrder.Id orderId, Status status, int progress) {
         Objects.requireNonNull(id, "id must not be null");
         Objects.requireNonNull(orderId, "orderId must not be null");
         Objects.requireNonNull(status, "status must not be null");
@@ -127,14 +127,14 @@ public final class CoffeeBrewJob {
     /**
      * Returns the job identifier.
      */
-    public Identifier id() {
+    public Id id() {
         return id;
     }
 
     /**
      * Returns the coffee order id this job belongs to.
      */
-    public CoffeeOrder.Identifier orderId() {
+    public CoffeeOrder.Id orderId() {
         return orderId;
     }
 
@@ -155,7 +155,7 @@ public final class CoffeeBrewJob {
     /**
      * Unique identifier of a coffee-brewing job.
      */
-    public record Identifier(UUID value) {
+    public record Id(UUID value) {
 
         /**
          * Creates a new brewing job identifier.
@@ -164,15 +164,15 @@ public final class CoffeeBrewJob {
          *
          * @throws NullPointerException if {@code value} is null
          */
-        public Identifier {
+        public Id {
             Objects.requireNonNull(value, "value must not be null");
         }
 
         /**
          * Generates a new unique coffee-brewing job identifier.
          */
-        static Identifier generate() {
-            return new Identifier(UUID.randomUUID());
+        static Id generate() {
+            return new Id(UUID.randomUUID());
         }
     }
 

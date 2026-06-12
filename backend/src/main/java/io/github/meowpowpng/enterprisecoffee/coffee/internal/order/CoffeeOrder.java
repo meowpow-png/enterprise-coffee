@@ -10,11 +10,11 @@ import java.util.UUID;
  */
 public final class CoffeeOrder {
 
-    private final Identifier id;
+    private final Id id;
     private final CoffeeType type;
     private final Status status;
 
-    private CoffeeOrder(Identifier id, CoffeeType type, Status status) {
+    private CoffeeOrder(Id id, CoffeeType type, Status status) {
         this.id = Objects.requireNonNull(id, "id must not be null");
         this.type = Objects.requireNonNull(type, "type must not be null");
         this.status = Objects.requireNonNull(status, "status must not be null");
@@ -28,7 +28,7 @@ public final class CoffeeOrder {
      * @throws NullPointerException if {@code type} is {@code null}
      */
     public static CoffeeOrder create(CoffeeType type) {
-        return new CoffeeOrder(Identifier.random(), type, Status.PENDING);
+        return new CoffeeOrder(Id.random(), type, Status.PENDING);
     }
 
     /**
@@ -40,14 +40,14 @@ public final class CoffeeOrder {
      *
      * @throws NullPointerException if any argument is {@code null}
      */
-    static CoffeeOrder restore(Identifier id, CoffeeType type, Status status) {
+    static CoffeeOrder restore(Id id, CoffeeType type, Status status) {
         return new CoffeeOrder(id, type, status);
     }
 
     /**
      * Returns the order identifier.
      */
-    public Identifier id() {
+    public Id id() {
         return id;
     }
 
@@ -100,15 +100,15 @@ public final class CoffeeOrder {
     /**
      * Coffee order identifier.
      */
-    public record Identifier(UUID value) {
+    public record Id(UUID value) {
 
         /**
          * Creates a new random order identifier.
          *
          * @return created identifier
          */
-        public static Identifier random() {
-            return new Identifier(UUID.randomUUID());
+        public static Id random() {
+            return new Id(UUID.randomUUID());
         }
 
         /**
@@ -118,7 +118,7 @@ public final class CoffeeOrder {
          *
          * @throws NullPointerException if {@code value} is {@code null}
          */
-        public Identifier {
+        public Id {
             Objects.requireNonNull(value, "value must not be null");
         }
     }

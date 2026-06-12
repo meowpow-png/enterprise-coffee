@@ -54,7 +54,7 @@ public class JpaCoffeeBrewJobRepository implements CoffeeBrewJobRepository {
     }
 
     @Override
-    public Optional<CoffeeBrewJob> findById(CoffeeBrewJob.Identifier id) {
+    public Optional<CoffeeBrewJob> findById(CoffeeBrewJob.Id id) {
         Objects.requireNonNull(id, "id");
 
         try {

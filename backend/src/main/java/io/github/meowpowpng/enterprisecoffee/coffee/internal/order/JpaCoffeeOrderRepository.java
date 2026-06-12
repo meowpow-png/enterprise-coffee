@@ -35,7 +35,7 @@ public class JpaCoffeeOrderRepository implements CoffeeOrderRepository {
     }
 
     @Override
-    public Optional<CoffeeOrder> findById(CoffeeOrder.Identifier id) {
+    public Optional<CoffeeOrder> findById(CoffeeOrder.Id id) {
         Objects.requireNonNull(id, "id");
         try {
             return repository.findById(id.value())

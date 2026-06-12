@@ -43,7 +43,7 @@ final class CoffeeOrderMapper {
     static CoffeeOrder toDomain(CoffeeOrderEntity entity) {
         try {
             return CoffeeOrder.restore(
-                    new CoffeeOrder.Identifier(entity.getId()),
+                    new CoffeeOrder.Id(entity.getId()),
                     CoffeeType.valueOf(entity.getType()),
                     entity.getStatus()
             );

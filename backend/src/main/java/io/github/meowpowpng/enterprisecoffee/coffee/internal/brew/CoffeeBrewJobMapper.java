@@ -44,8 +44,8 @@ final class CoffeeBrewJobMapper {
     static CoffeeBrewJob toDomain(CoffeeBrewJobEntity entity) {
         try {
             return CoffeeBrewJob.restore(
-                    new CoffeeBrewJob.Identifier(entity.getId()),
-                    new CoffeeOrder.Identifier(entity.getOrderId()),
+                    new CoffeeBrewJob.Id(entity.getId()),
+                    new CoffeeOrder.Id(entity.getOrderId()),
                     entity.getStatus(),
                     entity.getProgress()
             );

@@ -13,8 +13,8 @@ run:
 
 # Run go tests
 [arg("args", help="test arguments")]
-test *args:
-	go test -race -count=1 {{args}}
+test *args='./...':
+    go test -race -count=1 {{args}}
 
 # Run Go tests with coverage
 test-coverage:

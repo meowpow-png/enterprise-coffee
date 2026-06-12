@@ -4,7 +4,7 @@ status:
 
 # Submit coffee order
 [arg("type", help="coffee type")]
-order type:
+order type='AMERICANO':
     @curl \
         -s \
         -o /dev/null \

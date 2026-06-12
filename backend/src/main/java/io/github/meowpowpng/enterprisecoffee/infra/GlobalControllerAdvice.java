@@ -17,9 +17,6 @@ public class GlobalControllerAdvice {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalControllerAdvice.class);
 
-    /**
-     * Handles invalid client requests.
-     */
     @SuppressWarnings("DataFlowIssue")
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)

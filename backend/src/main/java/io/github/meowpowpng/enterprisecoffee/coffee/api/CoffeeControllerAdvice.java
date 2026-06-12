@@ -14,18 +14,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice(assignableTypes = CoffeeController.class)
 public class CoffeeControllerAdvice {
 
-    /**
-     * Handles invalid coffee order requests.
-     */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(CoffeeOrderInvalidException.class)
     ClientOrderResponse handleInvalidOrder(CoffeeOrderInvalidException exception) {
         return new ClientOrderResponse(exception.getMessage());
     }
 
-    /**
-     * Handles coffee order processing failures.
-     */
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(CoffeeOrderProcessingException.class)
     ClientOrderResponse handleProcessingFailure(CoffeeOrderProcessingException exception) {

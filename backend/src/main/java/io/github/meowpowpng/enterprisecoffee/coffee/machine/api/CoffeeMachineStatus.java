@@ -1,4 +1,4 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.model;
+package io.github.meowpowpng.enterprisecoffee.coffee.machine.api;
 
 /**
  * Operational status of the coffee machine.

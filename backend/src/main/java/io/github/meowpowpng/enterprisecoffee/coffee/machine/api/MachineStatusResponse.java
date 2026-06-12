@@ -1,7 +1,5 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.machine.api;
 
-import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeMachineStatus;
-
 import java.util.Objects;
 
 /**

@@ -1,5 +1,6 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.internal.brew;
 
+import io.github.meowpowpng.enterprisecoffee.coffee.internal.order.CoffeeOrder;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.Progress;
 
 import java.util.Objects;
@@ -11,6 +12,7 @@ import java.util.UUID;
 public final class CoffeeBrewJob {
 
     private final Identifier id;
+    private final CoffeeOrder.Identifier orderId;
 
     private Status status;
     private Progress progress;
@@ -19,27 +21,32 @@ public final class CoffeeBrewJob {
      * Creates a new coffee-brewing job.
      *
      * @param id unique identifier of the brewing job
+     * @param orderId unique identifier of the coffee order
      * @param status current status of the brewing job
      *
      * @throws NullPointerException if {@code id} or {@code status} is null
      */
-    private CoffeeBrewJob(Identifier id, Status status) {
+    private CoffeeBrewJob(Identifier id, CoffeeOrder.Identifier orderId, Status status) {
         this.id = Objects.requireNonNull(id, "id must not be null");
+        this.orderId = Objects.requireNonNull(orderId, "orderId must not be null");
         this.status = Objects.requireNonNull(status, "status must not be null");
         this.progress = Progress.initial();
     }
 
     /**
      * Creates a new coffee-brewing job.
+     *
+     * @param orderId unique identifier of the coffee order
      */
-    public static CoffeeBrewJob create() {
-        return new CoffeeBrewJob(Identifier.generate(), Status.PENDING);
+    public static CoffeeBrewJob create(CoffeeOrder.Identifier orderId) {
+        return new CoffeeBrewJob(Identifier.generate(), orderId, Status.PENDING);
     }
 
     /**
      * Restores an existing coffee-brewing job.
      *
      * @param id unique identifier of the brewing job
+     * @param orderId unique identifier of the coffee order
      * @param status current status of the brewing job
      * @param progress current progress of the brewing job
      *
@@ -47,11 +54,12 @@ public final class CoffeeBrewJob {
      * @throws IllegalArgumentException if {@code progress}
      * is outside valid range {@code 0-100}
      */
-    static CoffeeBrewJob restore(Identifier id, Status status, int progress) {
+    static CoffeeBrewJob restore(Identifier id, CoffeeOrder.Identifier orderId, Status status, int progress) {
         Objects.requireNonNull(id, "id must not be null");
+        Objects.requireNonNull(orderId, "orderId must not be null");
         Objects.requireNonNull(status, "status must not be null");
 
-        var job = new CoffeeBrewJob(id, status);
+        var job = new CoffeeBrewJob(id, orderId, status);
         job.progress = Progress.of(progress);
 
         return job;
@@ -121,6 +129,13 @@ public final class CoffeeBrewJob {
      */
     public Identifier id() {
         return id;
+    }
+
+    /**
+     * Returns the coffee order id this job belongs to.
+     */
+    public CoffeeOrder.Identifier orderId() {
+        return orderId;
     }
 
     /**

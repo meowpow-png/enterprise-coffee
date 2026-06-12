@@ -1,5 +1,7 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.internal.brew;
 
+import io.github.meowpowpng.enterprisecoffee.coffee.internal.order.CoffeeOrder;
+
 /**
  * Maps coffee brewing jobs
  * between domain and persistence models.
@@ -19,6 +21,7 @@ final class CoffeeBrewJobMapper {
     static CoffeeBrewJobEntity toEntity(CoffeeBrewJob job) {
         try {
             return new CoffeeBrewJobEntity(
+                    job.orderId().value(),
                     job.id().value(),
                     job.status(),
                     job.progress().value()
@@ -42,6 +45,7 @@ final class CoffeeBrewJobMapper {
         try {
             return CoffeeBrewJob.restore(
                     new CoffeeBrewJob.Identifier(entity.getId()),
+                    new CoffeeOrder.Identifier(entity.getOrderId()),
                     entity.getStatus(),
                     entity.getProgress()
             );

@@ -4,6 +4,9 @@
 
 CREATE TABLE coffee_brew_job (
     id UUID PRIMARY KEY,
+    order_id UUID NOT NULL
+        REFERENCES coffee_order(id)
+        ON DELETE CASCADE,
 
     status VARCHAR(32) NOT NULL,
     progress INTEGER NOT NULL,
@@ -30,3 +33,7 @@ ALTER TABLE coffee_brew_job
     CHECK (
         progress BETWEEN 0 AND 100
     );
+
+-- Index used to efficiently locate jobs by order ID
+CREATE INDEX idx_coffee_brew_job_order_id
+    ON coffee_brew_job(order_id);

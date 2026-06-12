@@ -21,6 +21,9 @@ public class CoffeeBrewJobEntity {
     @Column(nullable = false, updatable = false)
     private UUID id;
 
+    @Column(nullable = false, updatable = false)
+    private UUID orderId;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private CoffeeBrewJob.Status status;
@@ -38,7 +41,7 @@ public class CoffeeBrewJobEntity {
 
     protected CoffeeBrewJobEntity() {}
 
-    public CoffeeBrewJobEntity(UUID id, CoffeeBrewJob.Status status, int progress) {
+    public CoffeeBrewJobEntity(UUID id, UUID orderId, CoffeeBrewJob.Status status, int progress) {
         this.id = Objects.requireNonNull(id, "id must not be null");
         this.status = Objects.requireNonNull(status, "status must not be null");
         this.progress = progress;
@@ -46,6 +49,10 @@ public class CoffeeBrewJobEntity {
 
     UUID getId() {
         return id;
+    }
+
+    UUID getOrderId() {
+        return orderId;
     }
 
     CoffeeBrewJob.Status getStatus() {

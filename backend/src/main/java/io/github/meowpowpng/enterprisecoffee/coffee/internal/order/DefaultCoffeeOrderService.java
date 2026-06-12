@@ -51,7 +51,7 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
 
         var type = CoffeeType.valueOf(request.type());
         var order = CoffeeOrder.create(type);
-        var orderId = order.id().value();
+        var orderId = order.id();
 
         MachineOrderResponse response;
         try {
@@ -59,7 +59,7 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
         }
         catch (CoffeeMachineException e) {
             log.warn("Coffee order failed because machine is unavailable (id={})",
-                    orderId,
+                    orderId.value(),
                     e
             );
             repository.save(order.fail());
@@ -70,9 +70,9 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
         if (response.isAccepted()) {
             repository.save(order.accept());
 
-            log.info("Coffee order accepted (id={})", orderId);
+            log.info("Coffee order accepted (id={})", orderId.value());
 
-            var job = CoffeeBrewJob.create();
+            var job = CoffeeBrewJob.create(order.id());
             log.info("Coffee brew job created (id={})", job.id().value());
 
             tracker.track(job);
@@ -81,13 +81,13 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
         if (response.isRejected()) {
             repository.save(order.reject());
 
-            log.info("Coffee order rejected because machine is busy (id={})", orderId);
+            log.info("Coffee order rejected because machine is busy (id={})", orderId.value());
             throw new CoffeeOrderProcessingException("coffee machine is busy");
         }
         if (response.isInvalid()) {
             repository.save(order.markInvalid());
 
-            log.info("Coffee order rejected because request is invalid (id={})", orderId);
+            log.info("Coffee order rejected because request is invalid (id={})", orderId.value());
             throw new CoffeeOrderInvalidException("coffee order is invalid");
         }
         var message = "Unexpected response from coffee machine (status=%s)";

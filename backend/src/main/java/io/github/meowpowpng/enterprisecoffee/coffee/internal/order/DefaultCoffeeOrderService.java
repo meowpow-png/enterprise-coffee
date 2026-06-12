@@ -7,7 +7,7 @@ import io.github.meowpowpng.enterprisecoffee.coffee.api.exception.CoffeeOrderInv
 import io.github.meowpowpng.enterprisecoffee.coffee.api.exception.CoffeeOrderProcessingException;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.CoffeeMachineClient;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.CoffeeMachineException;
-import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.MachineOrderResponse;
+import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.MachineOrderResult;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.order.event.CoffeeOrderEvents;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
 import io.github.meowpowpng.enterprisecoffee.common.DomainEventPublisher;
@@ -50,12 +50,12 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
                 orderId.value(),
                 order.type().value()
         );
-        MachineOrderResponse response;
+        MachineOrderResult result;
         try {
-            response = client.order(type);
+            result = client.order(type);
         }
         catch (CoffeeMachineException e) {
-            log.warn("Coffee order failed because machine is unavailable (id={})",
+            log.warn("Coffee order failed because an exception occurred (id={})",
                     orderId.value(),
                     e
             );
@@ -64,26 +64,26 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
             var message = "coffee machine is not responding";
             throw new CoffeeOrderProcessingException(message, e);
         }
-        if (response.isAccepted()) {
+        if (result.isAccepted()) {
             order = order.accept();
             publisher.publish(CoffeeOrderEvents.accepted(order));
 
             log.info("Coffee order accepted (id={})", orderId.value());
             return ClientOrderResponse.accepted();
         }
-        if (response.isRejected()) {
+        if (result.isRejected()) {
             publisher.publish(CoffeeOrderEvents.rejected(order.reject()));
 
-            log.info("Coffee order rejected because machine is busy (id={})", orderId.value());
-            throw new CoffeeOrderProcessingException("coffee machine is busy");
+            log.info("Coffee order was rejected by machine (id={})", orderId.value());
+            throw new CoffeeOrderProcessingException("coffee order was rejected");
         }
-        if (response.isInvalid()) {
+        if (result.isInvalid()) {
             publisher.publish(CoffeeOrderEvents.invalid(order.markInvalid()));
 
             log.info("Coffee order rejected because request is invalid (id={})", orderId.value());
             throw new CoffeeOrderInvalidException("coffee order is invalid");
         }
-        var message = "Unexpected response from coffee machine (status=%s)";
-        throw new IllegalStateException(message.formatted(response));
+        var message = "Unexpected result from coffee machine (status=%s)";
+        throw new IllegalStateException(message.formatted(result));
     }
 }

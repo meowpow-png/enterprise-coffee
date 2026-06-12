@@ -42,14 +42,14 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
     }
 
     @Override
-    public MachineOrderResponse order(CoffeeType type) {
+    public MachineOrderResult order(CoffeeType type) {
         Objects.requireNonNull(type, "type must not be null");
 
         var operation = CallOperation.of("order", () -> restClient.post()
                 .uri("/order")
                 .body(new MachineOrderRequest(type.value()))
                 .exchange((ignored, clientResponse) ->
-                        new MachineOrderResponse(clientResponse.getStatusCode())
+                        new MachineOrderResult(clientResponse.getStatusCode())
                 ),
                 "Failed to submit coffee order"
         );

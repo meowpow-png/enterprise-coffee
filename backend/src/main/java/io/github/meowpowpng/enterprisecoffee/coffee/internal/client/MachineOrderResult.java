@@ -8,7 +8,7 @@ import java.util.Objects;
  * Represents a coffee order
  * response returned by the machine.
  */
-public final class MachineOrderResponse {
+public final class MachineOrderResult {
 
     private final HttpStatusCode status;
 
@@ -19,7 +19,7 @@ public final class MachineOrderResponse {
      *
      * @throws NullPointerException if {@code status} is null
      */
-    MachineOrderResponse(HttpStatusCode status) {
+    MachineOrderResult(HttpStatusCode status) {
         this.status = Objects.requireNonNull(status, "status must not be null");
     }
 

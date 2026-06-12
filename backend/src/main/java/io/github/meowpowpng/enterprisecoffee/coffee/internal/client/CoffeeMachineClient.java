@@ -34,5 +34,5 @@ public interface CoffeeMachineClient {
      * @throws CoffeeMachineException if communication with the
      * machine fails, or the machine returns an invalid response
      */
-    MachineOrderResponse order(CoffeeType type);
+    MachineOrderResult order(CoffeeType type);
 }

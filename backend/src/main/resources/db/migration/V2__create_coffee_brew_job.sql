@@ -12,7 +12,7 @@ CREATE TABLE coffee_brew_job (
     updated_at TIMESTAMP NOT NULL
 );
 
--- Status must be a valid coffee brew job status.
+-- Status must be a valid coffee brew job status
 ALTER TABLE coffee_brew_job
     ADD CONSTRAINT chk_coffee_brew_job_status
     CHECK (
@@ -24,7 +24,7 @@ ALTER TABLE coffee_brew_job
         )
     );
 
--- Progress must be between 0 and 100 inclusive.
+-- Progress must be between 0 and 100 inclusive
 ALTER TABLE coffee_brew_job
     ADD CONSTRAINT chk_coffee_brew_job_progress
     CHECK (

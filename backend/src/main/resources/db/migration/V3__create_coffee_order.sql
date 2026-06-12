@@ -11,7 +11,7 @@ CREATE TABLE coffee_order (
     created_at TIMESTAMP NOT NULL
 );
 
--- Status must be a valid coffee order status.
+-- Status must be a valid coffee order status
 ALTER TABLE coffee_order
     ADD CONSTRAINT chk_coffee_order_status
     CHECK (
@@ -23,6 +23,6 @@ ALTER TABLE coffee_order
         )
     );
 
--- Index used by scheduled cleanup.
+-- Index used by scheduled cleanup
 CREATE INDEX idx_coffee_order_created_at
     ON coffee_order(created_at);

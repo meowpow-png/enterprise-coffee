@@ -1,5 +1,6 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.internal.client;
+package io.github.meowpowpng.enterprisecoffee.coffee.machine.internal;
 
+import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.*;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.Progress;
 

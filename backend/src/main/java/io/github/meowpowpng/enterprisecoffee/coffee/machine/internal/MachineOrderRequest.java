@@ -1,4 +1,4 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.internal.client;
+package io.github.meowpowpng.enterprisecoffee.coffee.machine.internal;
 
 import java.util.Objects;
 

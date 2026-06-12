@@ -1,4 +1,4 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.internal.client;
+package io.github.meowpowpng.enterprisecoffee.coffee.machine.api;
 
 /**
  * Result of a coffee order request submitted to the machine.

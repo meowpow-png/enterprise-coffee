@@ -1,19 +1,18 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.internal.config;
+package io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 import java.time.Duration;
 
-@ConfigurationProperties("coffee")
-public record CoffeeProperties(
+@ConfigurationProperties("coffee.order.job")
+public record CoffeeJobProperties(
         @NotNull
         @Positive
         Duration pollingInterval,
         @NotNull
         @Positive
-        Duration jobTimeout
+        Duration timeout
 ) {}

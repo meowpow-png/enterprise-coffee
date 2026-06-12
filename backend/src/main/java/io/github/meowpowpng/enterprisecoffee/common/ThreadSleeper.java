@@ -1,4 +1,4 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.internal.job;
+package io.github.meowpowpng.enterprisecoffee.common;
 
 /**
  * Suspends execution of the current thread.

@@ -1,4 +1,6 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.internal.job;
+package io.github.meowpowpng.enterprisecoffee.infra;
+
+import io.github.meowpowpng.enterprisecoffee.common.ThreadSleeper;
 
 import java.time.Duration;
 import java.util.Objects;

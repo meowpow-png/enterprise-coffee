@@ -6,6 +6,7 @@ import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.MachineProgr
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.job.event.CoffeeJobEvents;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.Progress;
 import io.github.meowpowpng.enterprisecoffee.common.DomainEventPublisher;
+import io.github.meowpowpng.enterprisecoffee.common.ThreadSleeper;
 
 import org.springframework.scheduling.annotation.Async;
 

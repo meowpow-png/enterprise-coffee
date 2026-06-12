@@ -1,8 +1,8 @@
 -- ============================
--- coffee_brew_job table
+-- coffee_job table
 -- ============================
 
-CREATE TABLE coffee_brew_job (
+CREATE TABLE coffee_job (
     id UUID PRIMARY KEY,
     order_id UUID NOT NULL
         REFERENCES coffee_order(id)
@@ -15,9 +15,9 @@ CREATE TABLE coffee_brew_job (
     updated_at TIMESTAMP NOT NULL
 );
 
--- Status must be a valid coffee brew job status
-ALTER TABLE coffee_brew_job
-    ADD CONSTRAINT chk_coffee_brew_job_status
+-- Status must be a valid coffee job status
+ALTER TABLE coffee_job
+    ADD CONSTRAINT chk_coffee_job_status
     CHECK (
         status IN (
             'PENDING',
@@ -28,12 +28,12 @@ ALTER TABLE coffee_brew_job
     );
 
 -- Progress must be between 0 and 100 inclusive
-ALTER TABLE coffee_brew_job
-    ADD CONSTRAINT chk_coffee_brew_job_progress
+ALTER TABLE coffee_job
+    ADD CONSTRAINT chk_coffee_job_progress
     CHECK (
         progress BETWEEN 0 AND 100
     );
 
 -- Index used to efficiently locate jobs by order ID
-CREATE INDEX idx_coffee_brew_job_order_id
-    ON coffee_brew_job(order_id);
+CREATE INDEX idx_coffee_job_order_id
+    ON coffee_job(order_id);

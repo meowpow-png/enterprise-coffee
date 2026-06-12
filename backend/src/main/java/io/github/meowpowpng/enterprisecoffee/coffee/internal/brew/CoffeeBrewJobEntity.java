@@ -14,7 +14,7 @@ import java.util.UUID;
 @Entity
 @NullUnmarked
 @SuppressWarnings("unused")
-@Table(name = "coffee_brew_job")
+@Table(name = "coffee_job")
 public class CoffeeBrewJobEntity {
 
     @Id

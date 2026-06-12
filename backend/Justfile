@@ -1,5 +1,18 @@
 set shell := ["bash", "-eu", "-o", "pipefail", "-c"]
 
+backend-url := "http://localhost:8081"
+
 # Execute docker compose command
 compose +args:
     docker compose -p coffee-backend {{args}}
+
+# Submit coffee order
+[arg("type", help="coffee type")]
+order type='AMERICANO':
+    curl \
+        -s \
+        -w "\nHTTP %{http_code}\n" \
+        -X POST \
+        -H "Content-Type: application/json" \
+        -d '{"type":"{{type}}"}' \
+        {{backend-url}}/order

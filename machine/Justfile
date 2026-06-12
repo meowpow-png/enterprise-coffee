@@ -60,8 +60,8 @@ machine-watch-progress:
     @watch -n 1 "curl -s {{machine-url}}/progress | jq"
 
 # Execute docker compose command
-    docker compose -p enterprise-coffee {{args}}
 machine-compose +args:
+    docker compose -p coffee-machine {{args}}
 
 [private]
 build-machine:

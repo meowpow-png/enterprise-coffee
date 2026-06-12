@@ -1,4 +1,4 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.internal.order;
+package io.github.meowpowpng.enterprisecoffee.coffee.order.internal;
 
 import io.github.meowpowpng.enterprisecoffee.coffee.order.api.ClientOrderRequest;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.api.ClientOrderResponse;
@@ -8,7 +8,7 @@ import io.github.meowpowpng.enterprisecoffee.coffee.order.api.exception.CoffeeOr
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.CoffeeMachineClient;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.CoffeeMachineException;
 import io.github.meowpowpng.enterprisecoffee.coffee.internal.client.MachineOrderResult;
-import io.github.meowpowpng.enterprisecoffee.coffee.internal.order.event.CoffeeOrderEvents;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.event.CoffeeOrderEvents;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
 import io.github.meowpowpng.enterprisecoffee.common.DomainEventPublisher;
 

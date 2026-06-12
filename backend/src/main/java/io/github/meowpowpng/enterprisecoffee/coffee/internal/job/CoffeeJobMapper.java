@@ -1,6 +1,6 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.internal.job;
 
-import io.github.meowpowpng.enterprisecoffee.coffee.internal.order.CoffeeOrder;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.CoffeeOrder;
 
 /**
  * Maps coffee jobs between

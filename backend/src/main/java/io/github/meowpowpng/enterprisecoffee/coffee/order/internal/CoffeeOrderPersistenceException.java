@@ -1,4 +1,4 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.internal.order;
+package io.github.meowpowpng.enterprisecoffee.coffee.order.internal;
 
 /**
  * Indicates that an error occurred while

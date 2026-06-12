@@ -1,6 +1,6 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.internal.order.event;
+package io.github.meowpowpng.enterprisecoffee.coffee.order.internal.event;
 
-import io.github.meowpowpng.enterprisecoffee.coffee.internal.order.CoffeeOrder;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.CoffeeOrder;
 import io.github.meowpowpng.enterprisecoffee.common.DomainEvent;
 
 import java.util.Objects;

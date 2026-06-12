@@ -1,7 +1,7 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.internal.order.event;
+package io.github.meowpowpng.enterprisecoffee.coffee.order.internal.event;
 
-import io.github.meowpowpng.enterprisecoffee.coffee.internal.order.CoffeeOrder;
-import io.github.meowpowpng.enterprisecoffee.coffee.internal.order.CoffeeOrderRepository;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.CoffeeOrder;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.CoffeeOrderRepository;
 import io.github.meowpowpng.enterprisecoffee.common.DomainEventPublisher;
 
 import org.springframework.context.event.EventListener;

@@ -20,6 +20,6 @@ public class AsyncConfiguration implements AsyncConfigurer {
     @Override
     public AsyncUncaughtExceptionHandler
     getAsyncUncaughtExceptionHandler() {
-        return new CoffeeAsyncExceptionHandler();
+        return new AsyncExceptionHandler();
     }
 }

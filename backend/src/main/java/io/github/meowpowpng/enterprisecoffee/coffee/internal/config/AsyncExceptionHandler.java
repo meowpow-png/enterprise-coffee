@@ -15,9 +15,9 @@ import java.lang.reflect.Method;
  * thrown by asynchronous methods.
  */
 @NullMarked
-public final class CoffeeAsyncExceptionHandler implements AsyncUncaughtExceptionHandler {
+public final class AsyncExceptionHandler implements AsyncUncaughtExceptionHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(CoffeeAsyncExceptionHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(AsyncExceptionHandler.class);
 
     @Override
     public void handleUncaughtException(

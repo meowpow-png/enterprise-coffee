@@ -3,4 +3,4 @@ services:
     build: .
     image: meowpow-png/enterprise-coffee-machine
     ports:
-      - "8081:8080"
+      - "8082:8080"

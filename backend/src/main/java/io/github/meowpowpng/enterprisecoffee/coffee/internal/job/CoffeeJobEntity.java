@@ -43,6 +43,7 @@ public class CoffeeJobEntity {
 
     public CoffeeJobEntity(UUID id, UUID orderId, CoffeeJob.Status status, int progress) {
         this.id = Objects.requireNonNull(id, "id must not be null");
+        this.orderId = Objects.requireNonNull(orderId, "orderId must not be null");
         this.status = Objects.requireNonNull(status, "status must not be null");
         this.progress = progress;
     }

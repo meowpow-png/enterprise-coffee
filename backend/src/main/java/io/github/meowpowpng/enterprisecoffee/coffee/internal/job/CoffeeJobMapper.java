@@ -21,8 +21,8 @@ final class CoffeeJobMapper {
     static CoffeeJobEntity toEntity(CoffeeJob job) {
         try {
             return new CoffeeJobEntity(
-                    job.orderId().value(),
                     job.id().value(),
+                    job.orderId().value(),
                     job.status(),
                     job.progress().value()
             );

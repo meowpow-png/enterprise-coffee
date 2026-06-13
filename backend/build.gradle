@@ -57,6 +57,8 @@ dependencies {
 
     testImplementation(platform("org.mockito:mockito-bom:5.23.0"))
     testImplementation("org.mockito:mockito-junit-jupiter")
+
+    testFixturesCompileOnly("ch.qos.logback:logback-classic")
 }
 
 testing {

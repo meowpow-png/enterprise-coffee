@@ -13,7 +13,6 @@ import org.springframework.transaction.event.TransactionalEventListener;
 
 import org.slf4j.LoggerFactory;
 
-import java.util.Objects;
 import java.util.UUID;
 
 @Component
@@ -23,9 +22,6 @@ class CoffeeJobEventHandler {
     private final CoffeeJobTracker tracker;
 
     CoffeeJobEventHandler(CoffeeJobRepository repository, CoffeeJobTracker tracker) {
-        Objects.requireNonNull(repository, "repository must not be null");
-        Objects.requireNonNull(tracker, "tracker must not be null");
-
         this.repository = repository;
         this.tracker = tracker;
     }

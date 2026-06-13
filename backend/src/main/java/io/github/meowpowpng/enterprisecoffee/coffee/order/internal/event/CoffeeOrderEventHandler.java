@@ -12,8 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Objects;
-
 @Component
 class CoffeeOrderEventHandler {
 
@@ -23,9 +21,6 @@ class CoffeeOrderEventHandler {
     private final DomainEventPublisher publisher;
 
     CoffeeOrderEventHandler(CoffeeOrderRepository repository, DomainEventPublisher publisher) {
-        Objects.requireNonNull(repository, "repository must not be null");
-        Objects.requireNonNull(publisher, "publisher must not be null");
-
         this.repository = repository;
         this.publisher = publisher;
     }

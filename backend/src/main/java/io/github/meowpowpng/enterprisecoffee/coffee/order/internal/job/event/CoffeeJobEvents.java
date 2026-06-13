@@ -7,7 +7,7 @@ import io.github.meowpowpng.enterprisecoffee.common.DomainEvent;
 import java.util.Objects;
 
 /**
- * Events used to signal changes coffee job lifecycle.
+ * Events used to signal coffee job lifecycle changes.
  */
 public final class CoffeeJobEvents {
 

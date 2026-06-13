@@ -18,6 +18,10 @@ public record CoffeeOrderResponse(String message) {
         Objects.requireNonNull(message, "message must not be null");
     }
 
+    /**
+     * Returns the standard response
+     * for an accepted coffee order.
+     */
     public static CoffeeOrderResponse accepted() {
         return new CoffeeOrderResponse("Coffee order was successfully accepted");
     }

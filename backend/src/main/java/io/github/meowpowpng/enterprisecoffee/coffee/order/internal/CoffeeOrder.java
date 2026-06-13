@@ -67,6 +67,8 @@ public final class CoffeeOrder {
 
     /**
      * Returns a copy of this order with accepted status.
+     * <p>
+     * The order id and coffee type are preserved.
      */
     public CoffeeOrder accept() {
         return withStatus(Status.ACCEPTED);
@@ -74,6 +76,8 @@ public final class CoffeeOrder {
 
     /**
      * Returns a copy of this order with rejected status.
+     * <p>
+     * The order id and coffee type are preserved.
      */
     public CoffeeOrder reject() {
         return withStatus(Status.REJECTED);
@@ -81,6 +85,8 @@ public final class CoffeeOrder {
 
     /**
      * Returns a copy of this order with invalid status.
+     * <p>
+     * The order id and coffee type are preserved.
      */
     public CoffeeOrder markInvalid() {
         return withStatus(Status.INVALID);
@@ -88,6 +94,8 @@ public final class CoffeeOrder {
 
     /**
      * Returns a copy of this order with failed status.
+     * <p>
+     * The order id and coffee type are preserved.
      */
     public CoffeeOrder fail() {
         return withStatus(Status.FAILED);

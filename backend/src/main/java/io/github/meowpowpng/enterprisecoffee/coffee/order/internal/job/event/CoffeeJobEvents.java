@@ -60,6 +60,7 @@ public final class CoffeeJobEvents {
 
         public ProgressUpdated {
             Objects.requireNonNull(job, "job must not be null");
+            Objects.requireNonNull(previous, "previous must not be null");
         }
     }
 

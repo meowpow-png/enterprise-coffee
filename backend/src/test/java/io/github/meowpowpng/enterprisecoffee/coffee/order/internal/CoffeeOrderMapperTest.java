@@ -17,6 +17,7 @@ class CoffeeOrderMapperTest {
     class ToEntityMethodTests {
 
         @Test
+        @DisplayName("Should map order to entity when order is valid")
         void should_MapOrderToEntity_when_OrderIsValid() {
             var order = validCoffeeOrder();
             var entity = CoffeeOrderMapper.toEntity(order);
@@ -28,6 +29,7 @@ class CoffeeOrderMapperTest {
 
         @Test
         @SuppressWarnings("DataFlowIssue")
+        @DisplayName("Should throw CoffeeOrderMappingException when order cannot be mapped")
         void should_ThrowCoffeeOrderMappingException_when_OrderCannotBeMapped() {
             assertThatThrownBy(() -> CoffeeOrderMapper.toEntity(null))
                     .isInstanceOf(CoffeeOrderMappingException.class);
@@ -39,6 +41,7 @@ class CoffeeOrderMapperTest {
     class ToDomainMethodTests {
 
         @Test
+        @DisplayName("Should map entity to order when entity is valid")
         void should_MapEntityToOrder_when_EntityIsValid() {
             var entity = new CoffeeOrderEntity(
                     UUID.randomUUID(),
@@ -54,6 +57,7 @@ class CoffeeOrderMapperTest {
 
         @Test
         @SuppressWarnings("DataFlowIssue")
+        @DisplayName("Should throw CoffeeOrderMappingException when entity cannot be mapped")
         void should_ThrowCoffeeOrderMappingException_when_EntityCannotBeMapped() {
             assertThatThrownBy(() -> CoffeeOrderMapper.toDomain(null))
                     .isInstanceOf(CoffeeOrderMappingException.class);

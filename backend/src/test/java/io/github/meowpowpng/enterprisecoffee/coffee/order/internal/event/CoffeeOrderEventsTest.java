@@ -17,12 +17,14 @@ class CoffeeOrderEventsTest {
 
         @Test
         @SuppressWarnings("DataFlowIssue")
+        @DisplayName("Should throw NullPointerException when order is null")
         void should_ThrowNullPointerException_when_OrderIsNull() {
             assertThatThrownBy(() -> CoffeeOrderEvents.accepted(null))
                     .isInstanceOf(NullPointerException.class);
         }
 
         @Test
+        @DisplayName("Should return accepted event when order is provided")
         void should_ReturnAcceptedEvent_when_OrderIsProvided() {
             var order = validCoffeeOrder();
             var event = CoffeeOrderEvents.accepted(order);
@@ -37,12 +39,14 @@ class CoffeeOrderEventsTest {
 
         @Test
         @SuppressWarnings("DataFlowIssue")
+        @DisplayName("Should throw NullPointerException when order is null")
         void should_ThrowNullPointerException_when_OrderIsNull() {
             assertThatThrownBy(() -> CoffeeOrderEvents.store(null))
                     .isInstanceOf(NullPointerException.class);
         }
 
         @Test
+        @DisplayName("Should return stored event when order is provided")
         void should_ReturnStoredEvent_when_OrderIsProvided() {
             var order = validCoffeeOrder();
             var event = CoffeeOrderEvents.store(order);
@@ -57,12 +61,14 @@ class CoffeeOrderEventsTest {
 
         @Test
         @SuppressWarnings("DataFlowIssue")
+        @DisplayName("Should throw NullPointerException when order is null")
         void should_ThrowNullPointerException_when_OrderIsNull() {
             assertThatThrownBy(() -> CoffeeOrderEvents.rejected(null))
                     .isInstanceOf(NullPointerException.class);
         }
 
         @Test
+        @DisplayName("Should return rejected event when order is provided")
         void should_ReturnRejectedEvent_when_OrderIsProvided() {
             var order = validCoffeeOrder();
             var event = CoffeeOrderEvents.rejected(order);
@@ -77,12 +83,14 @@ class CoffeeOrderEventsTest {
 
         @Test
         @SuppressWarnings("DataFlowIssue")
+        @DisplayName("Should throw NullPointerException when order is null")
         void should_ThrowNullPointerException_when_OrderIsNull() {
             assertThatThrownBy(() -> CoffeeOrderEvents.invalid(null))
                     .isInstanceOf(NullPointerException.class);
         }
 
         @Test
+        @DisplayName("Should return invalid event when order is provided")
         void should_ReturnInvalidEvent_when_OrderIsProvided() {
             var order = validCoffeeOrder();
             var event = CoffeeOrderEvents.invalid(order);
@@ -97,12 +105,14 @@ class CoffeeOrderEventsTest {
 
         @Test
         @SuppressWarnings("DataFlowIssue")
+        @DisplayName("Should throw NullPointerException when order is null")
         void should_ThrowNullPointerException_when_OrderIsNull() {
             assertThatThrownBy(() -> CoffeeOrderEvents.failed(null))
                     .isInstanceOf(NullPointerException.class);
         }
 
         @Test
+        @DisplayName("Should return failed event when order is provided")
         void should_ReturnFailedEvent_when_OrderIsProvided() {
             var order = validCoffeeOrder();
             var event = CoffeeOrderEvents.failed(order);

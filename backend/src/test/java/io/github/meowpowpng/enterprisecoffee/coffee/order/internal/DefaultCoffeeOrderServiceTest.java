@@ -42,6 +42,7 @@ class DefaultCoffeeOrderServiceTest {
 
         @Test
         @SuppressWarnings("DataFlowIssue")
+        @DisplayName("Should throw NullPointerException when client is null")
         void should_ThrowNullPointerException_when_ClientIsNull() {
             var thrown = catchThrowable(() -> new DefaultCoffeeOrderService(
                     null,
@@ -52,6 +53,7 @@ class DefaultCoffeeOrderServiceTest {
 
         @Test
         @SuppressWarnings("DataFlowIssue")
+        @DisplayName("Should throw NullPointerException when publisher is null")
         void should_ThrowNullPointerException_when_PublisherIsNull() {
             var thrown = catchThrowable(() -> new DefaultCoffeeOrderService(
                     client,
@@ -74,12 +76,14 @@ class DefaultCoffeeOrderServiceTest {
 
         @Test
         @SuppressWarnings("DataFlowIssue")
+        @DisplayName("Should throw NullPointerException when request is null")
         void should_ThrowNullPointerException_when_RequestIsNull() {
             assertThatThrownBy(() -> service.order(null))
                     .isInstanceOf(NullPointerException.class);
         }
 
         @Test
+        @DisplayName("Should return response when order is accepted")
         void should_ReturnResponse_when_OrderIsAccepted() {
             Mockito.when(client.order(validCoffeeType())).thenReturn(
                     MachineOrderResult.ACCEPTED
@@ -90,6 +94,7 @@ class DefaultCoffeeOrderServiceTest {
         }
 
         @Test
+        @DisplayName("Should throw CoffeeOrderInvalidException when order is invalid")
         void should_ThrowCoffeeOrderInvalidException_when_OrderIsInvalid() {
             Mockito.when(client.order(validCoffeeType())).thenReturn(
                     MachineOrderResult.INVALID
@@ -99,6 +104,7 @@ class DefaultCoffeeOrderServiceTest {
         }
 
         @Test
+        @DisplayName("Should throw CoffeeOrderProcessingException when machine is busy")
         void should_ThrowCoffeeOrderProcessingException_when_MachineIsBusy() {
             Mockito.when(client.order(validCoffeeType())).thenReturn(
                     MachineOrderResult.BUSY
@@ -108,6 +114,7 @@ class DefaultCoffeeOrderServiceTest {
         }
 
         @Test
+        @DisplayName("Should throw CoffeeOrderProcessingException when machine is unavailable")
         void should_ThrowCoffeeOrderProcessingException_when_MachineIsUnavailable() {
             var exception = new CoffeeMachineUnavailableException(
                     "machine unavailable",
@@ -121,6 +128,7 @@ class DefaultCoffeeOrderServiceTest {
         }
 
         @Test
+        @DisplayName("Should propagate CoffeeMachineProtocolException when machine violates protocol")
         void should_PropagateCoffeeMachineProtocolException_when_MachineViolatesProtocol() {
             LoggingTestFixtures.withoutLogging(DefaultCoffeeOrderService.class, () -> {
                 var exception = new CoffeeMachineProtocolException(
@@ -136,6 +144,7 @@ class DefaultCoffeeOrderServiceTest {
 
         @Test
         @SuppressWarnings("DataFlowIssue")
+        @DisplayName("Should throw IllegalStateException when machine returns unexpected result")
         void should_ThrowIllegalStateException_when_MachineReturnsUnexpectedResult() {
             // unexpected result path triggers exception in implementation
             Mockito.when(client.order(validCoffeeType())).thenReturn(null);

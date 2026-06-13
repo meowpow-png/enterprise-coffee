@@ -265,7 +265,8 @@ class CoffeeJobTest {
     class IdTests {
 
         @Test
-        void should_CreateIdentifier_when_generateIdentifierMethodIsInvoked() {
+        @DisplayName("Should create identifier when generate method is invoked")
+        void should_CreateIdentifier_when_GenerateMethodIsInvoked() {
             assertThat(CoffeeJob.Id.generate()).isNotNull();
         }
 

@@ -20,12 +20,14 @@ class CoffeeJobEventsTest {
 
         @Test
         @SuppressWarnings("DataFlowIssue")
+        @DisplayName("Should throw NullPointerException when job is null")
         void should_ThrowNullPointerException_when_JobIsNull() {
             assertThatThrownBy(() -> CoffeeJobEvents.started(null))
                     .isInstanceOf(NullPointerException.class);
         }
 
         @Test
+        @DisplayName("Should return started event when job is provided")
         void should_ReturnStartedEvent_when_JobIsProvided() {
             var job = validCoffeeJob();
             var event = CoffeeJobEvents.started(job);
@@ -40,6 +42,7 @@ class CoffeeJobEventsTest {
 
         @Test
         @SuppressWarnings("DataFlowIssue")
+        @DisplayName("Should throw NullPointerException when job is null")
         void should_ThrowNullPointerException_when_JobIsNull() {
             var thrown = catchThrowable(() -> CoffeeJobEvents.progressUpdated(
                     null,
@@ -50,6 +53,7 @@ class CoffeeJobEventsTest {
 
         @Test
         @SuppressWarnings("DataFlowIssue")
+        @DisplayName("Should throw NullPointerException when previous is null")
         void should_ThrowNullPointerException_when_PreviousIsNull() {
             var thrown = catchThrowable(() -> CoffeeJobEvents.progressUpdated(
                     validCoffeeJob(),
@@ -59,6 +63,7 @@ class CoffeeJobEventsTest {
         }
 
         @Test
+        @DisplayName("Should return progress updated event when values are provided")
         void should_ReturnProgressUpdatedEvent_when_ValuesAreProvided() {
             var job = validCoffeeJob();
             var previous = Progress.of(10);
@@ -75,12 +80,14 @@ class CoffeeJobEventsTest {
 
         @Test
         @SuppressWarnings("DataFlowIssue")
+        @DisplayName("Should throw NullPointerException when job is null")
         void should_ThrowNullPointerException_when_JobIsNull() {
             assertThatThrownBy(() -> CoffeeJobEvents.finished(null))
                     .isInstanceOf(NullPointerException.class);
         }
 
         @Test
+        @DisplayName("Should return finished event when job is provided")
         void should_ReturnFinishedEvent_when_JobIsProvided() {
             var job = validCoffeeJob();
             var event = CoffeeJobEvents.finished(job);

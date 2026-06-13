@@ -2,6 +2,7 @@ package io.github.meowpowpng.enterprisecoffee.coffee.order.internal;
 
 import java.util.UUID;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -10,6 +11,7 @@ import static org.assertj.core.api.ThrowableAssert.catchThrowable;
 class CoffeeOrderEntityTest {
 
     @Test
+    @DisplayName("Should throw NullPointerException when id is null")
     void should_ThrowNullPointerException_when_IdIsNull() {
         var thrown = catchThrowable(() -> new CoffeeOrderEntity(
                 null,
@@ -20,6 +22,7 @@ class CoffeeOrderEntityTest {
     }
 
     @Test
+    @DisplayName("Should throw NullPointerException when type is null")
     void should_ThrowNullPointerException_when_TypeIsNull() {
         var thrown = catchThrowable(() -> new CoffeeOrderEntity(
                 UUID.randomUUID(),
@@ -30,6 +33,7 @@ class CoffeeOrderEntityTest {
     }
 
     @Test
+    @DisplayName("Should throw NullPointerException when status is null")
     void should_ThrowNullPointerException_when_StatusIsNull() {
         var thrown = catchThrowable(() -> new CoffeeOrderEntity(
                 UUID.randomUUID(),
@@ -40,6 +44,7 @@ class CoffeeOrderEntityTest {
     }
 
     @Test
+    @DisplayName("Should create entity when values are provided")
     void should_CreateEntity_when_ValuesAreProvided() {
         var id = UUID.randomUUID();
         var type = "ESPRESSO";

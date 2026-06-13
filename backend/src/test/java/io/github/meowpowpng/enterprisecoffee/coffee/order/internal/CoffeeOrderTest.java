@@ -23,12 +23,14 @@ class CoffeeOrderTest {
 
         @Test
         @SuppressWarnings("DataFlowIssue")
+        @DisplayName("Should throw NullPointerException when type is null")
         void should_ThrowNullPointerException_when_TypeIsNull() {
             assertThatThrownBy(() -> CoffeeOrder.create(null))
                     .isInstanceOf(NullPointerException.class);
         }
 
         @Test
+        @DisplayName("Should create pending order when type is provided")
         void should_CreatePendingOrder_when_TypeIsProvided() {
             var type = validCoffeeType();
 
@@ -39,6 +41,7 @@ class CoffeeOrderTest {
         }
 
         @Test
+        @DisplayName("Should create order with identifier when type is provided")
         void should_CreateOrderWithIdentifier_when_TypeIsProvided() {
             var order = CoffeeOrder.create(validCoffeeType());
 
@@ -52,6 +55,7 @@ class CoffeeOrderTest {
 
         @Test
         @SuppressWarnings("DataFlowIssue")
+        @DisplayName("Should throw NullPointerException when id is null")
         void should_ThrowNullPointerException_when_IdIsNull() {
             var thrown = catchThrowable(() -> CoffeeOrder.restore(
                     null,
@@ -63,6 +67,7 @@ class CoffeeOrderTest {
 
         @Test
         @SuppressWarnings("DataFlowIssue")
+        @DisplayName("Should throw NullPointerException when type is null")
         void should_ThrowNullPointerException_when_TypeIsNull() {
             var thrown = catchThrowable(() -> CoffeeOrder.restore(
                     CoffeeOrder.Id.generate(),
@@ -74,6 +79,7 @@ class CoffeeOrderTest {
 
         @Test
         @SuppressWarnings("DataFlowIssue")
+        @DisplayName("Should throw NullPointerException when status is null")
         void should_ThrowNullPointerException_when_StatusIsNull() {
             var thrown = catchThrowable(() -> CoffeeOrder.restore(
                     CoffeeOrder.Id.generate(),
@@ -84,6 +90,7 @@ class CoffeeOrderTest {
         }
 
         @Test
+        @DisplayName("Should restore order when values are provided")
         void should_RestoreOrder_when_ValuesAreProvided() {
             var id = CoffeeOrder.Id.generate();
             var type = new CoffeeType("ESPRESSO");
@@ -102,6 +109,7 @@ class CoffeeOrderTest {
     class AcceptMethodTests {
 
         @Test
+        @DisplayName("Should return accepted order when order is accepted")
         void should_ReturnAcceptedOrder_when_OrderIsAccepted() {
             var order = validCoffeeOrder();
             var acceptedOrder = order.accept();
@@ -117,6 +125,7 @@ class CoffeeOrderTest {
     class RejectMethodTests {
 
         @Test
+        @DisplayName("Should return rejected order when order is rejected")
         void should_ReturnRejectedOrder_when_OrderIsRejected() {
             var order = validCoffeeOrder();
             var rejectedOrder = order.reject();
@@ -132,6 +141,7 @@ class CoffeeOrderTest {
     class MarkInvalidMethodTests {
 
         @Test
+        @DisplayName("Should return invalid order when order is marked invalid")
         void should_ReturnInvalidOrder_when_OrderIsMarkedInvalid() {
             var order = validCoffeeOrder();
             var invalidOrder = order.markInvalid();
@@ -147,6 +157,7 @@ class CoffeeOrderTest {
     class FailMethodTests {
 
         @Test
+        @DisplayName("Should return failed order when order fails")
         void should_ReturnFailedOrder_when_OrderFails() {
             var order = validCoffeeOrder();
             var failedOrder = order.fail();
@@ -162,18 +173,21 @@ class CoffeeOrderTest {
     class IdTests {
 
         @Test
+        @DisplayName("Should create identifier when generate identifier method is invoked")
         void should_CreateIdentifier_when_generateIdentifierMethodIsInvoked() {
             assertThat(CoffeeOrder.Id.generate()).isNotNull();
         }
 
         @Test
         @SuppressWarnings("DataFlowIssue")
+        @DisplayName("Should throw NullPointerException when value is null")
         void should_ThrowNullPointerException_when_ValueIsNull() {
             assertThatThrownBy(() -> new CoffeeOrder.Id(null))
                     .isInstanceOf(NullPointerException.class);
         }
 
         @Test
+        @DisplayName("Should return value when value is provided")
         void should_ReturnValue_when_ValueIsProvided() {
             var value = UUID.randomUUID();
 

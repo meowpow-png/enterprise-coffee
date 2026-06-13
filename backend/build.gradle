@@ -64,7 +64,15 @@ testing {
             dependencies {
                 implementation 'org.springframework.boot:spring-boot-starter-test'
             }
-            useJUnitJupiter()
         }
     }
+}
+
+tasks.withType(Test).configureEach {
+    outputs.upToDateWhen { false }
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+    jvmArgs '-XX:+EnableDynamicAgentLoading'
 }

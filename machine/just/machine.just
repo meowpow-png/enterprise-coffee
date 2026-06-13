@@ -1,14 +1,14 @@
 # Remove build artifacts
 clean:
-    rm -rf build
+    @rm -rf build
 
 # Build binary artifacts
 build:
-    just build-machine
+    @just build-machine
 
 # Build and run coffee machine
 run:
-    just build-machine
+    @just build-machine
     ./build/bin/machine --port=8080
 
 # Run go tests

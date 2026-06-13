@@ -28,7 +28,7 @@ public final class CoffeeOrder {
      * @throws NullPointerException if {@code type} is {@code null}
      */
     public static CoffeeOrder create(CoffeeType type) {
-        return new CoffeeOrder(Id.random(), type, Status.PENDING);
+        return new CoffeeOrder(Id.generate(), type, Status.PENDING);
     }
 
     /**
@@ -111,15 +111,6 @@ public final class CoffeeOrder {
     public record Id(UUID value) {
 
         /**
-         * Creates a new random order identifier.
-         *
-         * @return created identifier
-         */
-        public static Id random() {
-            return new Id(UUID.randomUUID());
-        }
-
-        /**
          * Creates a new order identifier.
          *
          * @param value identifier value
@@ -128,6 +119,15 @@ public final class CoffeeOrder {
          */
         public Id {
             Objects.requireNonNull(value, "value must not be null");
+        }
+
+        /**
+         * Creates a new random order identifier.
+         *
+         * @return created identifier
+         */
+        public static Id generate() {
+            return new Id(UUID.randomUUID());
         }
     }
 

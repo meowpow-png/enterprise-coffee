@@ -47,6 +47,15 @@ dependencies {
 
     runtimeOnly 'org.flywaydb:flyway-database-postgresql:12.8.1'
     runtimeOnly 'org.postgresql:postgresql:42.7.11'
+
+    testImplementation(platform("org.junit:junit-bom:6.1.0"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    testImplementation 'org.assertj:assertj-core:3.27.7'
+
+    testImplementation(platform("org.mockito:mockito-bom:5.23.0"))
+    testImplementation("org.mockito:mockito-junit-jupiter")
 }
 
 testing {

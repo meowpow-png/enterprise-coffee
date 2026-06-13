@@ -39,27 +39,27 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-flyway'
+    implementation(libs.spring.boot.starter.web)
+    implementation(libs.spring.boot.starter.actuator)
+    implementation(libs.spring.boot.starter.validation)
+    implementation(libs.spring.boot.starter.data.jpa)
+    implementation(libs.spring.boot.starter.flyway)
 
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.3'
+    implementation(libs.springdoc.starter.webmvc.ui)
 
-    runtimeOnly 'org.flywaydb:flyway-database-postgresql:12.8.1'
-    runtimeOnly 'org.postgresql:postgresql:42.7.11'
+    runtimeOnly(libs.flyway.postgresql)
+    runtimeOnly(libs.postgresql)
 
-    testImplementation(platform("org.junit:junit-bom:6.1.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation(platform(libs.junit.bom))
+    testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.platform.launcher)
 
-    testImplementation 'org.assertj:assertj-core:3.27.7'
+    testImplementation(libs.assertj.core)
 
-    testImplementation(platform("org.mockito:mockito-bom:5.23.0"))
-    testImplementation("org.mockito:mockito-junit-jupiter")
+    testImplementation(platform(libs.mockito.bom))
+    testImplementation(libs.mockito.junit.jupiter)
 
-    testFixturesCompileOnly("ch.qos.logback:logback-classic")
+    testFixturesCompileOnly(libs.logback.classic)
 }
 
 testing {

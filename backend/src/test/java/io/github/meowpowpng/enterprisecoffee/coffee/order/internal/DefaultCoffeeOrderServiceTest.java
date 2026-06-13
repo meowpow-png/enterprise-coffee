@@ -1,0 +1,147 @@
+package io.github.meowpowpng.enterprisecoffee.coffee.order.internal;
+
+import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.CoffeeMachineClient;
+import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.MachineOrderResult;
+import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception.CoffeeMachineProtocolException;
+import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception.CoffeeMachineUnavailableException;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.api.CoffeeOrderResponse;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.api.exception.CoffeeOrderInvalidException;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.api.exception.CoffeeOrderProcessingException;
+import io.github.meowpowpng.enterprisecoffee.common.DomainEventPublisher;
+import io.github.meowpowpng.enterprisecoffee.support.LoggingTestFixtures;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeTestFixtures.*;
+import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.CoffeeOrderTestFixtures.*;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.ThrowableAssert.catchThrowable;
+
+@ExtendWith(MockitoExtension.class)
+class DefaultCoffeeOrderServiceTest {
+
+    @Mock
+    private CoffeeMachineClient client;
+
+    @Mock
+    private DomainEventPublisher publisher;
+
+    @Nested
+    @DisplayName("constructor")
+    class ConstructorTests {
+
+        @Test
+        @SuppressWarnings("DataFlowIssue")
+        void should_ThrowNullPointerException_when_ClientIsNull() {
+            var thrown = catchThrowable(() -> new DefaultCoffeeOrderService(
+                    null,
+                    publisher
+            ));
+            assertThat(thrown).isInstanceOf(NullPointerException.class);
+        }
+
+        @Test
+        @SuppressWarnings("DataFlowIssue")
+        void should_ThrowNullPointerException_when_PublisherIsNull() {
+            var thrown = catchThrowable(() -> new DefaultCoffeeOrderService(
+                    client,
+                    null
+            ));
+            assertThat(thrown).isInstanceOf(NullPointerException.class);
+        }
+    }
+
+    @Nested
+    @DisplayName("order")
+    class OrderMethodTests {
+
+        private DefaultCoffeeOrderService service;
+
+        @BeforeEach
+        void setupOrderMethodTest() {
+            service = new DefaultCoffeeOrderService(client, publisher);
+        }
+
+        @Test
+        @SuppressWarnings("DataFlowIssue")
+        void should_ThrowNullPointerException_when_RequestIsNull() {
+            assertThatThrownBy(() -> service.order(null))
+                    .isInstanceOf(NullPointerException.class);
+        }
+
+        @Test
+        void should_ReturnResponse_when_OrderIsAccepted() {
+            Mockito.when(client.order(validCoffeeType())).thenReturn(
+                    MachineOrderResult.ACCEPTED
+            );
+            var response = service.order(validCoffeeOrderRequest());
+
+            assertThat(response).isEqualTo(CoffeeOrderResponse.accepted());
+        }
+
+        @Test
+        void should_ThrowCoffeeOrderInvalidException_when_OrderIsInvalid() {
+            Mockito.when(client.order(validCoffeeType())).thenReturn(
+                    MachineOrderResult.INVALID
+            );
+            assertThatThrownBy(() -> service.order(validCoffeeOrderRequest()))
+                    .isInstanceOf(CoffeeOrderInvalidException.class);
+        }
+
+        @Test
+        void should_ThrowCoffeeOrderProcessingException_when_MachineIsBusy() {
+            Mockito.when(client.order(validCoffeeType())).thenReturn(
+                    MachineOrderResult.BUSY
+            );
+            assertThatThrownBy(() -> service.order(validCoffeeOrderRequest()))
+                    .isInstanceOf(CoffeeOrderProcessingException.class);
+        }
+
+        @Test
+        void should_ThrowCoffeeOrderProcessingException_when_MachineIsUnavailable() {
+            var exception = new CoffeeMachineUnavailableException(
+                    "machine unavailable",
+                    new RuntimeException("boom")
+            );
+            Mockito.when(client.order(validCoffeeType())).thenThrow(exception);
+
+            assertThatThrownBy(() -> service.order(validCoffeeOrderRequest()))
+                    .isInstanceOf(CoffeeOrderProcessingException.class)
+                    .hasCause(exception);
+        }
+
+        @Test
+        void should_PropagateCoffeeMachineProtocolException_when_MachineViolatesProtocol() {
+            LoggingTestFixtures.withoutLogging(DefaultCoffeeOrderService.class, () -> {
+                var exception = new CoffeeMachineProtocolException(
+                        "protocol violation",
+                        new RuntimeException("boom")
+                );
+                Mockito.when(client.order(validCoffeeType())).thenThrow(exception);
+
+                assertThatThrownBy(() -> service.order(validCoffeeOrderRequest()))
+                        .isSameAs(exception);
+            });
+        }
+
+        @Test
+        @SuppressWarnings("DataFlowIssue")
+        void should_ThrowIllegalStateException_when_MachineReturnsUnexpectedResult() {
+            // unexpected result path triggers exception in implementation
+            Mockito.when(client.order(validCoffeeType())).thenReturn(null);
+
+            assertThatThrownBy(() -> service.order(validCoffeeOrderRequest()))
+                    .isInstanceOf(IllegalStateException.class);
+        }
+    }
+}

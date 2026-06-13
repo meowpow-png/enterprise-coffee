@@ -181,7 +181,7 @@ public final class CoffeeJob {
         /**
          * Generates a new unique coffee job identifier.
          */
-        static Id generate() {
+        public static Id generate() {
             return new Id(UUID.randomUUID());
         }
     }

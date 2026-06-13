@@ -8,6 +8,12 @@ import java.util.UUID;
 
 /**
  * Coffee brewing job managed by backend.
+ * <p>
+ * <strong>Guarantees:</strong>
+ * <ul>
+ *   <li>Job progress never decreases.</li>
+ *   <li>A completed job always has 100% progress.</li>
+ * </ul>
  */
 public final class CoffeeJob {
 
@@ -19,6 +25,9 @@ public final class CoffeeJob {
 
     /**
      * Creates a new coffee job.
+     * <p>
+     * <strong>API Notes:</strong>
+     * The job initially starts in {@link Status#PENDING} state.
      *
      * @param id unique identifier of the job
      * @param orderId unique identifier of the coffee order
@@ -98,7 +107,8 @@ public final class CoffeeJob {
     }
 
     /**
-     * Marks the job as completed.
+     * Marks the job as completed
+     * and updates progress to 100%.
      *
      * @throws IllegalStateException if the job is not in progress
      */

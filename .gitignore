@@ -1,6 +1,9 @@
 ## Java
 *.class
 
+## Gradle
+.gradle/
+
 ## IntelliJ IDEA
 .idea/*
 *.iml

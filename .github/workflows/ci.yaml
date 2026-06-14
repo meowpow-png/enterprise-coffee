@@ -29,6 +29,8 @@ jobs:
       DB_NAME: coffee
       DB_USER: coffee
       DB_PASSWORD: coffee
+      MACHINE_COVERAGE_FILE: machine/build/coverage/coverage.out
+      BACKEND_COVERAGE_FILE: backend/build/reports/jacoco/test/jacocoTestReport.xml
 
     steps:
       - name: Checkout repository
@@ -71,6 +73,6 @@ jobs:
         uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: machine/build/coverage/coverage.out, backend/build/reports/jacoco/test/jacocoTestReport.xml
+          files: ${{ env.MACHINE_COVERAGE_FILE }},${{ env.BACKEND_COVERAGE_FILE }}
           disable_search: true
           fail_ci_if_error: true

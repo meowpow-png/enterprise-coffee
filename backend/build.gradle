@@ -89,8 +89,6 @@ tasks.withType(Test).configureEach {
 }
 
 jacocoTestReport {
-    dependsOn(test, integrationTest)
-
     executionData(
             layout.buildDirectory.file("jacoco/test.exec"),
             layout.buildDirectory.file("jacoco/integrationTest.exec")

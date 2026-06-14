@@ -7,6 +7,7 @@ import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
+import java.time.Instant;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -87,6 +88,24 @@ public class JpaCoffeeJobRepository implements CoffeeJobRepository {
         }
         catch (RuntimeException e) {
             var message = "failed to find coffee job";
+            throw new CoffeeJobPersistenceException(message, e);
+        }
+    }
+
+    /**
+     * <strong>Implementation Note:</strong>
+     * Marked as transactional because delete
+     * queries require an active transaction.
+     */
+    @Override
+    @Transactional
+    public long deleteNotUpdatedSince(Instant cutoff) {
+        Objects.requireNonNull(cutoff, "cutoff");
+        try {
+            return repository.deleteByUpdatedAtBefore(cutoff);
+        }
+        catch (RuntimeException e) {
+            var message = "failed to delete coffee jobs updated before: " + cutoff;
             throw new CoffeeJobPersistenceException(message, e);
         }
     }

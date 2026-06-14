@@ -1,5 +1,6 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job;
 
+import java.time.Instant;
 import java.util.Optional;
 
 /**
@@ -40,4 +41,16 @@ public interface CoffeeJobRepository {
      * @throws CoffeeJobPersistenceException if the job cannot be retrieved
      */
     Optional<CoffeeJob> findById(CoffeeJob.Id id);
+
+    /**
+     * Deletes coffee jobs that have not
+     * been updated since the specified instant.
+     *
+     * @param cutoff jobs last updated before this instant are deleted
+     *
+     * @return the number of deleted coffee jobs
+     * @throws NullPointerException if {@code cutoff} is {@code null}
+     * @throws CoffeeJobPersistenceException if the jobs cannot be deleted
+     */
+    long deleteNotUpdatedSince(Instant cutoff);
 }

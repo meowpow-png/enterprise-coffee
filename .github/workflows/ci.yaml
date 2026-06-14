@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/**"
+      - "docker-compose.yml"
+      - "backend/build.gradle"
+      - "backend/settings.gradle"
+      - "backend/gradlew"
+      - "backend/gradlew.bat"
+      - "backend/gradle/**"
+      - "backend/compose.yml"
+      - "backend/src/**"
+      - "machine/go.mod"
+      - "machine/Dockerfile"
+      - "machine/compose.yml"
+      - "machine/cmd/**"
+      - "machine/internal/**"
+      - "!**/*.md"
+
+jobs:
+  build-test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Install just
+        uses: extractions/setup-just@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: machine/go.mod
+
+      - name: Build machine
+        run: just machine::build
+
+      - name: Run machine tests
+        run: just machine::test ./...
+
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-read-only: false
+          cache-cleanup: never
+
+      - name: Build backend
+        run: just backend::gradlew assemble
+
+      - name: Run backend unit tests
+        run: just backend::gradlew test

@@ -45,8 +45,8 @@ jobs:
       - name: Build machine
         run: just machine::build
 
-      - name: Run machine tests
-        run: just machine::test ./...
+      - name: Run machine tests with coverage
+        run: just machine::test-coverage
 
       - name: Set up JDK
         uses: actions/setup-java@v5
@@ -63,5 +63,13 @@ jobs:
       - name: Build backend
         run: just backend::gradlew assemble
 
-      - name: Run backend unit tests
-        run: just backend::gradlew test
+      - name: Run backend tests with coverage
+        run: just backend::gradlew test jacocoTestReport
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v6
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: machine/build/coverage/coverage.out, backend/build/reports/jacoco/test/jacocoRootReport.xml
+          disable_search: true
+          fail_ci_if_error: true

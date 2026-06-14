@@ -5,3 +5,7 @@ backend-url := "http://localhost:8081"
 # Execute docker compose command
 compose +args:
     docker compose -p coffee-backend {{args}}
+
+# Execute gradle wrapper command
+gradlew *args:
+    @./gradlew {{args}}

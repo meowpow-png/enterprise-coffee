@@ -26,7 +26,7 @@ public interface CoffeeJobRepository {
      *
      * @return the updated coffee job
      * @throws NullPointerException if {@code job} is {@code null}
-     * @throws IllegalStateException if the job does not exist
+     * @throws CoffeeJobPersistenceException if the job does not exist
      */
     CoffeeJob update(CoffeeJob job);
 

@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Handles exceptions raised by controllers.
- */
 @RestControllerAdvice
 public class GlobalControllerAdvice {
 

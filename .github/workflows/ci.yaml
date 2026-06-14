@@ -41,6 +41,7 @@ jobs:
         uses: actions/setup-go@v6
         with:
           go-version-file: machine/go.mod
+          cache-dependency-path: machine/go.mod
 
       - name: Build machine
         run: just machine::build

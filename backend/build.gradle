@@ -31,7 +31,7 @@ static def loadEnv(File file) {
         [(key): value]
     }
 }
-def env = loadEnv(file('.env'))
+def env = loadEnv(file('.env')) + System.getenv()
 
 flyway {
     url = "jdbc:postgresql://localhost:5432/${env.DB_NAME}"

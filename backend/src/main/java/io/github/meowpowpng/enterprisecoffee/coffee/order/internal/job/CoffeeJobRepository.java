@@ -14,7 +14,8 @@ public interface CoffeeJobRepository {
      *
      * @throws NullPointerException if {@code job} is {@code null}
      * @throws CoffeeJobMappingException if the job cannot be mapped
-     * @throws CoffeeJobPersistenceException if the job cannot be persisted
+     * @throws CoffeeJobPersistenceException if the job already
+     * exists or cannot be persisted
      */
     void create(CoffeeJob job);
 

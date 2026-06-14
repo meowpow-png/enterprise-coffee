@@ -20,14 +20,13 @@ public class JpaCoffeeJobRepository implements CoffeeJobRepository {
     }
 
     @Override
-    public CoffeeJob create(CoffeeJob job) {
+    public void create(CoffeeJob job) {
         Objects.requireNonNull(job, "job");
 
         try {
             var entity = CoffeeJobMapper.toEntity(job);
             var persisted = repository.save(entity);
 
-            return CoffeeJobMapper.toDomain(persisted);
         }
         catch (CoffeeJobMappingException e) {
             throw e;
@@ -45,7 +44,7 @@ public class JpaCoffeeJobRepository implements CoffeeJobRepository {
      */
     @Override
     @Transactional
-    public CoffeeJob update(CoffeeJob job) {
+    public void update(CoffeeJob job) {
         Objects.requireNonNull(job, "job");
 
         var updated = repository.update(
@@ -57,13 +56,11 @@ public class JpaCoffeeJobRepository implements CoffeeJobRepository {
             var message = "coffee job not found: " + job.id().value();
             throw new CoffeeJobPersistenceException(message);
         }
-        return job;
     }
 
     @Override
     public Optional<CoffeeJob> findById(CoffeeJob.Id id) {
         Objects.requireNonNull(id, "id");
-
         try {
             return repository.findById(id.value())
                     .map(CoffeeJobMapper::toDomain);

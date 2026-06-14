@@ -24,6 +24,11 @@ jobs:
   build-test:
     name: Build & Test
     runs-on: ubuntu-latest
+    env:
+      DB_HOST: localhost
+      DB_NAME: coffee
+      DB_USER: coffee
+      DB_PASSWORD: coffee
 
     steps:
       - name: Checkout repository

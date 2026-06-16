@@ -1,3 +1,4 @@
+//file:noinspection GroovyAssignabilityCheck
 buildscript {
     // needed so flyway can connect to postgres database
     dependencies {

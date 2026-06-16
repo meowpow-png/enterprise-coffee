@@ -73,7 +73,7 @@ testing {
     suites {
         integrationTest(JvmTestSuite) {
             dependencies {
-                implementation 'org.springframework.boot:spring-boot-starter-test'
+                implementation libs.spring.boot.starter.test
             }
         }
     }

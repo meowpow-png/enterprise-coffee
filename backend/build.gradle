@@ -73,6 +73,8 @@ testing {
     suites {
         integrationTest(JvmTestSuite) {
             dependencies {
+                implementation project()
+                implementation libs.spring.boot.starter.validation
                 implementation libs.spring.boot.starter.test
 
                 implementation libs.spring.boot.webmvc.test

@@ -74,6 +74,9 @@ testing {
         integrationTest(JvmTestSuite) {
             dependencies {
                 implementation libs.spring.boot.starter.test
+                runtimeOnly platform(libs.testcontainers.bom)
+                runtimeOnly libs.testcontainers.postgres
+                runtimeOnly libs.testcontainers.jdbc
             }
         }
     }

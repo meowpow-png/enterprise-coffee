@@ -6,6 +6,7 @@ postgresql = "42.7.11"
 junit = "6.1.0"
 assertj = "3.27.7"
 mockito = "5.23.0"
+testcontainers = "1.21.4"
 
 [libraries]
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
@@ -20,6 +21,8 @@ springdoc-starter-webmvc-ui = { module = "org.springdoc:springdoc-openapi-starte
 flyway-postgresql = { module = "org.flywaydb:flyway-database-postgresql", version.ref = "flyway" }
 postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
 
+logback-classic = { module = "ch.qos.logback:logback-classic" }
+
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
@@ -29,4 +32,7 @@ assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 mockito-bom = { module = "org.mockito:mockito-bom", version.ref = "mockito" }
 mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter" }
 
-logback-classic = { module = "ch.qos.logback:logback-classic" }
+
+testcontainers-bom = { module = "org.testcontainers:testcontainers-bom", version.ref = "testcontainers" }
+testcontainers-postgres = { module = "org.testcontainers:postgresql" }
+testcontainers-jdbc = { module = "org.testcontainers:jdbc" }

@@ -1,5 +1,7 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.machine.api;
 
+import io.github.meowpowpng.enterprisecoffee.common.ApiEndpoints;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,12 +17,12 @@ public class CoffeeMachineController {
         this.client = client;
     }
 
-    @GetMapping("/status")
+    @GetMapping(ApiEndpoints.MACHINE_STATUS)
     MachineStatusResponse status() {
         return new MachineStatusResponse(client.status().name());
     }
 
-    @GetMapping("/progress")
+    @GetMapping(ApiEndpoints.MACHINE_PROGRESS)
     MachineProgressResponse progress() {
         var progress = client.progress();
 

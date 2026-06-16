@@ -1,5 +1,7 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.order.api;
 
+import io.github.meowpowpng.enterprisecoffee.common.ApiEndpoints;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +22,7 @@ public class CoffeeOrderController {
         this.service = service;
     }
 
-    @PostMapping("/order")
+    @PostMapping(ApiEndpoints.COFFEE_ORDER)
     @ResponseStatus(HttpStatus.ACCEPTED)
     CoffeeOrderResponse order(@Valid @RequestBody CoffeeOrderRequest request) {
         return service.order(request);

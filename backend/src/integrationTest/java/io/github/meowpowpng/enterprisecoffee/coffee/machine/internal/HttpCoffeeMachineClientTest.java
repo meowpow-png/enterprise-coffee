@@ -39,8 +39,6 @@ class HttpCoffeeMachineClientTest extends MockWebServerTest {
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
         registry.add("coffee.machine.base-url", () -> server.url("/").toString());
-        registry.add("coffee.machine.connect-timeout", () -> "100ms");
-        registry.add("coffee.machine.read-timeout", () -> "100ms");
     }
 
     @Nested

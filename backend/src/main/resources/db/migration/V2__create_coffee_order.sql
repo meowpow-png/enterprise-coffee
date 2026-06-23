@@ -16,6 +16,7 @@ ALTER TABLE coffee_order
     ADD CONSTRAINT chk_coffee_order_status
     CHECK (
         status IN (
+            'PENDING',
             'ACCEPTED',
             'REJECTED',
             'INVALID',

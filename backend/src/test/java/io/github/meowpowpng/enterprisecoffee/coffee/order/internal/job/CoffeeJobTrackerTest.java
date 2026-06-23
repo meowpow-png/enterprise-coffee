@@ -2,15 +2,22 @@ package io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job;
 
 import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.CoffeeMachineClient;
 import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.MachineCoffeeProgress;
+import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception.CoffeeMachineUnavailableException;
 import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception.TestCoffeeMachineException;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeTestFixtures;
+import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.Progress;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.CoffeeOrder;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job.event.CoffeeJobEvents;
+import io.github.meowpowpng.enterprisecoffee.common.DomainEvent;
 import io.github.meowpowpng.enterprisecoffee.common.DomainEventPublisher;
 import io.github.meowpowpng.enterprisecoffee.common.ThreadSleeper;
 import io.github.meowpowpng.enterprisecoffee.support.LoggingTestFixtures;
 import io.github.meowpowpng.enterprisecoffee.support.TestClock;
 
+import org.jspecify.annotations.NullMarked;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -20,9 +27,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.Clock;
 import java.time.Duration;
-import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -32,15 +39,14 @@ import static org.assertj.core.api.ThrowableAssert.catchThrowable;
 class CoffeeJobTrackerTest {
 
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(1);
-    
+
     @Mock
     private CoffeeMachineClient client;
 
-    @Mock
-    private DomainEventPublisher publisher;
+    private CoffeeJobTracker tracker;
 
-    @Mock
-    private ThreadSleeper sleeper;
+    private final TestDomainEventPublisher publisher = new TestDomainEventPublisher();
+    private final TestThreadSleeper threadSleeper = new TestThreadSleeper();
 
     @Nested
     @DisplayName("constructor")
@@ -53,7 +59,7 @@ class CoffeeJobTrackerTest {
             var thrown = catchThrowable(() -> new CoffeeJobTracker(
                     null,
                     publisher,
-                    sleeper,
+                    threadSleeper,
                     DEFAULT_TIMEOUT,
                     TestClock.create()
             ));
@@ -67,7 +73,7 @@ class CoffeeJobTrackerTest {
             var thrown = catchThrowable(() -> new CoffeeJobTracker(
                     client,
                     null,
-                    sleeper,
+                    threadSleeper,
                     DEFAULT_TIMEOUT,
                     TestClock.create()
             ));
@@ -95,7 +101,7 @@ class CoffeeJobTrackerTest {
             var thrown = catchThrowable(() -> new CoffeeJobTracker(
                     client,
                     publisher,
-                    sleeper,
+                    threadSleeper,
                     null,
                     TestClock.create()
             ));
@@ -109,7 +115,7 @@ class CoffeeJobTrackerTest {
             var thrown = catchThrowable(() -> new CoffeeJobTracker(
                     client,
                     publisher,
-                    sleeper,
+                    threadSleeper,
                     DEFAULT_TIMEOUT,
                     null
             ));
@@ -121,16 +127,20 @@ class CoffeeJobTrackerTest {
     @DisplayName("track")
     class TrackMethodTests {
 
-        @Test
-        @DisplayName("Should throw IllegalStateException when job is not pending")
-        void should_ThrowIllegalStateException_when_JobIsNotPending() {
-            var tracker = new CoffeeJobTracker(
+        @BeforeEach
+        void setupTrackMethodTest() {
+            tracker = new CoffeeJobTracker(
                     client,
                     publisher,
-                    sleeper,
+                    threadSleeper,
                     DEFAULT_TIMEOUT,
                     TestClock.create()
             );
+        }
+
+        @Test
+        @DisplayName("Should throw IllegalStateException when job is not pending")
+        void should_ThrowIllegalStateException_when_JobIsNotPending() {
             var job = CoffeeJob.restore(
                     CoffeeJob.Id.generate(),
                     CoffeeOrder.Id.generate(),
@@ -144,13 +154,6 @@ class CoffeeJobTrackerTest {
         @Test
         @DisplayName("Should complete job when progress reaches 100 percent")
         void should_CompleteJob_when_ProgressReaches100Percent() {
-            var tracker = new CoffeeJobTracker(
-                    client,
-                    publisher,
-                    sleeper,
-                    DEFAULT_TIMEOUT,
-                    TestClock.create()
-            );
             var job = CoffeeJobTestFixtures.validCoffeeJob();
 
             var progress = new MachineCoffeeProgress(
@@ -167,13 +170,6 @@ class CoffeeJobTrackerTest {
         @Test
         @DisplayName("Should fail job when communication with coffee machine fails")
         void should_FailJob_when_CommunicationWithCoffeeMachineFails() {
-            var tracker = new CoffeeJobTracker(
-                    client,
-                    publisher,
-                    sleeper,
-                    DEFAULT_TIMEOUT,
-                    TestClock.create()
-            );
             var job = CoffeeJobTestFixtures.validCoffeeJob();
 
             Mockito.when(client.progress()).thenThrow(
@@ -188,13 +184,6 @@ class CoffeeJobTrackerTest {
         @Test
         @DisplayName("Should fail job when tracking is interrupted")
         void should_FailJob_when_TrackingIsInterrupted() {
-            var tracker = new CoffeeJobTracker(
-                    client,
-                    publisher,
-                    sleeper,
-                    DEFAULT_TIMEOUT,
-                    TestClock.create()
-            );
             var job = CoffeeJobTestFixtures.validCoffeeJob();
 
             var progress = new MachineCoffeeProgress(
@@ -202,9 +191,7 @@ class CoffeeJobTrackerTest {
                     Progress.of(42)
             );
             Mockito.when(client.progress()).thenReturn(progress);
-            Mockito.doThrow(new IllegalStateException())
-                    .when(sleeper)
-                    .sleep();
+            threadSleeper.failOnSleep();
 
             tracker.track(job);
 
@@ -214,24 +201,254 @@ class CoffeeJobTrackerTest {
         @Test
         @DisplayName("Should fail job when tracking times out")
         void should_FailJob_when_TrackingTimesOut() {
-            var clock = Mockito.mock(Clock.class);
+            var clock = TestClock.create();
             var tracker = new CoffeeJobTracker(
                     client,
                     publisher,
-                    sleeper,
+                    threadSleeper,
                     DEFAULT_TIMEOUT,
                     clock
             );
             var job = CoffeeJobTestFixtures.validCoffeeJob();
 
-            var now = Instant.now();
-            Mockito.when(clock.instant())
-                    .thenReturn(now)
-                    .thenReturn(now.plusSeconds(30));
+            Mockito.when(client.progress()).thenAnswer(invocation -> {
+                clock.advance(DEFAULT_TIMEOUT.plusSeconds(1));
+
+                return new MachineCoffeeProgress(
+                        CoffeeTestFixtures.validCoffeeType(),
+                        Progress.of(42)
+                );
+            });
+            tracker.track(job);
+            assertThat(job.status()).isEqualTo(CoffeeJob.Status.FAILED);
+        }
+    }
+
+    @Nested
+    @DisplayName("progress")
+    class ProgressTests {
+
+        @BeforeEach
+        void setupProgressTest() {
+            threadSleeper.failOnSleep();
+            tracker = new CoffeeJobTracker(
+                    client,
+                    publisher,
+                    threadSleeper,
+                    DEFAULT_TIMEOUT,
+                    TestClock.create()
+            );
+        }
+
+        @Test
+        @DisplayName("Should update job progress when machine reports increased progress")
+        void should_UpdateJobProgress_when_MachineReportsIncreasedProgress() {
+            var type = new CoffeeType("ESPRESSO");
+            var job = createJob(type);
+            var progress = Progress.of(50);
+
+            Mockito.when(client.progress()).thenReturn(
+                    new MachineCoffeeProgress(type, progress)
+            );
+            tracker.track(job);
+
+            assertThat(job.progress()).isEqualTo(progress);
+        }
+
+        @Test
+        @DisplayName("Should not update job progress when machine reports unchanged progress")
+        void should_NotUpdateJobProgress_when_MachineReportsUnchangedProgress() {
+            var type = new CoffeeType("ESPRESSO");
+            var job = createJob(type);
+            var progress = Progress.initial();
+
+            Mockito.when(client.progress()).thenReturn(
+                    new MachineCoffeeProgress(type, progress)
+            );
+            tracker.track(job);
+
+            assertThat(job.progress()).isEqualTo(progress);
+        }
+    }
+
+    @Nested
+    @DisplayName("events")
+    class EventTests {
+
+        private TestClock clock;
+
+        @BeforeEach
+        void setupEventTest() {
+            clock = TestClock.create();
+            tracker = new CoffeeJobTracker(
+                    client,
+                    publisher,
+                    threadSleeper,
+                    DEFAULT_TIMEOUT,
+                    clock
+            );
+        }
+
+        @Test
+        @DisplayName("Should publish started event when job tracking begins")
+        void should_PublishStartedEvent_when_JobTrackingBegins() {
+            var type = new CoffeeType("ESPRESSO");
+            var progress = progressCompleted(type);
+            var job = createJob(type);
+
+            Mockito.when(client.progress()).thenReturn(progress);
 
             tracker.track(job);
 
-            assertThat(job.status()).isEqualTo(CoffeeJob.Status.FAILED);
+            assertThat(publisher.events().getFirst())
+                    .isEqualTo(CoffeeJobEvents.started(job));
+        }
+
+        @Test
+        @DisplayName("Should publish finished event when job completes")
+        void should_PublishFinishedEvent_when_JobCompletes() {
+            var type = new CoffeeType("ESPRESSO");
+            var progress = progressCompleted(type);
+            var job = createJob(type);
+
+            Mockito.when(client.progress()).thenReturn(progress);
+
+            tracker.track(job);
+
+            assertThat(publisher.events().getLast())
+                    .isEqualTo(CoffeeJobEvents.finished(job));
+        }
+
+        @Test
+        @DisplayName("Should publish progress updated event when job progress increases")
+        void should_PublishProgressUpdatedEvent_when_JobProgressIncreases() {
+            var type = new CoffeeType("ESPRESSO");
+            var job = createJob(type);
+            var progress = Progress.of(50);
+
+            Mockito.when(client.progress()).thenReturn(
+                    new MachineCoffeeProgress(type, progress)
+            );
+            threadSleeper.failOnSleep();
+            tracker.track(job);
+
+            var expected = CoffeeJobEvents.progressUpdated(
+                    job,
+                    Progress.initial()
+            );
+            assertThat(publisher.events()).contains(expected);
+        }
+
+        @Test
+        @DisplayName("Should not publish progress updated event when job progress is unchanged")
+        void should_NotPublishProgressUpdatedEvent_when_JobProgressIsUnchanged() {
+            var type = new CoffeeType("ESPRESSO");
+            var job = createJob(type);
+            var progress = Progress.initial();
+
+            Mockito.when(client.progress()).thenReturn(
+                    new MachineCoffeeProgress(type, progress)
+            );
+            threadSleeper.failOnSleep();
+            tracker.track(job);
+
+            assertThat(publisher.events())
+                    .filteredOn(CoffeeJobEvents.ProgressUpdated.class::isInstance)
+                    .isEmpty();
+        }
+
+        @Test
+        @DisplayName("Should publish finished event when job fails due to communication failure")
+        void should_PublishFinishedEvent_when_JobFailsDueToCommunicationFailure() {
+            var type = new CoffeeType("ESPRESSO");
+            var job = createJob(type);
+
+            var exception = new CoffeeMachineUnavailableException(
+                    "Machine unavailable",
+                    new RuntimeException()
+            );
+            Mockito.when(client.progress()).thenThrow(exception);
+
+            tracker.track(job);
+
+            assertThat(publisher.events().getLast())
+                    .isEqualTo(CoffeeJobEvents.finished(job));
+        }
+
+        @Test
+        @DisplayName("Should publish finished event when job fails due to interruption")
+        void should_PublishFinishedEvent_when_JobFailsDueToInterruption() {
+            var type = new CoffeeType("ESPRESSO");
+            var job = createJob(type);
+            var progress = new MachineCoffeeProgress(
+                    type,
+                    Progress.of(50)
+            );
+            Mockito.when(client.progress()).thenReturn(progress);
+            threadSleeper.failOnSleep();
+
+            tracker.track(job);
+
+            assertThat(publisher.events().getLast())
+                    .isEqualTo(CoffeeJobEvents.finished(job));
+        }
+
+        @Test
+        @DisplayName("Should publish finished event when job times out")
+        void should_PublishFinishedEvent_when_JobTimesOut() {
+            var type = new CoffeeType("ESPRESSO");
+            var job = createJob(type);
+
+            Mockito.when(client.progress()).thenAnswer(invocation -> {
+                clock.advance(DEFAULT_TIMEOUT.plusSeconds(1));
+
+                var progress = Progress.of(50);
+                return new MachineCoffeeProgress(type, progress);
+            });
+            tracker.track(job);
+
+            assertThat(publisher.events().getLast())
+                    .isEqualTo(CoffeeJobEvents.finished(job));
+        }
+    }
+
+    private static CoffeeJob createJob(CoffeeType type) {
+        var order = CoffeeOrder.create(type);
+        return CoffeeJob.create(order.id());
+    }
+
+    private static MachineCoffeeProgress progressCompleted(CoffeeType type) {
+        return new MachineCoffeeProgress(type, Progress.of(100));
+    }
+
+    private static final class TestThreadSleeper implements ThreadSleeper {
+
+        private boolean fail;
+
+        public void failOnSleep() {
+            this.fail = true;
+        }
+
+        @Override
+        public void sleep() {
+            if (fail) {
+                throw new IllegalStateException();
+            }
+        }
+    }
+
+    @NullMarked
+    private static final class TestDomainEventPublisher implements DomainEventPublisher {
+
+        private final List<DomainEvent> events = new ArrayList<>();
+
+        @Override
+        public void publish(DomainEvent event) {
+            events.add(event);
+        }
+
+        public List<DomainEvent> events() {
+            return events;
         }
     }
 }

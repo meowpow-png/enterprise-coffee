@@ -78,6 +78,7 @@ testing {
                 implementation testFixtures(project())
                 implementation libs.spring.boot.starter.validation
                 implementation libs.spring.boot.starter.test
+                implementation libs.spring.boot.jpa.test
                 implementation libs.spring.tx
 
                 implementation libs.spring.boot.webmvc.test

@@ -6,6 +6,7 @@ postgresql = "42.7.11"
 junit = "6.1.0"
 assertj = "3.27.7"
 mockito = "5.23.0"
+mockwebserver = "5.4.0"
 testcontainers = "1.21.4"
 
 [libraries]
@@ -16,6 +17,7 @@ spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-
 spring-boot-starter-flyway = { module = "org.springframework.boot:spring-boot-starter-flyway" }
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
 spring-boot-webmvc-test = { module = "org.springframework.boot:spring-boot-starter-webmvc-test" }
+spring-tx = { module = "org.springframework:spring-tx" }
 
 springdoc-starter-webmvc-ui = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc" }
 
@@ -33,6 +35,7 @@ assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 mockito-bom = { module = "org.mockito:mockito-bom", version.ref = "mockito" }
 mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter" }
 
+okhttp3-mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "mockwebserver" }
 
 testcontainers-bom = { module = "org.testcontainers:testcontainers-bom", version.ref = "testcontainers" }
 testcontainers-postgres = { module = "org.testcontainers:postgresql" }

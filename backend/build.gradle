@@ -75,10 +75,14 @@ testing {
         integrationTest(JvmTestSuite) {
             dependencies {
                 implementation project()
+                implementation testFixtures(project())
                 implementation libs.spring.boot.starter.validation
                 implementation libs.spring.boot.starter.test
+                implementation libs.spring.tx
 
                 implementation libs.spring.boot.webmvc.test
+                implementation libs.okhttp3.mockwebserver
+
                 runtimeOnly platform(libs.testcontainers.bom)
                 runtimeOnly libs.testcontainers.postgres
                 runtimeOnly libs.testcontainers.jdbc

@@ -136,9 +136,8 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
         T get();
     }
 
-    private record MachineStatusPayload(String status) {}
-
-    private record MachineProgressPayload(String type, int progress) {}
+    record MachineStatusPayload(String status) {}
+    record MachineProgressPayload(String type, int progress) {}
 
     private static final class Logger {
 

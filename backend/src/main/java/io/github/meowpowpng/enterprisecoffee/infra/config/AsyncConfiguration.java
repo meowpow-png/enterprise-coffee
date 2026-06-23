@@ -1,8 +1,7 @@
 package io.github.meowpowpng.enterprisecoffee.infra.config;
 
-import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.util.concurrent.Executor;
@@ -10,16 +9,10 @@ import java.util.concurrent.Executors;
 
 @EnableAsync
 @Configuration
-public class AsyncConfiguration implements AsyncConfigurer {
+public class AsyncConfiguration {
 
-    @Override
-    public Executor getAsyncExecutor() {
+    @Bean
+    Executor asyncExecutor() {
         return Executors.newVirtualThreadPerTaskExecutor();
-    }
-
-    @Override
-    public AsyncUncaughtExceptionHandler
-    getAsyncUncaughtExceptionHandler() {
-        return new AsyncExceptionHandler();
     }
 }

@@ -196,4 +196,23 @@ public final class CoffeeJob {
         COMPLETED,
         FAILED
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof CoffeeJob that)) {
+            return false;
+        }
+        return Objects.equals(id, that.id)
+                && Objects.equals(orderId, that.orderId)
+                && status == that.status
+                && Objects.equals(progress, that.progress);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, orderId, status, progress);
+    }
 }

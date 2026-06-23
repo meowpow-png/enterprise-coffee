@@ -142,4 +142,22 @@ public final class CoffeeOrder {
         INVALID,
         FAILED
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof CoffeeOrder that)) {
+            return false;
+        }
+        return Objects.equals(id, that.id)
+                && Objects.equals(type, that.type)
+                && status == that.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, type, status);
+    }
 }

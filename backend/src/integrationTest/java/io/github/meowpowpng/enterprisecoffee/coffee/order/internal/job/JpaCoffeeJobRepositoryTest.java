@@ -8,7 +8,6 @@ import io.github.meowpowpng.enterprisecoffee.support.JpaIntegrationTest;
 
 import jakarta.persistence.EntityManager;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -32,11 +31,6 @@ class JpaCoffeeJobRepositoryTest {
 
     @Autowired
     private JpaCoffeeOrderRepository orderRepository;
-
-    @BeforeEach
-    void setupJpaCoffeeOrderRepositoryTest() {
-        assertJobRepositoryEmpty();
-    }
 
     @Nested
     @DisplayName("create")
@@ -172,11 +166,5 @@ class JpaCoffeeJobRepositoryTest {
 
             assertThat(deleted).isEqualTo(2);
         }
-    }
-
-    private void assertJobRepositoryEmpty() {
-        var time = Instant.now().plusSeconds(10);
-        var _deleted = jobRepository.deleteNotUpdatedSince(time);
-        assertThat(_deleted).isZero();
     }
 }

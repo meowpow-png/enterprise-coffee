@@ -9,6 +9,7 @@ import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.Progress;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.CoffeeOrder;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.CoffeeOrderRepository;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.JpaCoffeeOrderCrudRepository;
 import io.github.meowpowpng.enterprisecoffee.common.ThreadSleeper;
 import io.github.meowpowpng.enterprisecoffee.support.DisableAsync;
 import io.github.meowpowpng.enterprisecoffee.support.IntegrationTest;
@@ -21,6 +22,7 @@ import org.springframework.context.annotation.Primary;
 
 import org.jspecify.annotations.NullMarked;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,7 +45,13 @@ class CoffeeJobTrackerTest {
     private CoffeeJobRepository jobRepository;
 
     @Autowired
+    private JpaCoffeeJobCrudRepository jobCrudRepository;
+
+    @Autowired
     private CoffeeOrderRepository orderRepository;
+
+    @Autowired
+    private JpaCoffeeOrderCrudRepository orderCrudRepository;
 
     @Autowired
     private CoffeeMachineClient client;
@@ -53,6 +61,12 @@ class CoffeeJobTrackerTest {
     @BeforeEach
     void setupCoffeeJobTrackerTest() {
         this.testClient = (TestCoffeeMachineClient) client;
+    }
+
+    @AfterEach
+    void teardownCoffeeJobTrackerTest() {
+        jobCrudRepository.deleteAll();
+        orderCrudRepository.deleteAll();
     }
 
     @Test

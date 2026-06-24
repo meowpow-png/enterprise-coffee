@@ -72,23 +72,29 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
 
     @Override
     public MachineCoffeeProgress progress() {
-        return callMachine(CallOperation.of("progress", () -> restClient.get()
-                .uri("/progress")
-                .exchange((ignored, response) -> {
-                    var payload = response.bodyTo(MachineProgressPayload.class);
+        return callMachine(CallOperation.of("progress", () -> {
+            var payload = restClient.get()
+                    .uri("/progress")
+                    .retrieve()
+                    .body(MachineProgressPayload.class);
 
-                    if (payload == null) {
-                        return null;
-                    }
-                    var type = payload.type();
-                    var coffeeType = !type.isBlank() ? new CoffeeType(type) : null;
-                    var progress = payload.progress();
+            if (payload == null) {
+                return null;
+            }
+            var type = payload.type();
+            var coffeeType = !type.isBlank()
+                    ? new CoffeeType(type)
+                    : null;
 
-                    Logger.logProgressReceived(coffeeType, progress);
-                    return new MachineCoffeeProgress(coffeeType, Progress.of(progress));
-                }),
-                "Failed to retrieve coffee machine progress"
-        ));
+            var progress = payload.progress();
+
+            Logger.logProgressReceived(coffeeType, progress);
+
+            return new MachineCoffeeProgress(
+                    coffeeType,
+                    Progress.of(progress)
+            );
+        }, "Failed to retrieve coffee machine progress"));
     }
 
     private static <T> T callMachine(CallOperation<T> op) {

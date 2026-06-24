@@ -2,14 +2,14 @@ package io.github.meowpowpng.enterprisecoffee.coffee.order.internal;
 
 import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
 
-import java.util.UUID;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeTestFixtures.*;
-import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.CoffeeOrderTestFixtures.*;
+import java.util.UUID;
+
+import static io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeTestFixtures.validCoffeeType;
+import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.CoffeeOrderTestFixtures.validCoffeeOrder;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;

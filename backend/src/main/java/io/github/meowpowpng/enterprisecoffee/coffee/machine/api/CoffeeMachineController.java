@@ -23,7 +23,6 @@ public class CoffeeMachineController {
      * Returns the current coffee machine status.
      *
      * @return current coffee machine status
-     *
      * @throws CoffeeMachineUnavailableException if communication with the machine fails
      * @throws CoffeeMachineProtocolException if the machine returns an invalid response
      */
@@ -36,7 +35,6 @@ public class CoffeeMachineController {
      * Returns the current coffee brewing progress.
      *
      * @return current coffee-brewing progress
-     *
      * @throws CoffeeMachineUnavailableException if communication with the machine fails
      * @throws CoffeeMachineProtocolException if the machine returns an invalid response
      */

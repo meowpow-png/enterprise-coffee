@@ -52,7 +52,7 @@ class CoffeeJobConfigurationTest {
     }
 
     private static String[] coffeeJobProperties() {
-        return new String[] {
+        return new String[]{
                 "coffee.order.job.polling-interval=PT1S",
                 "coffee.order.job.timeout=PT10S"
         };

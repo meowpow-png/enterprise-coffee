@@ -6,7 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job.CoffeeJobTestFixtures.*;
+import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job.CoffeeJobTestFixtures.validCoffeeJob;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

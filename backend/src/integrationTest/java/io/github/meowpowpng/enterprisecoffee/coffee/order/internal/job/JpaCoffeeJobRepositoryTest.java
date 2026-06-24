@@ -6,14 +6,14 @@ import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.CoffeeOrder;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.JpaCoffeeOrderRepository;
 import io.github.meowpowpng.enterprisecoffee.support.JpaIntegrationTest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
+
 import jakarta.persistence.EntityManager;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
 
 import java.time.Instant;
 

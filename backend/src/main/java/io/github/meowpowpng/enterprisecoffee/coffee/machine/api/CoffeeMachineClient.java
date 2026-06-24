@@ -33,7 +33,6 @@ public interface CoffeeMachineClient {
      * @param type coffee beverage to prepare
      *
      * @return result of the coffee order request
-     *
      * @throws NullPointerException if {@code type} is {@code null}
      * @throws CoffeeMachineUnavailableException if communication with the machine fails
      * @throws CoffeeMachineProtocolException if the machine returns an invalid response

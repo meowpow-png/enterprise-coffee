@@ -138,7 +138,7 @@ class CoffeeJobTrackerTest {
 
         var stored = jobRepository.findById(job.id());
 
-        assertThat(stored).hasValueSatisfying( found ->
+        assertThat(stored).hasValueSatisfying(found ->
                 assertThat(found.status()).isEqualTo(CoffeeJob.Status.FAILED)
         );
     }

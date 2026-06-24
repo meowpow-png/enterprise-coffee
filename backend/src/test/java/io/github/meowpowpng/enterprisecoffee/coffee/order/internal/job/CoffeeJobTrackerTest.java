@@ -176,7 +176,7 @@ class CoffeeJobTrackerTest {
                     new TestCoffeeMachineException("Communication failed")
             );
             LoggingTestFixtures.withoutLogging(CoffeeJobTracker.class, () ->
-                tracker.track(job)
+                    tracker.track(job)
             );
             assertThat(job.status()).isEqualTo(CoffeeJob.Status.FAILED);
         }

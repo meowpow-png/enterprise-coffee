@@ -31,7 +31,6 @@ public class CoffeeOrderController {
      * @param request coffee order request
      *
      * @return coffee order result
-     *
      * @throws CoffeeOrderInvalidException if the request cannot be
      * accepted because the specified coffee order is invalid
      * @throws CoffeeOrderProcessingException if the order cannot be processed

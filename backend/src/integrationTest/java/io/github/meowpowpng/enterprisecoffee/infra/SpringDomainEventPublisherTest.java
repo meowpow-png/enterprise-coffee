@@ -5,10 +5,11 @@ import io.github.meowpowpng.enterprisecoffee.infra.support.TestDomainEvent;
 import io.github.meowpowpng.enterprisecoffee.infra.support.TestDomainEventHandler;
 import io.github.meowpowpng.enterprisecoffee.support.IntegrationTest;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

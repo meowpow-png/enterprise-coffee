@@ -25,11 +25,11 @@ class GlobalControllerAdviceTest {
     @Test
     @DisplayName("Should return bad request when request validation fails")
     void should_ReturnBadRequest_when_RequestValidationFails() throws Exception {
-        var request = ValidationRequest.empty();
-
-        support.mockMvc().perform(post("/validate")
+        var request = post("/validate")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(support.mapper().writeValueAsString(request)))
+                .content(support.mapper().writeValueAsString(ValidationRequest.empty()));
+
+        support.mockMvc().perform(request)
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message")
                         .value("value must not be blank"));

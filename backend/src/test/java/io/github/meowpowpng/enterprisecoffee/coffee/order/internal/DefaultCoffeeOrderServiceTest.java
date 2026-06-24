@@ -20,8 +20,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeTestFixtures.*;
-import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.CoffeeOrderTestFixtures.*;
+import static io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeTestFixtures.validCoffeeType;
+import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.CoffeeOrderTestFixtures.validCoffeeOrderRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -130,7 +130,7 @@ class DefaultCoffeeOrderServiceTest {
         @Test
         @DisplayName("Should propagate CoffeeMachineProtocolException when machine violates protocol")
         void should_PropagateCoffeeMachineProtocolException_when_MachineViolatesProtocol() {
-            LoggingTestFixtures.withoutLogging(DefaultCoffeeOrderService.class, () -> {
+            Runnable action = () -> {
                 var exception = new CoffeeMachineProtocolException(
                         "protocol violation",
                         new RuntimeException("boom")
@@ -139,7 +139,8 @@ class DefaultCoffeeOrderServiceTest {
 
                 assertThatThrownBy(() -> service.order(validCoffeeOrderRequest()))
                         .isSameAs(exception);
-            });
+            };
+            LoggingTestFixtures.withoutLogging(DefaultCoffeeOrderService.class, action);
         }
 
         @Test

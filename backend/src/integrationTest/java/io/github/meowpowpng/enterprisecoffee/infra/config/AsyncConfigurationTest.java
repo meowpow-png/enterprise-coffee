@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,15 +29,16 @@ class AsyncConfigurationTest {
     @Test
     @DisplayName("Should use virtual threads when async executor executes task")
     void should_UseVirtualThreads_when_AsyncExecutorExecutesTask() {
+        Consumer<Executor> assertion = executor -> {
+            var future = CompletableFuture.supplyAsync(
+                    Thread::currentThread,
+                    executor
+            );
+            assertThat(future.join().isVirtual()).isTrue();
+        };
         TestApplicationContextRunner.from(new ApplicationContextRunner())
                 .withConfiguration(AsyncConfiguration.class)
-                .withBean(Executor.class, executor -> {
-                    var future = CompletableFuture.supplyAsync(
-                            Thread::currentThread,
-                            executor
-                    );
-                    assertThat(future.join().isVirtual()).isTrue();
-                })
+                .withBean(Executor.class, assertion)
                 .doesNotFail();
     }
 }

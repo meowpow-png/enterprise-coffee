@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job.CoffeeJobTestFixtures.*;
+import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job.CoffeeJobTestFixtures.validCoffeeJob;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

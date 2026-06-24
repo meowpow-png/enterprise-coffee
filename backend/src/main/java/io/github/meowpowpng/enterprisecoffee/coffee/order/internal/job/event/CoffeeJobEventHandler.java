@@ -1,9 +1,9 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job.event;
 
+import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.event.CoffeeOrderEvents;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job.CoffeeJob;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job.CoffeeJobRepository;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job.CoffeeJobTracker;
-import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.event.CoffeeOrderEvents;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;

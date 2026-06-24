@@ -1,6 +1,9 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.machine.internal;
 
-import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.*;
+import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.CoffeeMachineClient;
+import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.CoffeeMachineStatus;
+import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.MachineCoffeeProgress;
+import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.MachineOrderResult;
 import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception.CoffeeMachineProtocolException;
 import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception.CoffeeMachineUnavailableException;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
@@ -33,16 +36,16 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
     @Override
     public CoffeeMachineStatus status() {
         return callMachine(CallOperation.of("status", () -> restClient.get()
-                .uri("/status")
-                .exchange((ignored, response) -> {
-                    var payload = response.bodyTo(MachineStatusPayload.class);
-                    if (payload == null) {
-                        return null;
-                    }
-                    Logger.logStatusReceived(payload.status());
-                    return CoffeeMachineStatus.valueOf(payload.status());
-                }),
-        "Failed to retrieve coffee machine status"
+                        .uri("/status")
+                        .exchange((ignored, response) -> {
+                            var payload = response.bodyTo(MachineStatusPayload.class);
+                            if (payload == null) {
+                                return null;
+                            }
+                            Logger.logStatusReceived(payload.status());
+                            return CoffeeMachineStatus.valueOf(payload.status());
+                        }),
+                "Failed to retrieve coffee machine status"
         ));
     }
 
@@ -51,21 +54,21 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
         Objects.requireNonNull(type, "type must not be null");
 
         return callMachine(CallOperation.of("order", () -> restClient.post()
-                .uri("/order")
-                .body(new MachineOrderRequest(type.value()))
-                .exchange((ignored, clientResponse) -> {
-                    var statusCode = clientResponse.getStatusCode().value();
-                    Logger.logOrderReceived(String.valueOf(statusCode));
+                        .uri("/order")
+                        .body(new MachineOrderRequest(type.value()))
+                        .exchange((ignored, clientResponse) -> {
+                            var statusCode = clientResponse.getStatusCode().value();
+                            Logger.logOrderReceived(String.valueOf(statusCode));
 
-                    return switch (statusCode) {
-                        case 202 -> MachineOrderResult.ACCEPTED;
-                        case 409 -> MachineOrderResult.BUSY;
-                        case 400 -> MachineOrderResult.INVALID;
-                        default -> throw new IllegalStateException(
-                                "Unexpected machine order response: HTTP " + statusCode
-                        );
-                    };
-                }),
+                            return switch (statusCode) {
+                                case 202 -> MachineOrderResult.ACCEPTED;
+                                case 409 -> MachineOrderResult.BUSY;
+                                case 400 -> MachineOrderResult.INVALID;
+                                default -> throw new IllegalStateException(
+                                        "Unexpected machine order response: HTTP " + statusCode
+                                );
+                            };
+                        }),
                 "Failed to submit coffee order"
         ));
     }
@@ -73,28 +76,29 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
     @Override
     public MachineCoffeeProgress progress() {
         return callMachine(CallOperation.of("progress", () -> {
-            var payload = restClient.get()
-                    .uri("/progress")
-                    .retrieve()
-                    .body(MachineProgressPayload.class);
+                    var payload = restClient.get()
+                            .uri("/progress")
+                            .retrieve()
+                            .body(MachineProgressPayload.class);
 
-            if (payload == null) {
-                return null;
-            }
-            var type = payload.type();
-            var coffeeType = !type.isBlank()
-                    ? new CoffeeType(type)
-                    : null;
+                    if (payload == null) {
+                        return null;
+                    }
+                    var type = payload.type();
+                    var coffeeType = !type.isBlank()
+                            ? new CoffeeType(type)
+                            : null;
 
-            var progress = payload.progress();
+                    var progress = payload.progress();
 
-            Logger.logProgressReceived(coffeeType, progress);
+                    Logger.logProgressReceived(coffeeType, progress);
 
-            return new MachineCoffeeProgress(
-                    coffeeType,
-                    Progress.of(progress)
-            );
-        }, "Failed to retrieve coffee machine progress"));
+                    return new MachineCoffeeProgress(
+                            coffeeType,
+                            Progress.of(progress)
+                    );
+                }, "Failed to retrieve coffee machine progress"
+        ));
     }
 
     private static <T> T callMachine(CallOperation<T> op) {
@@ -143,6 +147,7 @@ class HttpCoffeeMachineClient implements CoffeeMachineClient {
     }
 
     record MachineStatusPayload(String status) {}
+
     record MachineProgressPayload(String type, int progress) {}
 
     private static final class Logger {

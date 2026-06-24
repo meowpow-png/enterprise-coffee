@@ -7,7 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job.CoffeeJobTestFixtures.*;
+import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job.CoffeeJobTestFixtures.validCoffeeJob;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -179,7 +179,7 @@ class CoffeeJobTest {
         @DisplayName("Should throw IllegalStateException when job is not in progress")
         void should_ThrowIllegalStateException_when_JobIsNotInProgress() {
             var job = validCoffeeJob();
-            var progress =  Progress.of(42);
+            var progress = Progress.of(42);
 
             assertThatThrownBy(() -> job.updateProgress(progress))
                     .isInstanceOf(IllegalStateException.class);

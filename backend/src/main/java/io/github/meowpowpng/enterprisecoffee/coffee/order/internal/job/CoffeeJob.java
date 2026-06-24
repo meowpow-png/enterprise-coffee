@@ -1,7 +1,7 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job;
 
-import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.CoffeeOrder;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.Progress;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.CoffeeOrder;
 
 import java.util.Objects;
 import java.util.UUID;

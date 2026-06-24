@@ -8,4 +8,4 @@ import java.util.UUID;
  * Spring Data repository for coffee order entities.
  */
 @SuppressWarnings("unused")
-interface JpaCoffeeOrderCrudRepository extends JpaRepository<CoffeeOrderEntity, UUID> {}
+public interface JpaCoffeeOrderCrudRepository extends JpaRepository<CoffeeOrderEntity, UUID> {}

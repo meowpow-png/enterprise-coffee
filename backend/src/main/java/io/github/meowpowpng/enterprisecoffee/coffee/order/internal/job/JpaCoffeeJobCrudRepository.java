@@ -11,7 +11,7 @@ import java.util.UUID;
  * Spring Data repository for coffee job entities.
  */
 @SuppressWarnings("unused")
-interface JpaCoffeeJobCrudRepository extends JpaRepository<CoffeeJobEntity, UUID> {
+public interface JpaCoffeeJobCrudRepository extends JpaRepository<CoffeeJobEntity, UUID> {
 
     //@formatter:off
     @Modifying

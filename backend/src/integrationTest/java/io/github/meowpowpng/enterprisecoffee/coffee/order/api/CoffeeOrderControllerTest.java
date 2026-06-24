@@ -28,18 +28,20 @@ class CoffeeOrderControllerTest {
     private MockMvcSupport support;
 
     @Autowired
-    private TestCoffeeOrderService service;
+    private CoffeeOrderService service;
 
+    private TestCoffeeOrderService testService;
     private MockMvc mockMvc;
 
     @BeforeEach
     void setupCoffeeOrderControllerTest() {
+        this.testService = (TestCoffeeOrderService) service;
         this.mockMvc = support.mockMvc();
     }
 
     @AfterEach
     void teardownCoffeeOrderControllerTest() {
-        service.reset();
+        testService.reset();
     }
 
     @Test
@@ -52,7 +54,7 @@ class CoffeeOrderControllerTest {
 
         var response = new CoffeeOrderResponse("accepted");
 
-        service.response(response);
+        testService.response(response);
 
         mockMvc.perform(request)
                 .andExpect(status().isAccepted())
@@ -79,7 +81,7 @@ class CoffeeOrderControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsBytes(new CoffeeOrderRequest("ESPRESSO")));
 
-        service.markInvalidOrder();
+        testService.markInvalidOrder();
 
         mockMvc.perform(request)
                 .andExpect(status().isBadRequest())
@@ -95,7 +97,7 @@ class CoffeeOrderControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsBytes(new CoffeeOrderRequest("ESPRESSO")));
 
-        service.markProcessingFailure();
+        testService.markProcessingFailure();
 
         mockMvc.perform(request)
                 .andExpect(status().isConflict())

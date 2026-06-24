@@ -6,7 +6,7 @@ import io.github.meowpowpng.enterprisecoffee.coffee.order.api.exception.CoffeeOr
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-final class StubCoffeeOrderService implements CoffeeOrderService {
+final class TestCoffeeOrderService implements CoffeeOrderService {
 
     public static final String INVALID_ORDER_MESSAGE = "invalid order";
     public static final String PROCESSING_FAILURE_MESSAGE = "processing failure";
@@ -15,7 +15,7 @@ final class StubCoffeeOrderService implements CoffeeOrderService {
     private boolean invalidOrder;
     private boolean processingFails;
 
-    StubCoffeeOrderService() {
+    TestCoffeeOrderService() {
         this.response = new CoffeeOrderResponse("accepted");
     }
 

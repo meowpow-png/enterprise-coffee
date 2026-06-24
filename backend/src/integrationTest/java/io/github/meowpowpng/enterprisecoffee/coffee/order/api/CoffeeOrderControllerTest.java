@@ -28,7 +28,7 @@ class CoffeeOrderControllerTest {
     private MockMvcSupport support;
 
     @Autowired
-    private StubCoffeeOrderService service;
+    private TestCoffeeOrderService service;
 
     private MockMvc mockMvc;
 
@@ -84,7 +84,7 @@ class CoffeeOrderControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message")
-                        .value(StubCoffeeOrderService.INVALID_ORDER_MESSAGE));
+                        .value(TestCoffeeOrderService.INVALID_ORDER_MESSAGE));
     }
 
     @Test
@@ -100,6 +100,6 @@ class CoffeeOrderControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.message")
-                        .value(StubCoffeeOrderService.PROCESSING_FAILURE_MESSAGE));
+                        .value(TestCoffeeOrderService.PROCESSING_FAILURE_MESSAGE));
     }
 }

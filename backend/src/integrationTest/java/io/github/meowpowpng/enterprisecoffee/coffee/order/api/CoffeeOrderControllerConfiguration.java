@@ -8,13 +8,13 @@ import org.springframework.context.annotation.Primary;
 public class CoffeeOrderControllerConfiguration {
 
     @Bean
-    StubCoffeeOrderService stubCoffeeOrderService() {
-        return new StubCoffeeOrderService();
+    TestCoffeeOrderService stubCoffeeOrderService() {
+        return new TestCoffeeOrderService();
     }
 
     @Bean
     @Primary
-    CoffeeOrderService testCoffeeOrderService(StubCoffeeOrderService service) {
+    CoffeeOrderService testCoffeeOrderService(TestCoffeeOrderService service) {
         return service;
     }
 }

@@ -67,7 +67,7 @@ jobs:
         run: just backend::gradlew assemble
 
       - name: Run backend tests with coverage
-        run: just backend::gradlew test jacocoTestReport
+        run: just backend::gradlew test integrationTest jacocoTestReport
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v6

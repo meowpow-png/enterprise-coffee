@@ -32,9 +32,6 @@ class JpaCoffeeJobRepositoryTest {
     @Autowired
     private JpaCoffeeOrderRepository orderRepository;
 
-    @Autowired
-    private EntityManager entityManager;
-
     @Nested
     @DisplayName("create")
     class CreateTests {
@@ -50,9 +47,6 @@ class JpaCoffeeJobRepositoryTest {
             orderRepository.save(order);
             jobRepository.create(job);
 
-            entityManager.flush();
-            entityManager.clear();
-
             var result = jobRepository.findById(job.id());
             assertThat(result).contains(job);
         }
@@ -61,6 +55,9 @@ class JpaCoffeeJobRepositoryTest {
     @Nested
     @DisplayName("update")
     class UpdateTests {
+
+        @Autowired
+        private EntityManager entityManager;
 
         @Test
         @DisplayName("Should update coffee job when job exists")
@@ -108,9 +105,6 @@ class JpaCoffeeJobRepositoryTest {
             jobRepository.create(espressoJob);
             jobRepository.create(latteJob);
 
-            entityManager.flush();
-            entityManager.clear();
-
             var result = jobRepository.findById(latteJob.id());
             assertThat(result).contains(latteJob);
         }
@@ -142,14 +136,8 @@ class JpaCoffeeJobRepositoryTest {
             orderRepository.save(order);
             jobRepository.create(job);
 
-            entityManager.flush();
-            entityManager.clear();
-
             var cutoff = Instant.now().plusSeconds(10);
             var deleted = jobRepository.deleteNotUpdatedSince(cutoff);
-
-            entityManager.flush();
-            entityManager.clear();
 
             assertThat(deleted).isEqualTo(1);
             assertThat(jobRepository.findById(job.id())).isEmpty();

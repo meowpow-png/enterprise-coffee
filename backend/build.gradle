@@ -98,8 +98,9 @@ tasks.withType(Test).configureEach {
     outputs.upToDateWhen { false }
     useJUnitPlatform()
     testLogging {
-        events "passed", "skipped", "failed"
+        events "passed", "skipped", "failed", "standardOut"
         exceptionFormat = TestExceptionFormat.FULL
+        showCauses = true
     }
     jvmArgs '-XX:+EnableDynamicAgentLoading'
 }

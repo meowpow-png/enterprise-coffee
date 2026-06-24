@@ -34,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @Transactional
 @SpringBootTest
 @IntegrationTest
-@Import(DefaultCoffeeOrderServiceTest.TestCoffeeJobConfiguration.class)
+@Import(DefaultCoffeeOrderServiceTest.Configuration.class)
 class DefaultCoffeeOrderServiceTest extends MockWebServerTest {
 
     @DynamicPropertySource
@@ -196,7 +196,7 @@ class DefaultCoffeeOrderServiceTest extends MockWebServerTest {
     }
 
     @TestConfiguration
-    static class TestCoffeeJobConfiguration {
+    static class Configuration {
 
         @Bean
         @Primary

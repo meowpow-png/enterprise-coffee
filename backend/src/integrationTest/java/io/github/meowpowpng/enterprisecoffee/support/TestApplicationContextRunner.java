@@ -89,11 +89,11 @@ public final class TestApplicationContextRunner {
         }
 
         public Builder withTransactionManagement() {
-            return withConfiguration(TestTransactionConfig.class);
+            return withConfiguration(TestTransactionConfiguration.class);
         }
 
         public Builder withSchedulingEnabled() {
-            return withConfiguration(TestSchedulerConfig.class);
+            return withConfiguration(TestSchedulerConfiguration.class);
         }
 
         public Builder runApplicationRunners(String... args) {
@@ -156,9 +156,9 @@ public final class TestApplicationContextRunner {
 
     @TestConfiguration
     @EnableTransactionManagement
-    static class TestTransactionConfig {}
+    static class TestTransactionConfiguration {}
 
     @TestConfiguration
     @EnableScheduling
-    static class TestSchedulerConfig {}
+    static class TestSchedulerConfiguration {}
 }

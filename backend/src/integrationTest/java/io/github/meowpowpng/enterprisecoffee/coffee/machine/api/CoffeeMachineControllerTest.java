@@ -1,5 +1,7 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.machine.api;
 
+import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception.CoffeeMachineProtocolException;
+import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception.CoffeeMachineUnavailableException;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.Progress;
 import io.github.meowpowpng.enterprisecoffee.common.ApiEndpoints;
@@ -13,6 +15,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.test.web.servlet.MockMvc;
+
+import org.jspecify.annotations.NullMarked;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,24 +36,26 @@ class CoffeeMachineControllerTest {
     private MockMvcSupport support;
 
     @Autowired
-    private StubCoffeeMachineClient client;
+    private CoffeeMachineClient client;
 
+    private TestCoffeeMachineClient testClient;
     private MockMvc mockMvc;
 
     @BeforeEach
     void setupCoffeeMachineControllerTest() {
+        this.testClient = (TestCoffeeMachineClient) client;
         this.mockMvc = support.mockMvc();
     }
 
     @AfterEach
     void teardownCoffeeMachineControllerTest() {
-        client.reset();
+        testClient.reset();
     }
 
     @Test
     @DisplayName("Should return status when status is requested")
     void should_ReturnStatus_when_StatusIsRequested() throws Exception {
-        client.status(CoffeeMachineStatus.BREWING);
+        testClient.status(CoffeeMachineStatus.BREWING);
 
         mockMvc.perform(get(ApiEndpoints.MACHINE_STATUS))
                 .andExpect(status().isOk())
@@ -63,7 +69,7 @@ class CoffeeMachineControllerTest {
         var expectedType = "LATTE";
         var expectedProgress = 75;
 
-        client.progress(new MachineCoffeeProgress(
+        testClient.progress(new MachineCoffeeProgress(
                 new CoffeeType(expectedType),
                 Progress.of(expectedProgress)
         ));
@@ -78,7 +84,7 @@ class CoffeeMachineControllerTest {
     void should_ReturnEmptyType_when_ProgressHasNoCoffeeType() throws Exception {
         var expectedProgress = 75;
 
-        client.progress(new MachineCoffeeProgress(
+        testClient.progress(new MachineCoffeeProgress(
                 null,
                 Progress.of(expectedProgress)
         ));
@@ -93,37 +99,106 @@ class CoffeeMachineControllerTest {
     @Test
     @DisplayName("Should return service unavailable when machine is unavailable")
     void should_ReturnServiceUnavailable_when_MachineIsUnavailable() throws Exception {
-        client.markUnavailable();
+        testClient.markUnavailable();
 
         mockMvc.perform(get(ApiEndpoints.MACHINE_STATUS))
                 .andExpect(status().isServiceUnavailable())
                 .andExpect(jsonPath("$.message")
-                        .value(StubCoffeeMachineClient.UNAVAILABLE_MESSAGE));
+                        .value(TestCoffeeMachineClient.UNAVAILABLE_MESSAGE));
     }
 
     @Test
     @DisplayName("Should return internal server error when machine protocol fails")
     void should_ReturnInternalServerError_when_MachineProtocolFails() throws Exception {
-        client.markProtocolFailure();
+        testClient.markProtocolFailure();
 
         mockMvc.perform(get(ApiEndpoints.MACHINE_STATUS))
                 .andExpect(status().isInternalServerError())
                 .andExpect(jsonPath("$.message")
-                        .value(StubCoffeeMachineClient.PROTOCOL_FAILURE_MESSAGE));
+                        .value(TestCoffeeMachineClient.PROTOCOL_FAILURE_MESSAGE));
     }
 
     @TestConfiguration
     static class Configuration {
 
         @Bean
-        StubCoffeeMachineClient stubCoffeeMachineClient() {
-            return new StubCoffeeMachineClient();
-        }
-
-        @Bean
         @Primary
-        CoffeeMachineClient testCoffeeMachineClient(StubCoffeeMachineClient client) {
-            return client;
+        CoffeeMachineClient testCoffeeMachineClient() {
+            return new TestCoffeeMachineClient();
         }
     }
+
+    @NullMarked
+    static final class TestCoffeeMachineClient implements CoffeeMachineClient {
+
+        public static final String UNAVAILABLE_MESSAGE = "machine unavailable";
+        public static final String PROTOCOL_FAILURE_MESSAGE = "protocol failure";
+
+        private CoffeeMachineStatus status;
+        private MachineCoffeeProgress progress;
+        private boolean isAvailable, protocolFails;
+
+        TestCoffeeMachineClient() {
+            this.status = CoffeeMachineStatus.READY;
+            this.progress = new MachineCoffeeProgress(
+                    new CoffeeType("ESPRESSO"),
+                    Progress.of(50)
+            );
+            this.isAvailable = true;
+        }
+
+        @Override
+        public CoffeeMachineStatus status() {
+            if (!isAvailable) {
+                throw new CoffeeMachineUnavailableException(
+                        UNAVAILABLE_MESSAGE,
+                        new RuntimeException("boom")
+                );
+            }
+            if (protocolFails) {
+                throw new CoffeeMachineProtocolException(
+                        PROTOCOL_FAILURE_MESSAGE,
+                        new RuntimeException("boom")
+                );
+            }
+            return status;
+        }
+
+        @Override
+        public MachineCoffeeProgress progress() {
+            return progress;
+        }
+
+        @Override
+        public MachineOrderResult order(CoffeeType type) {
+            return MachineOrderResult.ACCEPTED;
+        }
+
+        void status(CoffeeMachineStatus status) {
+            this.status = status;
+        }
+
+        void progress(MachineCoffeeProgress progress) {
+            this.progress = progress;
+        }
+
+        void markUnavailable() {
+            isAvailable = false;
+        }
+
+        void markProtocolFailure() {
+            protocolFails = true;
+        }
+
+        void reset() {
+            this.status = CoffeeMachineStatus.READY;
+            this.progress = new MachineCoffeeProgress(
+                    new CoffeeType("ESPRESSO"),
+                    Progress.of(50)
+            );
+            isAvailable = true;
+            protocolFails = false;
+        }
+    }
+
 }

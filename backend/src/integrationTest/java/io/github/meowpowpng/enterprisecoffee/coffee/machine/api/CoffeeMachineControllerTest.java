@@ -10,10 +10,7 @@ import io.github.meowpowpng.enterprisecoffee.support.MockMvcSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Primary;
 import org.springframework.test.web.servlet.MockMvc;
 
 import org.jspecify.annotations.NullMarked;
@@ -29,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @MockMvcIntegrationTest
-@Import(CoffeeMachineControllerTest.Configuration.class)
+@Import(CoffeeMachineControllerConfiguration.class)
 class CoffeeMachineControllerTest {
 
     @Autowired
@@ -118,16 +115,6 @@ class CoffeeMachineControllerTest {
                         .value(TestCoffeeMachineClient.PROTOCOL_FAILURE_MESSAGE));
     }
 
-    @TestConfiguration
-    static class Configuration {
-
-        @Bean
-        @Primary
-        CoffeeMachineClient testCoffeeMachineClient() {
-            return new TestCoffeeMachineClient();
-        }
-    }
-
     @NullMarked
     static final class TestCoffeeMachineClient implements CoffeeMachineClient {
 
@@ -200,5 +187,4 @@ class CoffeeMachineControllerTest {
             protocolFails = false;
         }
     }
-
 }

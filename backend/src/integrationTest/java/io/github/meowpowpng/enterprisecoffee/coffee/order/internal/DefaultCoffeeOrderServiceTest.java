@@ -5,17 +5,13 @@ import io.github.meowpowpng.enterprisecoffee.coffee.order.api.CoffeeOrderRespons
 import io.github.meowpowpng.enterprisecoffee.coffee.order.api.CoffeeOrderService;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.api.exception.CoffeeOrderInvalidException;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.api.exception.CoffeeOrderProcessingException;
-import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job.CoffeeJobTracker;
 import io.github.meowpowpng.enterprisecoffee.support.DisableAsync;
 import io.github.meowpowpng.enterprisecoffee.support.IntegrationTest;
 import io.github.meowpowpng.enterprisecoffee.support.MockWebServerTest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Primary;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +21,6 @@ import okhttp3.mockwebserver.SocketPolicy;
 
 import org.junit.jupiter.api.*;
 
-import org.mockito.Mockito;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -34,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @Transactional
 @SpringBootTest
 @IntegrationTest
-@Import(DefaultCoffeeOrderServiceTest.Configuration.class)
+@Import(CoffeeOrderServiceConfiguration.class)
 class DefaultCoffeeOrderServiceTest extends MockWebServerTest {
 
     @DynamicPropertySource
@@ -192,16 +186,6 @@ class DefaultCoffeeOrderServiceTest extends MockWebServerTest {
 
             assertThat(order.getType()).isEqualTo(coffeeType);
             assertThat(order.getStatus()).isEqualTo(CoffeeOrder.Status.FAILED);
-        }
-    }
-
-    @TestConfiguration
-    static class Configuration {
-
-        @Bean
-        @Primary
-        CoffeeJobTracker testCoffeeJobTracker() {
-            return Mockito.mock(CoffeeJobTracker.class);
         }
     }
 }

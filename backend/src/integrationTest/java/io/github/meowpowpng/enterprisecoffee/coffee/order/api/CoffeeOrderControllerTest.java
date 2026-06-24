@@ -6,10 +6,7 @@ import io.github.meowpowpng.enterprisecoffee.support.MockMvcSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -24,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @MockMvcIntegrationTest
-@Import(CoffeeOrderControllerTest.Configuration.class)
+@Import(CoffeeOrderControllerConfiguration.class)
 class CoffeeOrderControllerTest {
 
     @Autowired
@@ -104,20 +101,5 @@ class CoffeeOrderControllerTest {
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.message")
                         .value(StubCoffeeOrderService.PROCESSING_FAILURE_MESSAGE));
-    }
-
-    @TestConfiguration
-    static class Configuration {
-
-        @Bean
-        StubCoffeeOrderService stubCoffeeOrderService() {
-            return new StubCoffeeOrderService();
-        }
-
-        @Bean
-        @Primary
-        CoffeeOrderService testCoffeeOrderService(StubCoffeeOrderService service) {
-            return service;
-        }
     }
 }

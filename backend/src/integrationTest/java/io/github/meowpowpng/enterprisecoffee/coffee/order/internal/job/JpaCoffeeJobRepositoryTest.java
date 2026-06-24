@@ -130,6 +130,10 @@ class JpaCoffeeJobRepositoryTest {
         @Test
         @DisplayName("Should delete coffee jobs not updated since cutoff")
         void should_DeleteCoffeeJobsNotUpdatedSinceCutoff() {
+            var time = Instant.now().plusSeconds(10);
+            var _deleted = jobRepository.deleteNotUpdatedSince(time);
+            assertThat(_deleted).isZero();
+
             var order = CoffeeOrder.create(
                     new CoffeeType("ESPRESSO")
             );
@@ -154,6 +158,10 @@ class JpaCoffeeJobRepositoryTest {
         @Test
         @DisplayName("Should return deleted coffee job count when jobs are deleted")
         void should_ReturnDeletedCoffeeJobCount_when_JobsAreDeleted() {
+            var time = Instant.now().plusSeconds(10);
+            var _deleted = jobRepository.deleteNotUpdatedSince(time);
+            assertThat(_deleted).isZero();
+
             var espressoOrder = CoffeeOrder.create(
                     new CoffeeType("ESPRESSO")
             );

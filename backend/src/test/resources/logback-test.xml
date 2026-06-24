@@ -1,10 +1,11 @@
 <configuration>
+    <property name="TEST_LOG_LEVEL" value="${TEST_LOG_LEVEL:-ERROR}" />
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>[%level] %msg%n</pattern>
         </encoder>
     </appender>
-    <root level="ERROR">
+    <root level="${TEST_LOG_LEVEL}">
         <appender-ref ref="CONSOLE"/>
     </root>
 </configuration>

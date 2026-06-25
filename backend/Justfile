@@ -1,10 +1,12 @@
 set shell := ["bash", "-eu", "-o", "pipefail", "-c"]
 
+import 'just/docker.just'
+
 backend-url := "http://localhost:8081"
 
-# Execute docker compose command
-compose +args:
-    docker compose -p coffee-backend {{args}}
+# List available recipes
+default:
+    @just --list
 
 # Execute gradle wrapper command
 gradlew *args:

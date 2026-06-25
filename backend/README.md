@@ -21,19 +21,19 @@ DB_USER=coffee
 DB_PASSWORD=coffee
 ```
 
-Start the supporting services:
+Start supporting services:
 
 ```shell
 just compose up -d
 ```
 
-Build the application:
+Build backend application:
 
 ```shell
 ./gradlew build
 ```
 
-Run the application:
+Run backend application:
 
 ```shell
 ./gradlew bootRun
@@ -185,7 +185,7 @@ coffee.order.job.timeout=30s
 
 ## Deployment
 
-The backend is distributed as a Docker image based on Alpine 3.23. It requires access to a PostgreSQL database and an Enterprise Coffee Machine service.
+The backend is distributed as a Docker image based on Alpine 3.23. It requires access to a PostgreSQL database and Enterprise Coffee Machine service.
 
 The service is configured using the following environment variables:
 
@@ -279,6 +279,8 @@ Generate a combined code coverage report:
 ./gradlew jacocoTestReport
 ```
 
-When running the complete test suite, unit tests execute first, followed by integration tests. `jacocoTestReport` task runs last and aggregates code coverage from both test suites into a single report.
+**Notes:**
 
-Both unit and integration tests are always executed regardless of Gradle's up-to-date checks to ensure test results and coverage reports are generated from a fresh test run.
+- When running all test suites, unit tests execute first, followed by integration tests
+- Code coverage task runs last and aggregates coverage from all suites into a single report
+- Both unit and integration tests are always executed regardless of Gradle's up-to-date checks to ensure test results and coverage reports are generated from a fresh test run

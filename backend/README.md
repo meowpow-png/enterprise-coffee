@@ -259,6 +259,32 @@ volumes:
 | `./gradlew jacocoTestReport` | Generate code coverage report |
 | `just compose <args>`        | Run docker compose commands   |
 
+### Docker
+
+Build backend jar:
+
+```shell
+./gradlew build
+```
+
+Build Docker image:
+
+```shell
+just compose build
+```
+
+Start local container stack:
+
+```shell
+just compose up -d
+```
+
+**Notes:**
+
+- The Docker image is based on Alpine 3.23 to reduce image size
+- The image includes a custom Java runtime created with `jlink` and contains only the modules required to run the application
+- The Dockerfile expects a pre-built application JAR and does not build the project
+
 ### Testing
 
 Run unit tests:

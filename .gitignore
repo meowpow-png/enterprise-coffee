@@ -16,5 +16,6 @@
 .DS_Store
 
 ## Other
+.obsidian/*
 logs
 *.env

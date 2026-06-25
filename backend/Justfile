@@ -1,5 +1,6 @@
 set shell := ["bash", "-eu", "-o", "pipefail", "-c"]
 
+import 'just/api.just'
 import 'just/docker.just'
 
 backend-url := "http://localhost:8081"

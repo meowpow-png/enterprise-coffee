@@ -1,0 +1,5 @@
+*
+!build/*
+!build/libs/
+build/libs/*
+!build/libs/enterprise-coffee-backend.jar

@@ -49,6 +49,12 @@ http://localhost:8081/swagger-ui/index.html
 
 See [development](#development) for more information.
 
+## Architecture
+
+The backend follows a modular, domain-oriented architecture inspired by practices commonly used in enterprise applications. While the coffee domain is intentionally simple, the project emphasizes clear separation of responsibilities and maintainable code organization.
+
+For more information about system architecture and design decisions, see [ARCHITECTURE.md](architecture.md).
+
 ## API
 
 ### Submit Coffee Order

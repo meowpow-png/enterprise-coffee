@@ -1,4 +1,4 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.machine.internal;
+package io.github.meowpowpng.enterprisecoffee.coffee.machine.internal.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

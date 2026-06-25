@@ -1,6 +1,7 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job;
+package io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job.config;
 
 import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.CoffeeMachineClient;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job.CoffeeJobTracker;
 import io.github.meowpowpng.enterprisecoffee.common.DomainEventPublisher;
 import io.github.meowpowpng.enterprisecoffee.common.ThreadSleeper;
 import io.github.meowpowpng.enterprisecoffee.infra.DefaultThreadSleeper;

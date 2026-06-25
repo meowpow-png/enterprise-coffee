@@ -1,4 +1,4 @@
-package io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job;
+package io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

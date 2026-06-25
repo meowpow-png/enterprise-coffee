@@ -1,5 +1,7 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.machine.internal;
 
+import io.github.meowpowpng.enterprisecoffee.coffee.machine.internal.config.MachineConfiguration;
+import io.github.meowpowpng.enterprisecoffee.coffee.machine.internal.config.MachineProperties;
 import io.github.meowpowpng.enterprisecoffee.support.MockWebServerTest;
 import io.github.meowpowpng.enterprisecoffee.support.TestApplicationContextRunner;
 

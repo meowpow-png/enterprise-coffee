@@ -47,13 +47,13 @@ Open Swagger UI:
 http://localhost:8081/swagger-ui/index.html
 ```
 
-See [development](#development) for more information.
+See [Development](#development) section for more information.
 
 ## Architecture
 
 The backend follows a modular, domain-oriented architecture inspired by practices commonly used in enterprise applications. While the coffee domain is intentionally simple, the project emphasizes clear separation of responsibilities and maintainable code organization.
 
-For more information about system architecture and design decisions, see [ARCHITECTURE.md](architecture.md).
+Read [ARCHITECTURE.md](architecture.md) for more information.
 
 ## API
 
@@ -316,3 +316,4 @@ Generate a combined code coverage report:
 - When running all test suites, unit tests execute first, followed by integration tests
 - Code coverage task runs last and aggregates coverage from all suites into a single report
 - Both unit and integration tests are always executed regardless of Gradle's up-to-date checks to ensure test results and coverage reports are generated from a fresh test run
+- See [TESTING.md](docs/TESTING.md) for testing architecture, infrastructure, and project conventions

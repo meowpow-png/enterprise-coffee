@@ -1,7 +1,11 @@
 :root {
-    --color-background: #111827;
-    --color-primary: #d6a46b;
+    --color-primary: #D6A46B;
 
-    --color-text: #ffffff;
-    --color-text-muted: #9ca3af;
+    --color-background: #16181F;
+    --color-surface: #232730;
+
+    --color-text: #F5F5F7;
+    --color-text-muted: #9B9FA9;
+
+    --color-border: rgba(255, 255, 255, 0.12);
 }

@@ -1,0 +1,40 @@
+<svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 64 64"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+>
+    <!-- Foam -->
+    <path d="
+        M18 24
+        C18 20 21 18 24 18
+        C24 14 27 12 31 12
+        C35 12 38 14 38 18
+        C41 18 44 20 44 24
+    "/>
+
+    <!-- Rim -->
+    <path d="M18 24H44"/>
+
+    <!-- Cup -->
+    <path d="
+        M18 24
+        C18 34 22 42 31 42
+        C40 42 44 34 44 24
+    "/>
+
+    <!-- Handle -->
+    <path d="
+        M44 26
+        H49
+        C52 26 54 28 54 31
+        C54 34 52 36 49 36
+        H44
+    "/>
+
+    <!-- Saucer -->
+    <path d="M16 48H46"/>
+</svg>

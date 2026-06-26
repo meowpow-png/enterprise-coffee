@@ -1,0 +1,14 @@
+html,
+body,
+#root {
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+
+    background: var(--color-background);
+    color: var(--color-text);
+
+    font-family: system-ui, sans-serif;
+}

@@ -12,9 +12,12 @@ public final class TestCoffeeOrder {
 
     private TestCoffeeOrder() {}
 
-
     public static CoffeeOrder createOrder(CoffeeType type) {
         return FACTORY.create(type);
+    }
+
+    public static CoffeeOrder createOrder(String type) {
+        return FACTORY.create(new CoffeeType(type));
     }
 
     public static CoffeeOrder createOrder() {

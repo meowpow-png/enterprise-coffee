@@ -11,15 +11,15 @@ public final class TestCoffeeOrder {
 
     private TestCoffeeOrder() {}
 
-    public static CoffeeOrder createOrder(CoffeeType type) {
+    public static CoffeeOrder create(CoffeeType type) {
         return FACTORY.create(type);
     }
 
-    public static CoffeeOrder createOrder(String type) {
+    public static CoffeeOrder create(String type) {
         return FACTORY.create(new CoffeeType(type));
     }
 
-    public static CoffeeOrder createOrder() {
-        return createOrder(TestCoffeeType.create());
+    public static CoffeeOrder create() {
+        return create(TestCoffeeType.create());
     }
 }

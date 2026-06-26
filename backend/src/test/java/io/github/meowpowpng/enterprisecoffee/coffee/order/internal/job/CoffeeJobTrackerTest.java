@@ -414,7 +414,7 @@ class CoffeeJobTrackerTest {
     }
 
     private static CoffeeJob createJob(CoffeeType type) {
-        var order = TestCoffeeOrder.createOrder(type);
+        var order = TestCoffeeOrder.create(type);
         return CoffeeJob.create(order.id());
     }
 

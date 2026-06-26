@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.TestCoffeeOrder.createOrder;
+import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.TestCoffeeOrder.create;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
@@ -22,7 +22,7 @@ class CoffeeOrderMapperTest {
         @Test
         @DisplayName("Should map order to entity when order is valid")
         void should_MapOrderToEntity_when_OrderIsValid() {
-            var order = createOrder();
+            var order = create();
             var entity = CoffeeOrderMapper.toEntity(order);
 
             assertThat(entity.getId()).isEqualTo(order.id().value());

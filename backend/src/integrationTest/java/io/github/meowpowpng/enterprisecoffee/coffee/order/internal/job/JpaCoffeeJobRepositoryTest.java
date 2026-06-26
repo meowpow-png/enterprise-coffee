@@ -38,7 +38,7 @@ class JpaCoffeeJobRepositoryTest {
         @Test
         @DisplayName("Should persist coffee job when job is created")
         void should_PersistCoffeeJob_when_JobIsCreated() {
-            var order = TestCoffeeOrder.createOrder();
+            var order = TestCoffeeOrder.create();
             var job = CoffeeJob.create(order.id());
 
             orderRepository.save(order);
@@ -59,7 +59,7 @@ class JpaCoffeeJobRepositoryTest {
         @Test
         @DisplayName("Should update coffee job when job exists")
         void should_UpdateCoffeeJob_when_JobExists() {
-            var order = TestCoffeeOrder.createOrder();
+            var order = TestCoffeeOrder.create();
             var job = CoffeeJob.create(order.id());
 
             orderRepository.save(order);
@@ -85,8 +85,8 @@ class JpaCoffeeJobRepositoryTest {
         @Test
         @DisplayName("Should return coffee job when identifier exists")
         void should_ReturnCoffeeJob_when_IdentifierExists() {
-            var order1 = TestCoffeeOrder.createOrder("ESPRESSO");
-            var order2 = TestCoffeeOrder.createOrder("LATTE");
+            var order1 = TestCoffeeOrder.create("ESPRESSO");
+            var order2 = TestCoffeeOrder.create("LATTE");
 
             orderRepository.save(order1);
             orderRepository.save(order2);
@@ -120,7 +120,7 @@ class JpaCoffeeJobRepositoryTest {
             var _deleted = jobRepository.deleteNotUpdatedSince(time);
             assertThat(_deleted).isZero();
 
-            var order = TestCoffeeOrder.createOrder();
+            var order = TestCoffeeOrder.create();
             var job = CoffeeJob.create(order.id());
 
             orderRepository.save(order);
@@ -136,8 +136,8 @@ class JpaCoffeeJobRepositoryTest {
         @Test
         @DisplayName("Should return deleted coffee job count when jobs are deleted")
         void should_ReturnDeletedCoffeeJobCount_when_JobsAreDeleted() {
-            var espressoOrder = TestCoffeeOrder.createOrder("ESPRESSO");
-            var latteOrder = TestCoffeeOrder.createOrder("LATTE");
+            var espressoOrder = TestCoffeeOrder.create("ESPRESSO");
+            var latteOrder = TestCoffeeOrder.create("LATTE");
 
             orderRepository.save(espressoOrder);
             orderRepository.save(latteOrder);

@@ -27,7 +27,7 @@ class JpaCoffeeOrderRepositoryTest {
         @Test
         @DisplayName("Should persist coffee order when order is saved")
         void should_PersistCoffeeOrder_when_OrderIsSaved() {
-            var order = TestCoffeeOrder.createOrder();
+            var order = TestCoffeeOrder.create();
             repository.save(order);
 
             var result = repository.findById(order.id());
@@ -45,8 +45,8 @@ class JpaCoffeeOrderRepositoryTest {
         @Test
         @DisplayName("Should return coffee order when identifier exists")
         void should_ReturnCoffeeOrder_when_IdentifierExists() {
-            var espresso = TestCoffeeOrder.createOrder("ESPRESSO");
-            var latte = TestCoffeeOrder.createOrder("LATTE");
+            var espresso = TestCoffeeOrder.create("ESPRESSO");
+            var latte = TestCoffeeOrder.create("LATTE");
 
             repository.save(espresso);
             repository.save(latte);

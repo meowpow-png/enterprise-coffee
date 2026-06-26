@@ -72,7 +72,7 @@ class CoffeeJobTrackerTest {
     @Test
     @DisplayName("Should persist coffee job when tracking begins")
     void should_PersistCoffeeJob_when_TrackingBegins() {
-        var order = TestCoffeeOrder.createOrder();
+        var order = TestCoffeeOrder.create();
         var job = CoffeeJob.create(order.id());
 
         orderRepository.save(order);
@@ -88,7 +88,7 @@ class CoffeeJobTrackerTest {
     @Test
     @DisplayName("Should persist updated progress when machine reports increased progress")
     void should_PersistUpdatedProgress_when_MachineReportsIncreasedProgress() {
-        var order = TestCoffeeOrder.createOrder();
+        var order = TestCoffeeOrder.create();
         var job = CoffeeJob.create(order.id());
 
         orderRepository.save(order);
@@ -108,7 +108,7 @@ class CoffeeJobTrackerTest {
     @Test
     @DisplayName("Should persist completed job when machine reports 100 percent progress")
     void should_PersistCompletedJob_when_MachineReports100PercentProgress() {
-        var order = TestCoffeeOrder.createOrder();
+        var order = TestCoffeeOrder.create();
         var job = CoffeeJob.create(order.id());
 
         orderRepository.save(order);
@@ -128,7 +128,7 @@ class CoffeeJobTrackerTest {
     @Test
     @DisplayName("Should persist failed job when communication with coffee machine fails")
     void should_PersistFailedJob_when_CommunicationWithCoffeeMachineFails() {
-        var order = TestCoffeeOrder.createOrder();
+        var order = TestCoffeeOrder.create();
         var job = CoffeeJob.create(order.id());
 
         orderRepository.save(order);

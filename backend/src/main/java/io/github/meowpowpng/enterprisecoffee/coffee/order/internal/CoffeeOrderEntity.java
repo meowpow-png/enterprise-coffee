@@ -12,7 +12,7 @@ import java.util.UUID;
 @NullUnmarked
 @SuppressWarnings("unused")
 @Table(name = "coffee_order")
-class CoffeeOrderEntity {
+public class CoffeeOrderEntity {
 
     @Id
     @Column(nullable = false, updatable = false)

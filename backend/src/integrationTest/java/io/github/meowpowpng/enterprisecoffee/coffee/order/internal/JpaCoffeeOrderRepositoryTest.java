@@ -1,6 +1,5 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.order.internal;
 
-import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
 import io.github.meowpowpng.enterprisecoffee.support.JpaIntegrationTest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +27,7 @@ class JpaCoffeeOrderRepositoryTest {
         @Test
         @DisplayName("Should persist coffee order when order is saved")
         void should_PersistCoffeeOrder_when_OrderIsSaved() {
-            var order = CoffeeOrder.create(
-                    new CoffeeType("ESPRESSO")
-            );
+            var order = TestCoffeeOrder.createOrder();
             repository.save(order);
 
             var result = repository.findById(order.id());
@@ -48,12 +45,9 @@ class JpaCoffeeOrderRepositoryTest {
         @Test
         @DisplayName("Should return coffee order when identifier exists")
         void should_ReturnCoffeeOrder_when_IdentifierExists() {
-            var espresso = CoffeeOrder.create(
-                    new CoffeeType("ESPRESSO")
-            );
-            var latte = CoffeeOrder.create(
-                    new CoffeeType("LATTE")
-            );
+            var espresso = TestCoffeeOrder.createOrder("ESPRESSO");
+            var latte = TestCoffeeOrder.createOrder("LATTE");
+
             repository.save(espresso);
             repository.save(latte);
 

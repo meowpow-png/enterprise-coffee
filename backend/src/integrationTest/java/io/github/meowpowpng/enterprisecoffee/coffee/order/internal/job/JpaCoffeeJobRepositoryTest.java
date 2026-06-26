@@ -1,9 +1,8 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job;
 
-import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.Progress;
-import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.CoffeeOrder;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.JpaCoffeeOrderRepository;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.TestCoffeeOrder;
 import io.github.meowpowpng.enterprisecoffee.support.JpaIntegrationTest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +38,7 @@ class JpaCoffeeJobRepositoryTest {
         @Test
         @DisplayName("Should persist coffee job when job is created")
         void should_PersistCoffeeJob_when_JobIsCreated() {
-            var order = CoffeeOrder.create(
-                    new CoffeeType("ESPRESSO")
-            );
+            var order = TestCoffeeOrder.createOrder();
             var job = CoffeeJob.create(order.id());
 
             orderRepository.save(order);
@@ -62,9 +59,7 @@ class JpaCoffeeJobRepositoryTest {
         @Test
         @DisplayName("Should update coffee job when job exists")
         void should_UpdateCoffeeJob_when_JobExists() {
-            var order = CoffeeOrder.create(
-                    new CoffeeType("ESPRESSO")
-            );
+            var order = TestCoffeeOrder.createOrder();
             var job = CoffeeJob.create(order.id());
 
             orderRepository.save(order);
@@ -90,12 +85,9 @@ class JpaCoffeeJobRepositoryTest {
         @Test
         @DisplayName("Should return coffee job when identifier exists")
         void should_ReturnCoffeeJob_when_IdentifierExists() {
-            var order1 = CoffeeOrder.create(
-                    new CoffeeType("ESPRESSO")
-            );
-            var order2 = CoffeeOrder.create(
-                    new CoffeeType("LATTE")
-            );
+            var order1 = TestCoffeeOrder.createOrder("ESPRESSO");
+            var order2 = TestCoffeeOrder.createOrder("LATTE");
+
             orderRepository.save(order1);
             orderRepository.save(order2);
 
@@ -128,9 +120,7 @@ class JpaCoffeeJobRepositoryTest {
             var _deleted = jobRepository.deleteNotUpdatedSince(time);
             assertThat(_deleted).isZero();
 
-            var order = CoffeeOrder.create(
-                    new CoffeeType("ESPRESSO")
-            );
+            var order = TestCoffeeOrder.createOrder();
             var job = CoffeeJob.create(order.id());
 
             orderRepository.save(order);
@@ -146,12 +136,9 @@ class JpaCoffeeJobRepositoryTest {
         @Test
         @DisplayName("Should return deleted coffee job count when jobs are deleted")
         void should_ReturnDeletedCoffeeJobCount_when_JobsAreDeleted() {
-            var espressoOrder = CoffeeOrder.create(
-                    new CoffeeType("ESPRESSO")
-            );
-            var latteOrder = CoffeeOrder.create(
-                    new CoffeeType("LATTE")
-            );
+            var espressoOrder = TestCoffeeOrder.createOrder("ESPRESSO");
+            var latteOrder = TestCoffeeOrder.createOrder("LATTE");
+
             orderRepository.save(espressoOrder);
             orderRepository.save(latteOrder);
 

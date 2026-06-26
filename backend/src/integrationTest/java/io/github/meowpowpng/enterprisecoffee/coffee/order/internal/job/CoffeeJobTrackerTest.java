@@ -7,9 +7,9 @@ import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.MachineOrderResu
 import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception.CoffeeMachineUnavailableException;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.Progress;
-import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.CoffeeOrder;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.CoffeeOrderRepository;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.JpaCoffeeOrderCrudRepository;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.TestCoffeeOrder;
 import io.github.meowpowpng.enterprisecoffee.common.ThreadSleeper;
 import io.github.meowpowpng.enterprisecoffee.support.DisableAsync;
 import io.github.meowpowpng.enterprisecoffee.support.IntegrationTest;
@@ -72,7 +72,7 @@ class CoffeeJobTrackerTest {
     @Test
     @DisplayName("Should persist coffee job when tracking begins")
     void should_PersistCoffeeJob_when_TrackingBegins() {
-        var order = CoffeeOrder.create(new CoffeeType("ESPRESSO"));
+        var order = TestCoffeeOrder.createOrder();
         var job = CoffeeJob.create(order.id());
 
         orderRepository.save(order);
@@ -88,7 +88,7 @@ class CoffeeJobTrackerTest {
     @Test
     @DisplayName("Should persist updated progress when machine reports increased progress")
     void should_PersistUpdatedProgress_when_MachineReportsIncreasedProgress() {
-        var order = CoffeeOrder.create(new CoffeeType("ESPRESSO"));
+        var order = TestCoffeeOrder.createOrder();
         var job = CoffeeJob.create(order.id());
 
         orderRepository.save(order);
@@ -108,7 +108,7 @@ class CoffeeJobTrackerTest {
     @Test
     @DisplayName("Should persist completed job when machine reports 100 percent progress")
     void should_PersistCompletedJob_when_MachineReports100PercentProgress() {
-        var order = CoffeeOrder.create(new CoffeeType("ESPRESSO"));
+        var order = TestCoffeeOrder.createOrder();
         var job = CoffeeJob.create(order.id());
 
         orderRepository.save(order);
@@ -128,7 +128,7 @@ class CoffeeJobTrackerTest {
     @Test
     @DisplayName("Should persist failed job when communication with coffee machine fails")
     void should_PersistFailedJob_when_CommunicationWithCoffeeMachineFails() {
-        var order = CoffeeOrder.create(new CoffeeType("ESPRESSO"));
+        var order = TestCoffeeOrder.createOrder();
         var job = CoffeeJob.create(order.id());
 
         orderRepository.save(order);

@@ -1,0 +1,55 @@
+.button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 1rem;
+    min-height: 10rem;
+
+    border: 1px solid transparent;
+    border-radius: 1.75rem;
+
+    background-color: var(--color-surface);
+
+    color: var(--color-text);
+
+    cursor: pointer;
+
+    transition:
+            background-color 200ms ease,
+            border-color 200ms ease;
+}
+
+.button:hover {
+    border-color: var(--color-primary);
+}
+
+.selected {
+    border-color: var(--color-primary);
+}
+
+.icon {
+    width: 3rem;
+    height: 3rem;
+
+    color: var(--color-primary);
+}
+
+.label {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.indicator {
+    width: 4rem;
+    height: 0.2rem;
+    border-radius: 999px;
+
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+.selected .indicator {
+    background-color: var(--color-primary);
+}

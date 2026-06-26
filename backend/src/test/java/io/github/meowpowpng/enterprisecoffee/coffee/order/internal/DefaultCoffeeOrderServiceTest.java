@@ -9,6 +9,7 @@ import io.github.meowpowpng.enterprisecoffee.coffee.order.api.exception.CoffeeOr
 import io.github.meowpowpng.enterprisecoffee.coffee.order.api.exception.CoffeeOrderProcessingException;
 import io.github.meowpowpng.enterprisecoffee.common.DomainEventPublisher;
 import io.github.meowpowpng.enterprisecoffee.support.LoggingTestFixtures;
+import io.github.meowpowpng.enterprisecoffee.support.TestClock;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -36,6 +37,13 @@ class DefaultCoffeeOrderServiceTest {
     @Mock
     private DomainEventPublisher publisher;
 
+    private CoffeeOrderFactory factory;
+
+    @BeforeEach
+    void setupDefaultCoffeeOrderServiceTest() {
+        this.factory = new CoffeeOrderFactory(TestClock.create());
+    }
+
     @Nested
     @DisplayName("constructor")
     class ConstructorTests {
@@ -46,7 +54,8 @@ class DefaultCoffeeOrderServiceTest {
         void should_ThrowNullPointerException_when_ClientIsNull() {
             var thrown = catchThrowable(() -> new DefaultCoffeeOrderService(
                     null,
-                    publisher
+                    publisher,
+                    factory
             ));
             assertThat(thrown).isInstanceOf(NullPointerException.class);
         }
@@ -57,6 +66,19 @@ class DefaultCoffeeOrderServiceTest {
         void should_ThrowNullPointerException_when_PublisherIsNull() {
             var thrown = catchThrowable(() -> new DefaultCoffeeOrderService(
                     client,
+                    null,
+                    factory
+            ));
+            assertThat(thrown).isInstanceOf(NullPointerException.class);
+        }
+
+        @Test
+        @SuppressWarnings("DataFlowIssue")
+        @DisplayName("Should throw NullPointerException when factory is null")
+        void should_ThrowNullPointerException_when_FactoryIsNull() {
+            var thrown = catchThrowable(() -> new DefaultCoffeeOrderService(
+                    client,
+                    publisher,
                     null
             ));
             assertThat(thrown).isInstanceOf(NullPointerException.class);
@@ -71,7 +93,7 @@ class DefaultCoffeeOrderServiceTest {
 
         @BeforeEach
         void setupOrderMethodTest() {
-            service = new DefaultCoffeeOrderService(client, publisher);
+            service = new DefaultCoffeeOrderService(client, publisher, factory);
         }
 
         @Test

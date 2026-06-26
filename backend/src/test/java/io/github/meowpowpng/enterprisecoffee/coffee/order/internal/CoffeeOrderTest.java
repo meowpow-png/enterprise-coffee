@@ -1,6 +1,7 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.order.internal;
 
 import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
+import io.github.meowpowpng.enterprisecoffee.support.TestClock;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -17,6 +18,8 @@ import static org.assertj.core.api.ThrowableAssert.catchThrowable;
 
 class CoffeeOrderTest {
 
+    private static final TestClock CLOCK = TestClock.create();
+
     @Nested
     @DisplayName("create")
     class CreateMethodTests {
@@ -25,7 +28,7 @@ class CoffeeOrderTest {
         @SuppressWarnings("DataFlowIssue")
         @DisplayName("Should throw NullPointerException when type is null")
         void should_ThrowNullPointerException_when_TypeIsNull() {
-            assertThatThrownBy(() -> CoffeeOrder.create(null))
+            assertThatThrownBy(() -> CoffeeOrder.create(null, CLOCK.instant()))
                     .isInstanceOf(NullPointerException.class);
         }
 
@@ -34,7 +37,7 @@ class CoffeeOrderTest {
         void should_CreatePendingOrder_when_TypeIsProvided() {
             var type = validCoffeeType();
 
-            var order = CoffeeOrder.create(type);
+            var order = CoffeeOrder.create(type, CLOCK.instant());
 
             assertThat(order.status()).isEqualTo(CoffeeOrder.Status.PENDING);
             assertThat(order.type()).isEqualTo(type);
@@ -43,7 +46,7 @@ class CoffeeOrderTest {
         @Test
         @DisplayName("Should create order with identifier when type is provided")
         void should_CreateOrderWithIdentifier_when_TypeIsProvided() {
-            var order = CoffeeOrder.create(validCoffeeType());
+            var order = CoffeeOrder.create(validCoffeeType(), CLOCK.instant());
 
             assertThat(order.id()).isNotNull();
         }
@@ -60,7 +63,8 @@ class CoffeeOrderTest {
             var thrown = catchThrowable(() -> CoffeeOrder.restore(
                     null,
                     validCoffeeType(),
-                    CoffeeOrder.Status.PENDING
+                    CoffeeOrder.Status.PENDING,
+                    CLOCK.instant()
             ));
             assertThat(thrown).isInstanceOf(NullPointerException.class);
         }
@@ -72,7 +76,8 @@ class CoffeeOrderTest {
             var thrown = catchThrowable(() -> CoffeeOrder.restore(
                     CoffeeOrder.Id.generate(),
                     null,
-                    CoffeeOrder.Status.PENDING
+                    CoffeeOrder.Status.PENDING,
+                    CLOCK.instant()
             ));
             assertThat(thrown).isInstanceOf(NullPointerException.class);
         }
@@ -84,6 +89,20 @@ class CoffeeOrderTest {
             var thrown = catchThrowable(() -> CoffeeOrder.restore(
                     CoffeeOrder.Id.generate(),
                     validCoffeeType(),
+                    null,
+                    CLOCK.instant()
+            ));
+            assertThat(thrown).isInstanceOf(NullPointerException.class);
+        }
+
+        @Test
+        @SuppressWarnings("DataFlowIssue")
+        @DisplayName("Should throw NullPointerException when createdAt is null")
+        void should_ThrowNullPointerException_when_CreatedAtIsNull() {
+            var thrown = catchThrowable(() -> CoffeeOrder.restore(
+                    CoffeeOrder.Id.generate(),
+                    validCoffeeType(),
+                    CoffeeOrder.Status.PENDING,
                     null
             ));
             assertThat(thrown).isInstanceOf(NullPointerException.class);
@@ -95,12 +114,14 @@ class CoffeeOrderTest {
             var id = CoffeeOrder.Id.generate();
             var type = new CoffeeType("ESPRESSO");
             var status = CoffeeOrder.Status.ACCEPTED;
+            var createdAt = CLOCK.instant();
 
-            var order = CoffeeOrder.restore(id, type, status);
+            var order = CoffeeOrder.restore(id, type, status, createdAt);
 
             assertThat(order.id()).isEqualTo(id);
             assertThat(order.type()).isEqualTo(type);
             assertThat(order.status()).isEqualTo(status);
+            assertThat(order.createdAt()).isEqualTo(createdAt);
         }
     }
 

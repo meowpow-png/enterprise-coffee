@@ -23,11 +23,12 @@ final class CoffeeOrderMapper {
             return new CoffeeOrderEntity(
                     order.id().value(),
                     order.type().value(),
-                    order.status()
+                    order.status(),
+                    order.createdAt()
             );
         }
         catch (RuntimeException e) {
-            var message = "Failed to map order to entity";
+            var message = "failed to map order to entity";
             throw new CoffeeOrderMappingException(message, e);
         }
     }
@@ -45,11 +46,12 @@ final class CoffeeOrderMapper {
             return CoffeeOrder.restore(
                     new CoffeeOrder.Id(entity.getId()),
                     new CoffeeType(entity.getType()),
-                    entity.getStatus()
+                    entity.getStatus(),
+                    entity.getCreatedAt()
             );
         }
         catch (RuntimeException e) {
-            var message = "Failed to map entity to order";
+            var message = "failed to map entity to order";
             throw new CoffeeOrderMappingException(message, e);
         }
     }

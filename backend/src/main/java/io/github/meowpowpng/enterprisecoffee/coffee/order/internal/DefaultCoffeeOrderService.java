@@ -30,13 +30,20 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
 
     private final CoffeeMachineClient client;
     private final DomainEventPublisher publisher;
+    private final CoffeeOrderFactory orderFactory;
 
-    DefaultCoffeeOrderService(CoffeeMachineClient client, DomainEventPublisher publisher) {
+    DefaultCoffeeOrderService(
+            CoffeeMachineClient client,
+            DomainEventPublisher publisher,
+            CoffeeOrderFactory orderFactory
+    ) {
         Objects.requireNonNull(client, "client must not be null");
         Objects.requireNonNull(publisher, "publisher must not be null");
+        Objects.requireNonNull(orderFactory, "orderFactory must not be null");
 
         this.client = client;
         this.publisher = publisher;
+        this.orderFactory = orderFactory;
     }
 
     @Override
@@ -44,7 +51,7 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
         Objects.requireNonNull(request, "request must not be null");
 
         var type = new CoffeeType(request.type());
-        var order = CoffeeOrder.create(type);
+        var order = orderFactory.create(type);
         var orderId = order.id();
 
         log.info("Coffee order created (id={}, type={})",

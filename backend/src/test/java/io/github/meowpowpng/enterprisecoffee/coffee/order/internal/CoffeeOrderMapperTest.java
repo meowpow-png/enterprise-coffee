@@ -1,5 +1,7 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.order.internal;
 
+import io.github.meowpowpng.enterprisecoffee.support.TestClock;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -47,7 +49,8 @@ class CoffeeOrderMapperTest {
             var entity = new CoffeeOrderEntity(
                     UUID.randomUUID(),
                     "ESPRESSO",
-                    CoffeeOrder.Status.PENDING
+                    CoffeeOrder.Status.PENDING,
+                    TestClock.create().instant()
             );
             var order = CoffeeOrderMapper.toDomain(entity);
 

@@ -2,6 +2,7 @@ package io.github.meowpowpng.enterprisecoffee.coffee.order.internal;
 
 import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
 
+import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -13,22 +14,25 @@ public final class CoffeeOrder {
     private final Id id;
     private final CoffeeType type;
     private final Status status;
+    private final Instant createdAt;
 
-    private CoffeeOrder(Id id, CoffeeType type, Status status) {
+    private CoffeeOrder(Id id, CoffeeType type, Status status, Instant createdAt) {
         this.id = Objects.requireNonNull(id, "id must not be null");
         this.type = Objects.requireNonNull(type, "type must not be null");
         this.status = Objects.requireNonNull(status, "status must not be null");
+        this.createdAt = Objects.requireNonNull(createdAt, "createdAt must not be null");
     }
 
     /**
      * Creates a new pending coffee order.
      *
      * @param type requested coffee type
+     * @param createdAt time the order was created
      *
      * @throws NullPointerException if {@code type} is {@code null}
      */
-    public static CoffeeOrder create(CoffeeType type) {
-        return new CoffeeOrder(Id.generate(), type, Status.PENDING);
+    public static CoffeeOrder create(CoffeeType type, Instant createdAt) {
+        return new CoffeeOrder(Id.generate(), type, Status.PENDING, createdAt);
     }
 
     /**
@@ -37,11 +41,12 @@ public final class CoffeeOrder {
      * @param id order identifier
      * @param type requested coffee type
      * @param status order status
+     * @param createdAt time the order was created
      *
      * @throws NullPointerException if any argument is {@code null}
      */
-    static CoffeeOrder restore(Id id, CoffeeType type, Status status) {
-        return new CoffeeOrder(id, type, status);
+    static CoffeeOrder restore(Id id, CoffeeType type, Status status, Instant createdAt) {
+        return new CoffeeOrder(id, type, status, createdAt);
     }
 
     /**
@@ -63,6 +68,13 @@ public final class CoffeeOrder {
      */
     public Status status() {
         return status;
+    }
+
+    /**
+     * Returns the time the order was created.
+     */
+    public Instant createdAt() {
+        return createdAt;
     }
 
     /**
@@ -102,7 +114,7 @@ public final class CoffeeOrder {
     }
 
     private CoffeeOrder withStatus(Status status) {
-        return new CoffeeOrder(id, type, status);
+        return new CoffeeOrder(id, type, status, createdAt);
     }
 
     /**
@@ -153,11 +165,12 @@ public final class CoffeeOrder {
         }
         return Objects.equals(id, that.id)
                 && Objects.equals(type, that.type)
-                && status == that.status;
+                && status == that.status
+                && createdAt.equals(that.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, type, status);
+        return Objects.hash(id, type, status, createdAt);
     }
 }

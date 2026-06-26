@@ -1,7 +1,5 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.order.internal;
 
-import org.hibernate.annotations.CreationTimestamp;
-
 import jakarta.persistence.*;
 
 import org.jspecify.annotations.NullUnmarked;
@@ -27,20 +25,21 @@ class CoffeeOrderEntity {
     @Column(nullable = false, length = 32, updatable = false)
     private CoffeeOrder.Status status;
 
-    @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
 
     protected CoffeeOrderEntity() {}
 
-    CoffeeOrderEntity(UUID id, String type, CoffeeOrder.Status status) {
+    CoffeeOrderEntity(UUID id, String type, CoffeeOrder.Status status, Instant createdAt) {
         Objects.requireNonNull(id, "id must not be null");
         Objects.requireNonNull(type, "type must not be null");
         Objects.requireNonNull(status, "status must not be null");
+        Objects.requireNonNull(createdAt, "createdAt must not be null");
 
         this.id = id;
         this.type = type;
         this.status = status;
+        this.createdAt = createdAt;
     }
 
     UUID getId() {

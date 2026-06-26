@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job.TestCoffeeJob.validCoffeeJob;
+import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job.TestCoffeeJob.create;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -20,7 +20,7 @@ class CoffeeJobMapperTest {
         @Test
         @DisplayName("Should map job to entity when job is valid")
         void should_MapJobToEntity_when_JobIsValid() {
-            var job = validCoffeeJob();
+            var job = create();
             var entity = CoffeeJobMapper.toEntity(job);
 
             assertThat(entity.getId()).isEqualTo(job.id().value());

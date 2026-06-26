@@ -8,9 +8,7 @@ public final class TestCoffeeJob {
 
     private TestCoffeeJob() {}
 
-    public static CoffeeJob validCoffeeJob() {
-        return CoffeeJob.create(
-                new CoffeeOrder.Id(UUID.randomUUID())
-        );
+    public static CoffeeJob create() {
+        return CoffeeJob.create(new CoffeeOrder.Id(UUID.randomUUID()));
     }
 }

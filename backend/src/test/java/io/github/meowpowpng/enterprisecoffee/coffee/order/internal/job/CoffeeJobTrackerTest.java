@@ -155,7 +155,7 @@ class CoffeeJobTrackerTest {
         @Test
         @DisplayName("Should complete job when progress reaches 100 percent")
         void should_CompleteJob_when_ProgressReaches100Percent() {
-            var job = TestCoffeeJob.validCoffeeJob();
+            var job = TestCoffeeJob.create();
 
             var progress = new MachineCoffeeProgress(
                     TestCoffeeType.create(),
@@ -171,7 +171,7 @@ class CoffeeJobTrackerTest {
         @Test
         @DisplayName("Should fail job when communication with coffee machine fails")
         void should_FailJob_when_CommunicationWithCoffeeMachineFails() {
-            var job = TestCoffeeJob.validCoffeeJob();
+            var job = TestCoffeeJob.create();
 
             Mockito.when(client.progress()).thenThrow(
                     new TestCoffeeMachineException("Communication failed")
@@ -185,7 +185,7 @@ class CoffeeJobTrackerTest {
         @Test
         @DisplayName("Should fail job when tracking is interrupted")
         void should_FailJob_when_TrackingIsInterrupted() {
-            var job = TestCoffeeJob.validCoffeeJob();
+            var job = TestCoffeeJob.create();
 
             var progress = new MachineCoffeeProgress(
                     TestCoffeeType.create(),
@@ -210,7 +210,7 @@ class CoffeeJobTrackerTest {
                     DEFAULT_TIMEOUT,
                     clock
             );
-            var job = TestCoffeeJob.validCoffeeJob();
+            var job = TestCoffeeJob.create();
 
             Mockito.when(client.progress()).thenAnswer(invocation -> {
                 clock.advance(DEFAULT_TIMEOUT.plusSeconds(1));

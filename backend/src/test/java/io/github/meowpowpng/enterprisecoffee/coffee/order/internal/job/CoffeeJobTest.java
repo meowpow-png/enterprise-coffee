@@ -7,7 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job.TestCoffeeJob.validCoffeeJob;
+import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job.TestCoffeeJob.create;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -30,13 +30,13 @@ class CoffeeJobTest {
         @Test
         @DisplayName("Should initialize progress when coffee job is created")
         void should_InitializeProgress_when_CoffeeJobIsCreated() {
-            assertThat(validCoffeeJob().progress()).isEqualTo(Progress.initial());
+            assertThat(create().progress()).isEqualTo(Progress.initial());
         }
 
         @Test
         @DisplayName("Should start in pending state when coffee job is created")
         void should_StartInPendingState_when_CoffeeJobIsCreated() {
-            assertThat(validCoffeeJob().status()).isEqualTo(CoffeeJob.Status.PENDING);
+            assertThat(create().status()).isEqualTo(CoffeeJob.Status.PENDING);
         }
 
         @Test
@@ -52,7 +52,7 @@ class CoffeeJobTest {
         @Test
         @DisplayName("Should generate identifier when coffee job is created")
         void should_GenerateIdentifier_when_CoffeeJobIsCreated() {
-            assertThat(validCoffeeJob().id()).isNotNull();
+            assertThat(create().id()).isNotNull();
         }
     }
 
@@ -138,7 +138,7 @@ class CoffeeJobTest {
         @Test
         @DisplayName("Should mark job as started when job is pending")
         void should_MarkJobAsStarted_when_JobIsPending() {
-            var job = validCoffeeJob();
+            var job = create();
 
             job.start();
 
@@ -166,7 +166,7 @@ class CoffeeJobTest {
         @Test
         @DisplayName("Should update current progress when job is in progress")
         void should_UpdateCurrentProgress_when_JobIsInProgress() {
-            var job = validCoffeeJob();
+            var job = create();
             var progress = Progress.of(42);
 
             job.start();
@@ -178,7 +178,7 @@ class CoffeeJobTest {
         @Test
         @DisplayName("Should throw IllegalStateException when job is not in progress")
         void should_ThrowIllegalStateException_when_JobIsNotInProgress() {
-            var job = validCoffeeJob();
+            var job = create();
             var progress = Progress.of(42);
 
             assertThatThrownBy(() -> job.updateProgress(progress))
@@ -188,7 +188,7 @@ class CoffeeJobTest {
         @Test
         @DisplayName("Should throw IllegalArgumentException when progress decreases")
         void should_ThrowIllegalArgumentException_when_ProgressDecreases() {
-            var job = validCoffeeJob();
+            var job = create();
 
             job.start();
             job.updateProgress(Progress.of(42));
@@ -205,7 +205,7 @@ class CoffeeJobTest {
         @Test
         @DisplayName("Should complete job when job is in progress")
         void should_CompleteJob_when_JobIsInProgress() {
-            var job = validCoffeeJob();
+            var job = create();
 
             job.start();
             job.complete();
@@ -216,7 +216,7 @@ class CoffeeJobTest {
         @Test
         @DisplayName("Should update progress to 100 percent when job is completed")
         void should_UpdateProgressTo100Percent_when_JobIsCompleted() {
-            var job = validCoffeeJob();
+            var job = create();
 
             job.start();
             job.complete();
@@ -228,7 +228,7 @@ class CoffeeJobTest {
         @Test
         @DisplayName("Should throw IllegalStateException when job is not in progress")
         void should_ThrowIllegalStateException_when_JobIsNotInProgress() {
-            assertThatThrownBy(() -> validCoffeeJob().complete())
+            assertThatThrownBy(() -> create().complete())
                     .isInstanceOf(IllegalStateException.class);
         }
     }
@@ -240,7 +240,7 @@ class CoffeeJobTest {
         @Test
         @DisplayName("Should mark job as failed when job can be failed")
         void should_MarkJobAsFailed_when_JobCanBeFailed() {
-            var job = validCoffeeJob();
+            var job = create();
 
             job.fail();
 
@@ -251,7 +251,7 @@ class CoffeeJobTest {
         @Test
         @DisplayName("Should throw IllegalStateException when job has already completed or failed")
         void should_ThrowIllegalStateException_when_JobHasAlreadyCompletedOrFailed() {
-            var job = validCoffeeJob();
+            var job = create();
 
             job.fail();
 

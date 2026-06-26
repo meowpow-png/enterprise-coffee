@@ -22,7 +22,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeTestFixtures.validCoffeeType;
-import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.TestCoffeeOrder.validCoffeeOrderRequest;
+import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.TestCoffeeOrder.createRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -110,7 +110,7 @@ class DefaultCoffeeOrderServiceTest {
             Mockito.when(client.order(validCoffeeType())).thenReturn(
                     MachineOrderResult.ACCEPTED
             );
-            var response = service.order(validCoffeeOrderRequest());
+            var response = service.order(createRequest());
 
             assertThat(response).isEqualTo(CoffeeOrderResponse.accepted());
         }
@@ -121,7 +121,7 @@ class DefaultCoffeeOrderServiceTest {
             Mockito.when(client.order(validCoffeeType())).thenReturn(
                     MachineOrderResult.INVALID
             );
-            assertThatThrownBy(() -> service.order(validCoffeeOrderRequest()))
+            assertThatThrownBy(() -> service.order(createRequest()))
                     .isInstanceOf(CoffeeOrderInvalidException.class);
         }
 
@@ -131,7 +131,7 @@ class DefaultCoffeeOrderServiceTest {
             Mockito.when(client.order(validCoffeeType())).thenReturn(
                     MachineOrderResult.BUSY
             );
-            assertThatThrownBy(() -> service.order(validCoffeeOrderRequest()))
+            assertThatThrownBy(() -> service.order(createRequest()))
                     .isInstanceOf(CoffeeOrderProcessingException.class);
         }
 
@@ -144,7 +144,7 @@ class DefaultCoffeeOrderServiceTest {
             );
             Mockito.when(client.order(validCoffeeType())).thenThrow(exception);
 
-            assertThatThrownBy(() -> service.order(validCoffeeOrderRequest()))
+            assertThatThrownBy(() -> service.order(createRequest()))
                     .isInstanceOf(CoffeeOrderProcessingException.class)
                     .hasCause(exception);
         }
@@ -159,7 +159,7 @@ class DefaultCoffeeOrderServiceTest {
                 );
                 Mockito.when(client.order(validCoffeeType())).thenThrow(exception);
 
-                assertThatThrownBy(() -> service.order(validCoffeeOrderRequest()))
+                assertThatThrownBy(() -> service.order(createRequest()))
                         .isSameAs(exception);
             };
             LoggingTestFixtures.withoutLogging(DefaultCoffeeOrderService.class, action);
@@ -172,7 +172,7 @@ class DefaultCoffeeOrderServiceTest {
             // unexpected result path triggers exception in implementation
             Mockito.when(client.order(validCoffeeType())).thenReturn(null);
 
-            assertThatThrownBy(() -> service.order(validCoffeeOrderRequest()))
+            assertThatThrownBy(() -> service.order(createRequest()))
                     .isInstanceOf(IllegalStateException.class);
         }
     }

@@ -5,8 +5,6 @@ import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.api.CoffeeOrderRequest;
 import io.github.meowpowpng.enterprisecoffee.support.TestClock;
 
-import java.util.UUID;
-
 public final class TestCoffeeOrder {
 
     private static final TestClock CLOCK = TestClock.create();
@@ -14,20 +12,16 @@ public final class TestCoffeeOrder {
 
     private TestCoffeeOrder() {}
 
-    public static CoffeeOrder validCoffeeOrder() {
-        return CoffeeOrder.restore(
-                new CoffeeOrder.Id(UUID.randomUUID()),
-                CoffeeTestFixtures.validCoffeeType(),
-                CoffeeOrder.Status.PENDING,
-                CLOCK.instant()
-        );
-    }
 
-    public static CoffeeOrderRequest validCoffeeOrderRequest() {
-        return new CoffeeOrderRequest("ESPRESSO");
-    }
-
-    public static CoffeeOrder orderOfType(CoffeeType type) {
+    public static CoffeeOrder createOrder(CoffeeType type) {
         return FACTORY.create(type);
+    }
+
+    public static CoffeeOrder createOrder() {
+        return createOrder(CoffeeTestFixtures.validCoffeeType());
+    }
+
+    public static CoffeeOrderRequest createRequest() {
+        return new CoffeeOrderRequest("ESPRESSO");
     }
 }

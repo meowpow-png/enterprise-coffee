@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.util.UUID;
 
 import static io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeTestFixtures.validCoffeeType;
-import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.TestCoffeeOrder.validCoffeeOrder;
+import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.TestCoffeeOrder.createOrder;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
@@ -132,7 +132,7 @@ class CoffeeOrderTest {
         @Test
         @DisplayName("Should return accepted order when order is accepted")
         void should_ReturnAcceptedOrder_when_OrderIsAccepted() {
-            var order = validCoffeeOrder();
+            var order = createOrder();
             var acceptedOrder = order.accept();
 
             assertThat(acceptedOrder.id()).isEqualTo(order.id());
@@ -148,7 +148,7 @@ class CoffeeOrderTest {
         @Test
         @DisplayName("Should return rejected order when order is rejected")
         void should_ReturnRejectedOrder_when_OrderIsRejected() {
-            var order = validCoffeeOrder();
+            var order = createOrder();
             var rejectedOrder = order.reject();
 
             assertThat(rejectedOrder.id()).isEqualTo(order.id());
@@ -164,7 +164,7 @@ class CoffeeOrderTest {
         @Test
         @DisplayName("Should return invalid order when order is marked invalid")
         void should_ReturnInvalidOrder_when_OrderIsMarkedInvalid() {
-            var order = validCoffeeOrder();
+            var order = createOrder();
             var invalidOrder = order.markInvalid();
 
             assertThat(invalidOrder.id()).isEqualTo(order.id());
@@ -180,7 +180,7 @@ class CoffeeOrderTest {
         @Test
         @DisplayName("Should return failed order when order fails")
         void should_ReturnFailedOrder_when_OrderFails() {
-            var order = validCoffeeOrder();
+            var order = createOrder();
             var failedOrder = order.fail();
 
             assertThat(failedOrder.id()).isEqualTo(order.id());

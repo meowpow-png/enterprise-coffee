@@ -4,7 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.TestCoffeeOrder.validCoffeeOrder;
+import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.TestCoffeeOrder.createOrder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -26,7 +26,7 @@ class CoffeeOrderEventsTest {
         @Test
         @DisplayName("Should return accepted event when order is provided")
         void should_ReturnAcceptedEvent_when_OrderIsProvided() {
-            var order = validCoffeeOrder();
+            var order = createOrder();
             var event = CoffeeOrderEvents.accepted(order);
 
             assertThat(event.order()).isEqualTo(order);
@@ -48,7 +48,7 @@ class CoffeeOrderEventsTest {
         @Test
         @DisplayName("Should return stored event when order is provided")
         void should_ReturnStoredEvent_when_OrderIsProvided() {
-            var order = validCoffeeOrder();
+            var order = createOrder();
             var event = CoffeeOrderEvents.store(order);
 
             assertThat(event.order()).isEqualTo(order);
@@ -70,7 +70,7 @@ class CoffeeOrderEventsTest {
         @Test
         @DisplayName("Should return rejected event when order is provided")
         void should_ReturnRejectedEvent_when_OrderIsProvided() {
-            var order = validCoffeeOrder();
+            var order = createOrder();
             var event = CoffeeOrderEvents.rejected(order);
 
             assertThat(event.order()).isEqualTo(order);
@@ -92,7 +92,7 @@ class CoffeeOrderEventsTest {
         @Test
         @DisplayName("Should return invalid event when order is provided")
         void should_ReturnInvalidEvent_when_OrderIsProvided() {
-            var order = validCoffeeOrder();
+            var order = createOrder();
             var event = CoffeeOrderEvents.invalid(order);
 
             assertThat(event.order()).isEqualTo(order);
@@ -114,7 +114,7 @@ class CoffeeOrderEventsTest {
         @Test
         @DisplayName("Should return failed event when order is provided")
         void should_ReturnFailedEvent_when_OrderIsProvided() {
-            var order = validCoffeeOrder();
+            var order = createOrder();
             var event = CoffeeOrderEvents.failed(order);
 
             assertThat(event.order()).isEqualTo(order);

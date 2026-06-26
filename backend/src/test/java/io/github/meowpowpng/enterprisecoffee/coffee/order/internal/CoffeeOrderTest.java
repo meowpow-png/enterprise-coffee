@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.util.UUID;
 
 import static io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeTestFixtures.validCoffeeType;
-import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.CoffeeOrderTestFixtures.validCoffeeOrder;
+import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.TestCoffeeOrder.validCoffeeOrder;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;

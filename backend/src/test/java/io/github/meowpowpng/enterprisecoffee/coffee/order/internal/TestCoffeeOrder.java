@@ -7,12 +7,12 @@ import io.github.meowpowpng.enterprisecoffee.support.TestClock;
 
 import java.util.UUID;
 
-public final class CoffeeOrderTestFixtures {
+public final class TestCoffeeOrder {
 
     private static final TestClock CLOCK = TestClock.create();
     private static final CoffeeOrderFactory FACTORY = new CoffeeOrderFactory(CLOCK);
 
-    private CoffeeOrderTestFixtures() {}
+    private TestCoffeeOrder() {}
 
     public static CoffeeOrder validCoffeeOrder() {
         return CoffeeOrder.restore(

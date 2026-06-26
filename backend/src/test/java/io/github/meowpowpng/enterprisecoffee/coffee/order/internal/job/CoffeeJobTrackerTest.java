@@ -8,7 +8,7 @@ import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeTestFixtures;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.Progress;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.CoffeeOrder;
-import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.CoffeeOrderTestFixtures;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.TestCoffeeOrder;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.job.event.CoffeeJobEvents;
 import io.github.meowpowpng.enterprisecoffee.common.DomainEvent;
 import io.github.meowpowpng.enterprisecoffee.common.DomainEventPublisher;
@@ -414,7 +414,7 @@ class CoffeeJobTrackerTest {
     }
 
     private static CoffeeJob createJob(CoffeeType type) {
-        var order = CoffeeOrderTestFixtures.orderOfType(type);
+        var order = TestCoffeeOrder.orderOfType(type);
         return CoffeeJob.create(order.id());
     }
 

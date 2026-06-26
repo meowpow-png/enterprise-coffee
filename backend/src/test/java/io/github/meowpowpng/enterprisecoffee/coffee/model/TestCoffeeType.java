@@ -1,8 +1,8 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.model;
 
-public final class CoffeeTestFixtures {
+public final class TestCoffeeType {
 
-    private CoffeeTestFixtures() {}
+    private TestCoffeeType() {}
 
     public static CoffeeType validCoffeeType() {
         return new CoffeeType("ESPRESSO");

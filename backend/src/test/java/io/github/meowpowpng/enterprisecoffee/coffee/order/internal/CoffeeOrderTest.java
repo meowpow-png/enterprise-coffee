@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeTestFixtures.validCoffeeType;
+import static io.github.meowpowpng.enterprisecoffee.coffee.model.TestCoffeeType.validCoffeeType;
 import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.TestCoffeeOrder.createOrder;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

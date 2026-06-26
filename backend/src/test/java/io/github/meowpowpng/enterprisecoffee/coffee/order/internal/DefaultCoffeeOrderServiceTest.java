@@ -21,7 +21,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeTestFixtures.validCoffeeType;
+import static io.github.meowpowpng.enterprisecoffee.coffee.model.TestCoffeeType.validCoffeeType;
 import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.TestCoffeeOrder.createRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;

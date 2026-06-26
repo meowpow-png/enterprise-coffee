@@ -4,7 +4,7 @@ import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.CoffeeMachineCli
 import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.MachineCoffeeProgress;
 import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception.CoffeeMachineUnavailableException;
 import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception.TestCoffeeMachineException;
-import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeTestFixtures;
+import io.github.meowpowpng.enterprisecoffee.coffee.model.TestCoffeeType;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.Progress;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.CoffeeOrder;
@@ -158,7 +158,7 @@ class CoffeeJobTrackerTest {
             var job = CoffeeJobTestFixtures.validCoffeeJob();
 
             var progress = new MachineCoffeeProgress(
-                    CoffeeTestFixtures.validCoffeeType(),
+                    TestCoffeeType.validCoffeeType(),
                     Progress.of(100)
             );
             Mockito.when(client.progress()).thenReturn(progress);
@@ -188,7 +188,7 @@ class CoffeeJobTrackerTest {
             var job = CoffeeJobTestFixtures.validCoffeeJob();
 
             var progress = new MachineCoffeeProgress(
-                    CoffeeTestFixtures.validCoffeeType(),
+                    TestCoffeeType.validCoffeeType(),
                     Progress.of(42)
             );
             Mockito.when(client.progress()).thenReturn(progress);
@@ -216,7 +216,7 @@ class CoffeeJobTrackerTest {
                 clock.advance(DEFAULT_TIMEOUT.plusSeconds(1));
 
                 return new MachineCoffeeProgress(
-                        CoffeeTestFixtures.validCoffeeType(),
+                        TestCoffeeType.validCoffeeType(),
                         Progress.of(42)
                 );
             });

@@ -158,7 +158,7 @@ class CoffeeJobTrackerTest {
             var job = CoffeeJobTestFixtures.validCoffeeJob();
 
             var progress = new MachineCoffeeProgress(
-                    TestCoffeeType.validCoffeeType(),
+                    TestCoffeeType.create(),
                     Progress.of(100)
             );
             Mockito.when(client.progress()).thenReturn(progress);
@@ -188,7 +188,7 @@ class CoffeeJobTrackerTest {
             var job = CoffeeJobTestFixtures.validCoffeeJob();
 
             var progress = new MachineCoffeeProgress(
-                    TestCoffeeType.validCoffeeType(),
+                    TestCoffeeType.create(),
                     Progress.of(42)
             );
             Mockito.when(client.progress()).thenReturn(progress);
@@ -216,7 +216,7 @@ class CoffeeJobTrackerTest {
                 clock.advance(DEFAULT_TIMEOUT.plusSeconds(1));
 
                 return new MachineCoffeeProgress(
-                        TestCoffeeType.validCoffeeType(),
+                        TestCoffeeType.create(),
                         Progress.of(42)
                 );
             });

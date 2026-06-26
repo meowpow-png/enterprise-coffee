@@ -4,7 +4,7 @@ public final class TestCoffeeType {
 
     private TestCoffeeType() {}
 
-    public static CoffeeType validCoffeeType() {
+    public static CoffeeType create() {
         return new CoffeeType("ESPRESSO");
     }
 }

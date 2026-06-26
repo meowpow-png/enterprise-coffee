@@ -21,7 +21,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static io.github.meowpowpng.enterprisecoffee.coffee.model.TestCoffeeType.validCoffeeType;
+import static io.github.meowpowpng.enterprisecoffee.coffee.model.TestCoffeeType.create;
 import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.TestCoffeeOrder.createRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -107,7 +107,7 @@ class DefaultCoffeeOrderServiceTest {
         @Test
         @DisplayName("Should return response when order is accepted")
         void should_ReturnResponse_when_OrderIsAccepted() {
-            Mockito.when(client.order(validCoffeeType())).thenReturn(
+            Mockito.when(client.order(create())).thenReturn(
                     MachineOrderResult.ACCEPTED
             );
             var response = service.order(createRequest());
@@ -118,7 +118,7 @@ class DefaultCoffeeOrderServiceTest {
         @Test
         @DisplayName("Should throw CoffeeOrderInvalidException when order is invalid")
         void should_ThrowCoffeeOrderInvalidException_when_OrderIsInvalid() {
-            Mockito.when(client.order(validCoffeeType())).thenReturn(
+            Mockito.when(client.order(create())).thenReturn(
                     MachineOrderResult.INVALID
             );
             assertThatThrownBy(() -> service.order(createRequest()))
@@ -128,7 +128,7 @@ class DefaultCoffeeOrderServiceTest {
         @Test
         @DisplayName("Should throw CoffeeOrderProcessingException when machine is busy")
         void should_ThrowCoffeeOrderProcessingException_when_MachineIsBusy() {
-            Mockito.when(client.order(validCoffeeType())).thenReturn(
+            Mockito.when(client.order(create())).thenReturn(
                     MachineOrderResult.BUSY
             );
             assertThatThrownBy(() -> service.order(createRequest()))
@@ -142,7 +142,7 @@ class DefaultCoffeeOrderServiceTest {
                     "machine unavailable",
                     new RuntimeException("boom")
             );
-            Mockito.when(client.order(validCoffeeType())).thenThrow(exception);
+            Mockito.when(client.order(create())).thenThrow(exception);
 
             assertThatThrownBy(() -> service.order(createRequest()))
                     .isInstanceOf(CoffeeOrderProcessingException.class)
@@ -157,7 +157,7 @@ class DefaultCoffeeOrderServiceTest {
                         "protocol violation",
                         new RuntimeException("boom")
                 );
-                Mockito.when(client.order(validCoffeeType())).thenThrow(exception);
+                Mockito.when(client.order(create())).thenThrow(exception);
 
                 assertThatThrownBy(() -> service.order(createRequest()))
                         .isSameAs(exception);
@@ -170,7 +170,7 @@ class DefaultCoffeeOrderServiceTest {
         @DisplayName("Should throw IllegalStateException when machine returns unexpected result")
         void should_ThrowIllegalStateException_when_MachineReturnsUnexpectedResult() {
             // unexpected result path triggers exception in implementation
-            Mockito.when(client.order(validCoffeeType())).thenReturn(null);
+            Mockito.when(client.order(create())).thenReturn(null);
 
             assertThatThrownBy(() -> service.order(createRequest()))
                     .isInstanceOf(IllegalStateException.class);

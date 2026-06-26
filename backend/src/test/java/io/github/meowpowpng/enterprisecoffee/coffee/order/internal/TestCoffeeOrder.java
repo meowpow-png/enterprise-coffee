@@ -18,7 +18,7 @@ public final class TestCoffeeOrder {
     }
 
     public static CoffeeOrder createOrder() {
-        return createOrder(TestCoffeeType.validCoffeeType());
+        return createOrder(TestCoffeeType.create());
     }
 
     public static CoffeeOrderRequest createRequest() {

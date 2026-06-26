@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static io.github.meowpowpng.enterprisecoffee.coffee.model.TestCoffeeType.validCoffeeType;
+import static io.github.meowpowpng.enterprisecoffee.coffee.model.TestCoffeeType.create;
 import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.TestCoffeeOrder.createOrder;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -35,7 +35,7 @@ class CoffeeOrderTest {
         @Test
         @DisplayName("Should create pending order when type is provided")
         void should_CreatePendingOrder_when_TypeIsProvided() {
-            var type = validCoffeeType();
+            var type = create();
 
             var order = CoffeeOrder.create(type, CLOCK.instant());
 
@@ -46,7 +46,7 @@ class CoffeeOrderTest {
         @Test
         @DisplayName("Should create order with identifier when type is provided")
         void should_CreateOrderWithIdentifier_when_TypeIsProvided() {
-            var order = CoffeeOrder.create(validCoffeeType(), CLOCK.instant());
+            var order = CoffeeOrder.create(create(), CLOCK.instant());
 
             assertThat(order.id()).isNotNull();
         }
@@ -62,7 +62,7 @@ class CoffeeOrderTest {
         void should_ThrowNullPointerException_when_IdIsNull() {
             var thrown = catchThrowable(() -> CoffeeOrder.restore(
                     null,
-                    validCoffeeType(),
+                    create(),
                     CoffeeOrder.Status.PENDING,
                     CLOCK.instant()
             ));
@@ -88,7 +88,7 @@ class CoffeeOrderTest {
         void should_ThrowNullPointerException_when_StatusIsNull() {
             var thrown = catchThrowable(() -> CoffeeOrder.restore(
                     CoffeeOrder.Id.generate(),
-                    validCoffeeType(),
+                    create(),
                     null,
                     CLOCK.instant()
             ));
@@ -101,7 +101,7 @@ class CoffeeOrderTest {
         void should_ThrowNullPointerException_when_CreatedAtIsNull() {
             var thrown = catchThrowable(() -> CoffeeOrder.restore(
                     CoffeeOrder.Id.generate(),
-                    validCoffeeType(),
+                    create(),
                     CoffeeOrder.Status.PENDING,
                     null
             ));

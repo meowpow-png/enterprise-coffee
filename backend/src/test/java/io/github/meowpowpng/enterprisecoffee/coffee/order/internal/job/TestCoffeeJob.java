@@ -4,9 +4,9 @@ import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.CoffeeOrder;
 
 import java.util.UUID;
 
-public final class CoffeeJobTestFixtures {
+public final class TestCoffeeJob {
 
-    private CoffeeJobTestFixtures() {}
+    private TestCoffeeJob() {}
 
     public static CoffeeJob validCoffeeJob() {
         return CoffeeJob.create(

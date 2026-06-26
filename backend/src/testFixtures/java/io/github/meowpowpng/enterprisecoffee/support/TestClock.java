@@ -35,7 +35,8 @@ public final class TestClock extends Clock {
         return instant;
     }
 
-    public void advance(Duration duration) {
+    public Instant advance(Duration duration) {
         instant = instant.plus(duration);
+        return instant;
     }
 }

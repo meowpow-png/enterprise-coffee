@@ -2,7 +2,6 @@ package io.github.meowpowpng.enterprisecoffee.coffee.order.internal;
 
 import io.github.meowpowpng.enterprisecoffee.coffee.model.TestCoffeeType;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
-import io.github.meowpowpng.enterprisecoffee.coffee.order.api.CoffeeOrderRequest;
 import io.github.meowpowpng.enterprisecoffee.support.TestClock;
 
 public final class TestCoffeeOrder {
@@ -22,9 +21,5 @@ public final class TestCoffeeOrder {
 
     public static CoffeeOrder createOrder() {
         return createOrder(TestCoffeeType.create());
-    }
-
-    public static CoffeeOrderRequest createRequest() {
-        return new CoffeeOrderRequest("ESPRESSO");
     }
 }

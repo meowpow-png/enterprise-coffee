@@ -53,7 +53,7 @@ class DefaultCoffeeOrderServiceTest extends MockWebServerTest {
         void should_ReturnAcceptedResponse_when_MachineAcceptsOrder() {
             server.enqueue(new MockResponse().setResponseCode(202));
 
-            var request = new CoffeeOrderRequest("ESPRESSO");
+            var request = TestCoffeeOrderRequest.create();
             var response = service.order(request);
 
             assertThat(response).isEqualTo(CoffeeOrderResponse.accepted());
@@ -89,7 +89,7 @@ class DefaultCoffeeOrderServiceTest extends MockWebServerTest {
         void should_ThrowCoffeeOrderProcessingException_when_MachineIsBusy() {
             server.enqueue(new MockResponse().setResponseCode(409));
 
-            var request = new CoffeeOrderRequest("ESPRESSO");
+            var request = TestCoffeeOrderRequest.create();
 
             assertThatThrownBy(() -> service.order(request))
                     .isInstanceOf(CoffeeOrderProcessingException.class);
@@ -126,7 +126,7 @@ class DefaultCoffeeOrderServiceTest extends MockWebServerTest {
         void should_ThrowCoffeeOrderInvalidException_when_MachineRejectsOrder() {
             server.enqueue(new MockResponse().setResponseCode(400));
 
-            var request = new CoffeeOrderRequest("ESPRESSO");
+            var request = TestCoffeeOrderRequest.create();
 
             assertThatThrownBy(() -> service.order(request))
                     .isInstanceOf(CoffeeOrderInvalidException.class);

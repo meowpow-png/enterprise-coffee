@@ -1,5 +1,6 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.order.api;
 
+import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.TestCoffeeOrderRequest;
 import io.github.meowpowpng.enterprisecoffee.common.ApiEndpoints;
 import io.github.meowpowpng.enterprisecoffee.support.MockMvcIntegrationTest;
 import io.github.meowpowpng.enterprisecoffee.support.MockMvcSupport;
@@ -50,7 +51,7 @@ class CoffeeOrderControllerTest {
         var mapper = support.mapper();
         var request = post(ApiEndpoints.COFFEE_ORDER)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsBytes(new CoffeeOrderRequest("ESPRESSO")));
+                .content(mapper.writeValueAsBytes(TestCoffeeOrderRequest.create()));
 
         var response = new CoffeeOrderResponse("accepted");
 
@@ -79,7 +80,7 @@ class CoffeeOrderControllerTest {
         var mapper = support.mapper();
         var request = post(ApiEndpoints.COFFEE_ORDER)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsBytes(new CoffeeOrderRequest("ESPRESSO")));
+                .content(mapper.writeValueAsBytes(TestCoffeeOrderRequest.create()));
 
         testService.markInvalidOrder();
 
@@ -95,7 +96,7 @@ class CoffeeOrderControllerTest {
         var mapper = support.mapper();
         var request = post(ApiEndpoints.COFFEE_ORDER)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsBytes(new CoffeeOrderRequest("ESPRESSO")));
+                .content(mapper.writeValueAsBytes(TestCoffeeOrderRequest.create()));
 
         testService.markProcessingFailure();
 

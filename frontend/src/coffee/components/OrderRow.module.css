@@ -1,0 +1,77 @@
+.row {
+    display: flex;
+    align-items: center;
+
+    gap: 1.2rem;
+    padding: 1rem 0;
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    width: 2rem;
+    height: 2rem;
+
+    border-radius: 50%;
+}
+
+.iconSvg {
+    width: 1rem;
+    height: 1rem;
+
+    color: var(--color-text);
+}
+
+.pending {
+    background-color: var(--color-text-muted);
+}
+
+.accepted {
+    background-color: #3FB950;
+}
+
+.rejected {
+    background-color: #D29922;
+}
+
+.invalid {
+    background-color: #F85149;
+}
+
+.failed {
+    background-color: #F85149;
+}
+
+.content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+
+    gap: 0.25rem;
+}
+
+.type {
+    color: var(--color-text);
+
+    font-size: 0.93rem;
+    font-weight: 500;
+}
+
+.status {
+    color: var(--color-text-muted);
+}
+
+.time {
+    flex-shrink: 0;
+
+    color: var(--color-text-muted);
+}
+
+.status,
+.time {
+    font-size: 0.8125rem;
+}

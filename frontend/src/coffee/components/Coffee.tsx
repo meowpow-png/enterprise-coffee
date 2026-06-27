@@ -1,5 +1,6 @@
 import CoffeeSelector from "./CoffeeSelector";
 import ProgressRing from "./ProgressRing";
+import RecentOrders from "./RecentOrders";
 
 import styles from "./Coffee.module.css";
 
@@ -11,6 +12,7 @@ function Coffee() {
                 type="ESPRESSO"
             />
             <CoffeeSelector />
+            <RecentOrders />
         </main>
     );
 }

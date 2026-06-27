@@ -1,0 +1,34 @@
+.card {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+
+    gap: 0.5rem;
+
+    padding: 2rem;
+
+    border: 1px solid var(--color-border);
+    border-radius: 1.25rem;
+
+    background-color: var(--color-surface);
+}
+
+.title {
+    color: var(--color-text);
+
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.orders {
+    display: flex;
+    flex-direction: column;
+}
+
+.orders > *:not(:last-child) {
+    margin-bottom: 0.15rem;
+    padding-bottom: 1.15rem;
+
+    border-bottom: 1px solid var(--color-border);
+}

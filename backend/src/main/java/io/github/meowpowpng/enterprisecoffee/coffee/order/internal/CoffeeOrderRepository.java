@@ -1,5 +1,6 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.order.internal;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -27,4 +28,15 @@ public interface CoffeeOrderRepository {
      * @throws CoffeeOrderPersistenceException if the order cannot be retrieved
      */
     Optional<CoffeeOrder> findById(CoffeeOrder.Id id);
+
+    /**
+     * Finds the latest coffee orders.
+     *
+     * @param limit maximum number of coffee orders to retrieve
+     *
+     * @return latest coffee orders from newest to oldest
+     * @throws IllegalArgumentException if {@code limit} is less than {@code 1}
+     * @throws CoffeeOrderPersistenceException if the orders cannot be retrieved
+     */
+    List<CoffeeOrder> findLatest(int limit);
 }

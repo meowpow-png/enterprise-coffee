@@ -1,15 +1,21 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.order.internal;
 
 import io.github.meowpowpng.enterprisecoffee.support.JpaIntegrationTest;
+import io.github.meowpowpng.enterprisecoffee.support.TestClock;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 
 import jakarta.persistence.EntityManager;
 
+import org.awaitility.Durations;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import java.time.Instant;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -63,6 +69,56 @@ class JpaCoffeeOrderRepositoryTest {
         void should_ReturnEmptyResult_when_IdentifierDoesNotExist() {
             var id = CoffeeOrder.Id.generate();
             assertThat(repository.findById(id)).isEmpty();
+        }
+
+        @Test
+        @DisplayName("Should return latest coffee orders when orders exist")
+        void should_ReturnLatestCoffeeOrders_when_OrdersExist() {
+            var clock = TestClock.create(
+                    Instant.parse("2026-01-01T10:02:00Z")
+            );
+            var minusOneSecond = Durations.ONE_SECOND.negated();
+            List<CoffeeOrder> orders = List.of(
+                    TestCoffeeOrder.create("ESPRESSO", clock.instant()),
+                    TestCoffeeOrder.create("LATTE", clock.advance(minusOneSecond)),
+                    TestCoffeeOrder.create("CAPPUCCINO", clock.advance(minusOneSecond))
+            );
+            orders.forEach(order -> repository.save(order));
+
+            entityManager.flush();
+
+            var result = repository.findLatest(3);
+            assertThat(result).containsExactlyElementsOf(orders);
+        }
+
+        @Test
+        @DisplayName("Should respect limit when latest coffee orders are requested")
+        void should_RespectLimit_when_LatestCoffeeOrdersAreRequested() {
+            var clock = TestClock.create(
+                    Instant.parse("2026-01-01T10:02:00Z")
+            );
+            var minusOneSecond = Durations.ONE_SECOND.negated();
+            List<CoffeeOrder> orders = List.of(
+                    TestCoffeeOrder.create("ESPRESSO", clock.instant()),
+                    TestCoffeeOrder.create("LATTE", clock.advance(minusOneSecond)),
+                    TestCoffeeOrder.create("CAPPUCCINO", clock.advance(minusOneSecond))
+            );
+            orders.forEach(repository::save);
+
+            entityManager.flush();
+
+            var result = repository.findLatest(2);
+
+            assertThat(result).containsExactly(
+                    orders.get(0),  // ESPRESSO
+                    orders.get(1)   // LATTE
+            );
+        }
+
+        @Test
+        @DisplayName("Should return empty list when no coffee orders exist")
+        void should_ReturnEmptyList_when_NoCoffeeOrdersExist() {
+            assertThat(repository.findLatest(10)).isEmpty();
         }
     }
 }

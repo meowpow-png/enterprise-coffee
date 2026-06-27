@@ -1,7 +1,9 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.order.internal;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -46,6 +48,28 @@ public class JpaCoffeeOrderRepository implements CoffeeOrderRepository {
         }
         catch (RuntimeException e) {
             var message = "failed to find coffee order";
+            throw new CoffeeOrderPersistenceException(message, e);
+        }
+    }
+
+    @Override
+    public List<CoffeeOrder> findLatest(int limit) {
+        if (limit < 1) {
+            throw new IllegalArgumentException("limit must be positive");
+        }
+        try {
+            var pageable = PageRequest.of(0, limit);
+
+            return repository.findByOrderByCreatedAtDesc(pageable)
+                    .stream()
+                    .map(CoffeeOrderMapper::toDomain)
+                    .toList();
+        }
+        catch (CoffeeOrderMappingException e) {
+            throw e;
+        }
+        catch (RuntimeException e) {
+            var message = "failed to find latest coffee orders";
             throw new CoffeeOrderPersistenceException(message, e);
         }
     }

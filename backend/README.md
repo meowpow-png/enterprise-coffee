@@ -316,12 +316,11 @@ volumes:
 
 | Command                      | Description                   |
 |------------------------------|-------------------------------|
-| `./gradlew build`            | Build the application         |
-| `./gradlew bootRun`          | Run the application           |
-| `./gradlew test`             | Run unit tests                |
-| `./gradlew integrationTest`  | Run integration tests         |
-| `./gradlew jacocoTestReport` | Generate code coverage report |
-| `just compose <args>`        | Run docker compose commands   |
+| `just compose <args>`        | Run Docker Compose commands   |
+| `just status`                | Get coffee machine status     |
+| `just order <type>`          | Submit coffee order           |
+| `just orders [limit]`        | Get latest coffee orders      |
+| `just progress`              | Get brewing progress          |
 
 ### Docker
 

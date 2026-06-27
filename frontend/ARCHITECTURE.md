@@ -35,12 +35,13 @@ A typical feature contains:
 * `hooks/` — feature-specific application logic
 * `api.ts` — backend communication
 * `types.ts` — feature-specific types
+* `index.ts` — barrel that re-exports the feature's public API
 
 **Rules**
 
 * Features own their UI, application logic, and backend communication
-* Features should be self-contained
-* Features must not depend on other features
+* Features should be self-contained and must not depend on other features
+* Consumers should import from the feature barrel rather than its internal modules
 
 ## Shared Modules
 

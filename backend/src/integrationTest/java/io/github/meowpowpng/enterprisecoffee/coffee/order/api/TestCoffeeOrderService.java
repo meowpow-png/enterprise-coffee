@@ -30,6 +30,11 @@ final class TestCoffeeOrderService implements CoffeeOrderService {
         return response;
     }
 
+    @Override
+    public CoffeeOrdersResponse findLatest(int limit) {
+        throw new UnsupportedOperationException();
+    }
+
     void response(CoffeeOrderResponse response) {
         this.response = response;
     }

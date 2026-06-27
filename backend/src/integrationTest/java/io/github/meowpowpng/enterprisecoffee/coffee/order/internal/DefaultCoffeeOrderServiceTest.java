@@ -3,11 +3,13 @@ package io.github.meowpowpng.enterprisecoffee.coffee.order.internal;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.api.CoffeeOrderRequest;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.api.CoffeeOrderResponse;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.api.CoffeeOrderService;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.api.CoffeeOrderView;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.api.exception.CoffeeOrderInvalidException;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.api.exception.CoffeeOrderProcessingException;
 import io.github.meowpowpng.enterprisecoffee.support.DisableAsync;
 import io.github.meowpowpng.enterprisecoffee.support.IntegrationTest;
 import io.github.meowpowpng.enterprisecoffee.support.MockWebServerTest;
+import io.github.meowpowpng.enterprisecoffee.support.TestClock;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,10 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.SocketPolicy;
+import org.awaitility.Durations;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -45,8 +50,8 @@ class DefaultCoffeeOrderServiceTest extends MockWebServerTest {
     private JpaCoffeeOrderCrudRepository orderRepository;
 
     @Nested
-    @DisplayName("accepted")
-    class AcceptedTests {
+    @DisplayName("order")
+    class OrderMethodTests {
 
         @Test
         @DisplayName("Should return accepted response when machine accepts order")
@@ -78,11 +83,6 @@ class DefaultCoffeeOrderServiceTest extends MockWebServerTest {
             assertThat(order.getType()).isEqualTo(coffeeType);
             assertThat(order.getStatus()).isEqualTo(CoffeeOrder.Status.ACCEPTED);
         }
-    }
-
-    @Nested
-    @DisplayName("busy")
-    class BusyTests {
 
         @Test
         @DisplayName("Should throw CoffeeOrderProcessingException when machine is busy")
@@ -115,11 +115,6 @@ class DefaultCoffeeOrderServiceTest extends MockWebServerTest {
             assertThat(order.getType()).isEqualTo(coffeeType);
             assertThat(order.getStatus()).isEqualTo(CoffeeOrder.Status.REJECTED);
         }
-    }
-
-    @Nested
-    @DisplayName("invalid")
-    class InvalidTests {
 
         @Test
         @DisplayName("Should throw CoffeeOrderInvalidException when machine rejects order")
@@ -152,16 +147,11 @@ class DefaultCoffeeOrderServiceTest extends MockWebServerTest {
             assertThat(order.getType()).isEqualTo(coffeeType);
             assertThat(order.getStatus()).isEqualTo(CoffeeOrder.Status.INVALID);
         }
-    }
-
-    @Nested
-    @DisplayName("unavailable")
-    class UnavailableTests {
 
         @Test
         @DisplayName("Should throw CoffeeOrderProcessingException when machine is unavailable")
         void should_ThrowCoffeeOrderProcessingException_when_MachineIsUnavailable() {
-            server.enqueue(new MockResponse().setSocketPolicy(SocketPolicy.DISCONNECT_AT_START));
+            server.enqueue(new MockResponse().setSocketPolicy(SocketPolicy.DISCONNECT_AFTER_REQUEST));
 
             var request = new CoffeeOrderRequest("ESPRESSO");
 
@@ -172,7 +162,7 @@ class DefaultCoffeeOrderServiceTest extends MockWebServerTest {
         @Test
         @DisplayName("Should persist failed order when machine is unavailable")
         void should_PersistFailedOrder_when_MachineIsUnavailable() {
-            server.enqueue(new MockResponse().setSocketPolicy(SocketPolicy.DISCONNECT_AT_START));
+            server.enqueue(new MockResponse().setSocketPolicy(SocketPolicy.DISCONNECT_AFTER_REQUEST));
 
             var coffeeType = "ESPRESSO";
             var request = new CoffeeOrderRequest(coffeeType);
@@ -188,6 +178,59 @@ class DefaultCoffeeOrderServiceTest extends MockWebServerTest {
 
             assertThat(order.getType()).isEqualTo(coffeeType);
             assertThat(order.getStatus()).isEqualTo(CoffeeOrder.Status.FAILED);
+        }
+    }
+
+    @Nested
+    @DisplayName("findLatest")
+    class FindLatestMethodTests {
+
+        @Autowired
+        private CoffeeOrderRepository repository;
+
+        @Test
+        @DisplayName("Should return latest coffee orders from newest to oldest")
+        void should_ReturnLatestCoffeeOrdersFromNewestToOldest_when_OrdersExist() {
+            var clock = TestClock.create(Instant.parse("2025-01-01T10:00:00Z"));
+            var oldest = TestCoffeeOrder.create(
+                    "ESPRESSO",
+                    clock.instant()
+            );
+            var newest = TestCoffeeOrder.create(
+                    "LATTE",
+                    clock.advance(Durations.ONE_SECOND)
+            );
+            repository.save(oldest);
+            repository.save(newest);
+
+            var response = service.findLatest(10);
+
+            assertThat(response.orders())
+                    .extracting(CoffeeOrderView::type)
+                    .containsExactly("LATTE", "ESPRESSO");
+        }
+
+        @Test
+        @DisplayName("Should return requested number of latest coffee orders")
+        void should_ReturnRequestedNumberOfLatestCoffeeOrders_when_LimitIsSpecified() {
+            var clock = TestClock.create(Instant.parse("2025-01-01T10:00:00Z"));
+            repository.save(TestCoffeeOrder.create(
+                    "ESPRESSO",
+                    clock.instant()
+            ));
+            repository.save(TestCoffeeOrder.create(
+                    "LATTE",
+                    clock.advance(Durations.ONE_SECOND)
+            ));
+            repository.save(TestCoffeeOrder.create(
+                    "CAPPUCCINO",
+                    clock.advance(Durations.ONE_SECOND)
+            ));
+            var response = service.findLatest(2);
+
+            assertThat(response.orders())
+                    .extracting(CoffeeOrderView::type)
+                    .containsExactly("CAPPUCCINO", "LATTE");
         }
     }
 }

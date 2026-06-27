@@ -5,9 +5,7 @@ import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.MachineOrderResu
 import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception.CoffeeMachineProtocolException;
 import io.github.meowpowpng.enterprisecoffee.coffee.machine.api.exception.CoffeeMachineUnavailableException;
 import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
-import io.github.meowpowpng.enterprisecoffee.coffee.order.api.CoffeeOrderRequest;
-import io.github.meowpowpng.enterprisecoffee.coffee.order.api.CoffeeOrderResponse;
-import io.github.meowpowpng.enterprisecoffee.coffee.order.api.CoffeeOrderService;
+import io.github.meowpowpng.enterprisecoffee.coffee.order.api.*;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.api.exception.CoffeeOrderInvalidException;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.api.exception.CoffeeOrderProcessingException;
 import io.github.meowpowpng.enterprisecoffee.coffee.order.internal.event.CoffeeOrderEvents;
@@ -18,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -31,19 +30,23 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
     private final CoffeeMachineClient client;
     private final DomainEventPublisher publisher;
     private final CoffeeOrderFactory orderFactory;
+    private final CoffeeOrderRepository repository;
 
     DefaultCoffeeOrderService(
             CoffeeMachineClient client,
             DomainEventPublisher publisher,
-            CoffeeOrderFactory orderFactory
+            CoffeeOrderFactory orderFactory,
+            CoffeeOrderRepository repository
     ) {
         Objects.requireNonNull(client, "client must not be null");
         Objects.requireNonNull(publisher, "publisher must not be null");
         Objects.requireNonNull(orderFactory, "orderFactory must not be null");
+        Objects.requireNonNull(repository, "repository must not be null");
 
         this.client = client;
         this.publisher = publisher;
         this.orderFactory = orderFactory;
+        this.repository = repository;
     }
 
     @Override
@@ -101,5 +104,24 @@ public class DefaultCoffeeOrderService implements CoffeeOrderService {
             throw new CoffeeOrderInvalidException(reason);
         }
         throw new IllegalStateException("Unexpected order result: " + result);
+    }
+
+    @Override
+    public CoffeeOrdersResponse findLatest(int limit) {
+        List<CoffeeOrderView> orders = repository.findLatest(limit)
+                .stream()
+                .map(DefaultCoffeeOrderService::toView)
+                .toList();
+
+        return new CoffeeOrdersResponse(orders);
+    }
+
+    private static CoffeeOrderView toView(CoffeeOrder order) {
+        return new CoffeeOrderView(
+                order.id().value(),
+                order.type().value(),
+                order.status().name(),
+                order.createdAt()
+        );
     }
 }

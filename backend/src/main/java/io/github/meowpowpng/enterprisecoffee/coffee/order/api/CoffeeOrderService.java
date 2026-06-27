@@ -23,4 +23,14 @@ public interface CoffeeOrderService {
      * @throws IllegalStateException if the machine client returned an unexpected result
      */
     CoffeeOrderResponse order(CoffeeOrderRequest request);
+
+    /**
+     * Returns the latest coffee orders.
+     *
+     * @param limit maximum number of coffee orders to retrieve
+     *
+     * @return latest coffee orders from newest to oldest
+     * @throws IllegalArgumentException if {@code limit} is less than {@code 1}
+     */
+    CoffeeOrdersResponse findLatest(int limit);
 }

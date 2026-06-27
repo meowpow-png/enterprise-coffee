@@ -53,7 +53,7 @@ See [Development](#development) section for more information.
 
 The backend follows a modular, domain-oriented architecture inspired by practices commonly used in enterprise applications. While the coffee domain is intentionally simple, the project emphasizes clear separation of responsibilities and maintainable code organization.
 
-Read [ARCHITECTURE.md](architecture.md) for more information.
+Read [ARCHITECTURE.md](docs/ARCHITECTURE.md) for more information.
 
 ## API
 

@@ -1,6 +1,7 @@
 package io.github.meowpowpng.enterprisecoffee.coffee.order.internal;
 
 import io.github.meowpowpng.enterprisecoffee.coffee.model.CoffeeType;
+import io.github.meowpowpng.enterprisecoffee.coffee.model.TestCoffeeType;
 import io.github.meowpowpng.enterprisecoffee.support.TestClock;
 
 import org.junit.jupiter.api.DisplayName;
@@ -9,15 +10,11 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static io.github.meowpowpng.enterprisecoffee.coffee.order.internal.TestCoffeeOrder.create;
-
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.assertj.core.api.ThrowableAssert.catchThrowable;
 
 class CoffeeOrderTest {
-
-    private static final TestClock CLOCK = TestClock.create();
 
     @Nested
     @DisplayName("create")
@@ -27,16 +24,15 @@ class CoffeeOrderTest {
         @SuppressWarnings("DataFlowIssue")
         @DisplayName("Should throw NullPointerException when type is null")
         void should_ThrowNullPointerException_when_TypeIsNull() {
-            assertThatThrownBy(() -> CoffeeOrder.create(null, CLOCK.instant()))
+            assertThatThrownBy(() -> CoffeeOrder.create(null, TestClock.create().instant()))
                     .isInstanceOf(NullPointerException.class);
         }
 
         @Test
         @DisplayName("Should create pending order when type is provided")
         void should_CreatePendingOrder_when_TypeIsProvided() {
-            var type = create();
-
-            var order = CoffeeOrder.create(type, CLOCK.instant());
+            var type = TestCoffeeType.create();
+            var order = TestCoffeeOrder.create(type);
 
             assertThat(order.status()).isEqualTo(CoffeeOrder.Status.PENDING);
             assertThat(order.type()).isEqualTo(type);
@@ -45,7 +41,8 @@ class CoffeeOrderTest {
         @Test
         @DisplayName("Should create order with identifier when type is provided")
         void should_CreateOrderWithIdentifier_when_TypeIsProvided() {
-            var order = CoffeeOrder.create(create(), CLOCK.instant());
+            var type = TestCoffeeType.create();
+            var order = TestCoffeeOrder.create(type);
 
             assertThat(order.id()).isNotNull();
         }
@@ -55,13 +52,15 @@ class CoffeeOrderTest {
     @DisplayName("restore")
     class RestoreMethodTests {
 
+        private static final TestClock CLOCK = TestClock.create();
+
         @Test
         @SuppressWarnings("DataFlowIssue")
         @DisplayName("Should throw NullPointerException when id is null")
         void should_ThrowNullPointerException_when_IdIsNull() {
             var thrown = catchThrowable(() -> CoffeeOrder.restore(
                     null,
-                    create(),
+                    TestCoffeeType.create(),
                     CoffeeOrder.Status.PENDING,
                     CLOCK.instant()
             ));
@@ -87,7 +86,7 @@ class CoffeeOrderTest {
         void should_ThrowNullPointerException_when_StatusIsNull() {
             var thrown = catchThrowable(() -> CoffeeOrder.restore(
                     CoffeeOrder.Id.generate(),
-                    create(),
+                    TestCoffeeType.create(),
                     null,
                     CLOCK.instant()
             ));
@@ -100,7 +99,7 @@ class CoffeeOrderTest {
         void should_ThrowNullPointerException_when_CreatedAtIsNull() {
             var thrown = catchThrowable(() -> CoffeeOrder.restore(
                     CoffeeOrder.Id.generate(),
-                    create(),
+                    TestCoffeeType.create(),
                     CoffeeOrder.Status.PENDING,
                     null
             ));

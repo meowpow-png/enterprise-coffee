@@ -73,6 +73,12 @@ POST /order
 |-------|--------|----------|----------------------|
 | type  | string | yes      | Coffee type to order |
 
+**Response (application/json)**
+
+| Field   | Type   | Description                      |
+|---------|--------|----------------------------------|
+| message | string | Human-readable result message    |
+
 **Example**
 
 ```json
@@ -150,7 +156,6 @@ GET /orders
 **Responses**
 
 - `200 OK` - Coffee orders returned successfully
-    
 - `400 Bad Request` - Invalid request
 
 ### Get Machine Status
@@ -200,7 +205,9 @@ GET /progress
 | type     | string  | Current coffee type (empty if idle) |
 | progress | integer | Brewing progress (0–100)            |
 
-**Example**
+**Examples**
+
+Espresso:
 
 ```json
 {

@@ -1,4 +1,4 @@
-import Coffee from "./coffee/components/Coffee";
+import Coffee from "./coffee";
 
 function App() {
     return (

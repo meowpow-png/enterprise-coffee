@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -18,13 +17,17 @@ import java.util.Optional;
 public class JpaCoffeeJobRepository implements CoffeeJobRepository {
 
     private final JpaCoffeeJobCrudRepository repository;
+    private final EntityManager entityManager;
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    JpaCoffeeJobRepository(JpaCoffeeJobCrudRepository repository) {
+    JpaCoffeeJobRepository(
+            JpaCoffeeJobCrudRepository repository,
+            EntityManager entityManager
+    ) {
         Objects.requireNonNull(repository, "repository must not be null");
+        Objects.requireNonNull(entityManager, "entityManager must not be null");
+
         this.repository = repository;
+        this.entityManager = entityManager;
     }
 
     /**

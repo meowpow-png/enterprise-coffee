@@ -14,6 +14,11 @@ order type='AMERICANO':
         -d '{"type":"{{type}}"}' \
         {{backend-url}}/order
 
+# Get latest coffee orders
+[arg("limit", help="maximum number of orders to return")]
+orders limit='20':
+    @curl -s "{{backend-url}}/orders?limit={{limit}}" | jq
+
 # Get brewing progress
 progress:
     @curl -s {{backend-url}}/progress | jq

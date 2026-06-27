@@ -34,7 +34,7 @@ public interface CoffeeOrderRepository {
      *
      * @param limit maximum number of coffee orders to retrieve
      *
-     * @return latest coffee orders from newest to oldest
+     * @return latest coffee orders in descending creation order
      * @throws IllegalArgumentException if {@code limit} is less than {@code 1}
      * @throws CoffeeOrderPersistenceException if the orders cannot be retrieved
      */

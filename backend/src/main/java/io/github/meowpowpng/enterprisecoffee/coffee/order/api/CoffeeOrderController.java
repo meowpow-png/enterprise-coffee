@@ -45,7 +45,7 @@ public class CoffeeOrderController {
      *
      * @param limit maximum number of coffee orders to retrieve
      *
-     * @return latest coffee ordered from newest to oldest
+     * @return latest coffee orders in descending creation order
      * @throws IllegalArgumentException if {@code limit} is less than {@code 1}
      */
     @GetMapping(ApiEndpoints.COFFEE_ORDERS)

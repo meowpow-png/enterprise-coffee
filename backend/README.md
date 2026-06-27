@@ -95,6 +95,64 @@ POST /order
 }
 ```
 
+### Get Coffee Orders
+
+Returns the latest coffee orders.
+
+**Path**
+
+```text
+GET /orders
+```
+
+**Query Parameters**
+
+| Parameter | Type    | Required | Description                                               |
+|-----------|---------|----------|-----------------------------------------------------------|
+| limit     | integer | no       | Maximum number of coffee orders to return (20 by default) |
+
+**Response (application/json)**
+
+| Field  | Type  | Description   |
+|--------|-------|---------------|
+| orders | array | Coffee orders |
+
+**Coffee Order**
+
+| Field     | Type   | Description                       |
+|-----------|--------|-----------------------------------|
+| id        | string | Coffee order identifier           |
+| type      | string | Requested coffee type             |
+| status    | string | Current coffee order status       |
+| createdAt | string | Time the coffee order was created |
+
+**Example**
+
+```json
+{
+  "orders": [
+    {
+      "id": "a4b84783-b19d-4af0-8e2d-3d68552f9d67",
+      "type": "ESPRESSO",
+      "status": "ACCEPTED",
+      "createdAt": "2026-01-01T10:02:00Z"
+    },
+    {
+      "id": "fb4a75d4-8ca7-47b8-9d2d-d87e489e51b2",
+      "type": "LATTE",
+      "status": "FAILED",
+      "createdAt": "2026-01-01T10:01:00Z"
+    }
+  ]
+}
+```
+
+**Responses**
+
+- `200 OK` - Coffee orders returned successfully
+    
+- `400 Bad Request` - Invalid request
+
 ### Get Machine Status
 
 Returns the current machine status.

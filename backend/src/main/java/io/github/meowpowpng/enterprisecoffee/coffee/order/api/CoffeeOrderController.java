@@ -6,10 +6,7 @@ import io.github.meowpowpng.enterprisecoffee.coffee.order.api.exception.CoffeeOr
 import io.github.meowpowpng.enterprisecoffee.common.ApiEndpoints;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
@@ -41,5 +38,18 @@ public class CoffeeOrderController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     CoffeeOrderResponse order(@Valid @RequestBody CoffeeOrderRequest request) {
         return service.order(request);
+    }
+
+    /**
+     * Returns the latest coffee orders.
+     *
+     * @param limit maximum number of coffee orders to retrieve
+     *
+     * @return latest coffee ordered from newest to oldest
+     * @throws IllegalArgumentException if {@code limit} is less than {@code 1}
+     */
+    @GetMapping(ApiEndpoints.COFFEE_ORDERS)
+    CoffeeOrdersResponse orders(@RequestParam(defaultValue = "20") int limit) {
+        return service.findLatest(limit);
     }
 }

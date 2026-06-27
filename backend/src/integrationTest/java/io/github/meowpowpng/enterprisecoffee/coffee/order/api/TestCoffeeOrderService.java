@@ -5,6 +5,8 @@ import io.github.meowpowpng.enterprisecoffee.coffee.order.api.exception.CoffeeOr
 
 import org.jspecify.annotations.NullMarked;
 
+import java.util.List;
+
 @NullMarked
 final class TestCoffeeOrderService implements CoffeeOrderService {
 
@@ -12,11 +14,14 @@ final class TestCoffeeOrderService implements CoffeeOrderService {
     public static final String PROCESSING_FAILURE_MESSAGE = "processing failure";
 
     private CoffeeOrderResponse response;
+    private CoffeeOrdersResponse ordersResponse;
     private boolean invalidOrder;
     private boolean processingFails;
+    private int limit;
 
     TestCoffeeOrderService() {
         this.response = new CoffeeOrderResponse("accepted");
+        this.ordersResponse = new CoffeeOrdersResponse(List.of());
     }
 
     @Override
@@ -32,11 +37,16 @@ final class TestCoffeeOrderService implements CoffeeOrderService {
 
     @Override
     public CoffeeOrdersResponse findLatest(int limit) {
-        throw new UnsupportedOperationException();
+        this.limit = limit;
+        return ordersResponse;
     }
 
     void response(CoffeeOrderResponse response) {
         this.response = response;
+    }
+
+    void ordersResponse(CoffeeOrdersResponse response) {
+        this.ordersResponse = response;
     }
 
     void markInvalidOrder() {
@@ -47,9 +57,15 @@ final class TestCoffeeOrderService implements CoffeeOrderService {
         processingFails = true;
     }
 
+    int limit() {
+        return limit;
+    }
+
     void reset() {
         response = new CoffeeOrderResponse("accepted");
+        ordersResponse = new CoffeeOrdersResponse(List.of());
         invalidOrder = false;
         processingFails = false;
+        limit = 0;
     }
 }

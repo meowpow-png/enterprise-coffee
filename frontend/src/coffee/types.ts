@@ -22,8 +22,13 @@ export interface CoffeeOrder {
     readonly createdAt: string;
 }
 
+export interface MachineProgress {
+    readonly type: CoffeeType | null;
+    readonly progress: number;
+}
+
 /**
- * Coffee order request submitted by client.
+ * Coffee order request submitted by the client.
  */
 export interface CoffeeOrderRequest {
     type: CoffeeType;

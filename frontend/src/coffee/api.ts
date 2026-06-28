@@ -4,7 +4,7 @@ import type {
     CoffeeOrdersResponse,
     MachineProgressResponse,
     MachineStatusResponse
-} from "./types.ts";
+} from "./types";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 

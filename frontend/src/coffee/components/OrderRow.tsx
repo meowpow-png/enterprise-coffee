@@ -1,4 +1,3 @@
-import type { CoffeeOrder } from "../types";
 import {
     Ban,
     Check,
@@ -6,6 +5,8 @@ import {
     Clock3,
     X,
 } from "lucide-react";
+
+import type { CoffeeOrder } from "../types";
 
 import styles from "./OrderRow.module.css";
 

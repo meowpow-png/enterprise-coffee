@@ -1,6 +1,6 @@
-import type { CoffeeOrder } from "../types";
-
 import OrderRow from "./OrderRow";
+
+import type { CoffeeOrder } from "../types";
 
 import styles from "./RecentOrders.module.css";
 

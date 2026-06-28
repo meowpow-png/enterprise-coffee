@@ -1,5 +1,6 @@
+import CoffeeButton from "./CoffeeButton";
+
 import styles from "./CoffeeSelector.module.css";
-import CoffeeButton from "./CoffeeButton.tsx";
 
 function CoffeeSelector() {
     return (

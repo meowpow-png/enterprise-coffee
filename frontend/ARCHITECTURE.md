@@ -43,6 +43,29 @@ A typical feature contains:
 * Features should be self-contained and must not depend on other features
 * Consumers should import from the feature barrel rather than its internal modules
 
+## Imports
+
+Feature barrels (`index.ts`) define the public API of a feature. They provide a single entry point for consumers outside the feature and decouple them from its internal file structure.
+
+Files within a feature should import directly from feature modules rather than through the feature barrel. This preserves clear layering and avoids feature implementations depending on their own public API.
+
+Imports should be grouped by their role within the module:
+
+1. Runtime dependencies 
+2. Type-only imports
+3. Static assets such as styles and images
+
+**Example**
+
+```ts
+import OrderRow from "./OrderRow";
+import coffeeService from "../coffee";
+
+import type { CoffeeOrder } from "../types";
+
+import styles from "./RecentOrders.module.css";
+```
+
 ## Shared Modules
 
 Shared modules contain reusable code that is used across multiple features.

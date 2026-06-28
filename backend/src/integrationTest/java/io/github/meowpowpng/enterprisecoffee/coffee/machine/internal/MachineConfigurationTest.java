@@ -14,6 +14,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.function.Consumer;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MachineConfigurationTest {
@@ -46,29 +48,27 @@ class MachineConfigurationTest {
         @DisplayName("Should configure rest client from machine properties when machine configuration is loaded")
         void should_ConfigureRestClientFromMachineProperties_when_MachineConfigurationIsLoaded() {
             server.enqueue(new MockResponse().setResponseCode(200));
+            Consumer<RestClient> assertion = client -> {
+                client.get()
+                        .uri("/health")
+                        .retrieve()
+                        .toBodilessEntity();
 
+                try {
+                    var request = server.takeRequest();
+
+                    assertThat(request.getMethod()).isEqualTo("GET");
+                    assertThat(request.getPath()).isEqualTo("/health");
+                }
+                catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            };
             TestApplicationContextRunner.from(new ApplicationContextRunner())
                     .withConfiguration(MachineConfiguration.class)
                     .withPropertyValues(machineProperties(server.url("/").toString()))
-                    .withBean(RestClient.class, RestClientTests::assertConfiguredRestClient)
+                    .withBean(RestClient.class, assertion)
                     .doesNotFail();
-        }
-
-        private static void assertConfiguredRestClient(RestClient client) {
-            client.get()
-                    .uri("/health")
-                    .retrieve()
-                    .toBodilessEntity();
-
-            try {
-                var request = server.takeRequest();
-
-                assertThat(request.getMethod()).isEqualTo("GET");
-                assertThat(request.getPath()).isEqualTo("/health");
-            }
-            catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
         }
     }
 

@@ -125,7 +125,10 @@ public final class TestApplicationContextRunner {
             runner.run(context -> {
                 var startupFailure = context.getStartupFailure();
                 if (startupFailure != null) {
-                    assertThat(startupFailure).isInstanceOf(expected);
+                    if (expected.isInstance(startupFailure)) {
+                        return;
+                    }
+                    assertThat(startupFailure).hasCauseInstanceOf(expected);
                     return;
                 }
                 var assertion = SpringWiringTestAssertion.assertThatContext(context);
